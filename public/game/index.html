@@ -8,7 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; }
+body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; overflow-x: hidden; }
 .screen { display: none; flex-direction: column; min-height: 100vh; }
 .screen.active { display: flex; }
 .reg-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 24px; }
@@ -47,10 +47,9 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .timer-text.urgent { color: #e74c3c; }
 .q-badge { margin: 0 16px 6px; display: inline-flex; align-items: center; gap: 6px; background: #111118; border: 1px solid #2a2a3a; border-radius: 10px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.6); }
 .media-img-wrap { margin: 0 16px 0; border-radius: 16px 16px 0 0; overflow: hidden; background: #111118; position: relative; }
-.media-img { width: 100%; display: block; }
-.media-img.actor { height: 280px; object-fit: cover; object-position: 50% 0%; }
-.media-img.poster { height: 240px; object-fit: contain; background: #000; }
-.no-img { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: #111118; }
+.media-img.actor { width: 100%; height: 300px; object-fit: cover; object-position: 50% 30%; display: block; }
+.media-img.poster { width: 100%; height: 240px; object-fit: contain; background: #000; display: block; }
+.no-img { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: #111118; }
 .round-badge { position: absolute; top: 10px; right: 10px; background: rgba(226,71,30,0.9); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; }
 .question-box { margin: 0 16px 10px; background: #111118; border-radius: 0 0 16px 16px; border-top: 1px solid #1a1a2e; padding: 12px 14px; }
 .question-text { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; }
@@ -65,27 +64,41 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .result-bar { margin: 0 16px 10px; border-radius: 14px; padding: 12px 16px; text-align: center; font-size: 14px; font-weight: 600; display: none; line-height: 1.6; }
 .result-bar.correct { background: rgba(39,174,96,0.15); border: 1px solid #27ae60; color: #2ecc71; display: block; }
 .result-bar.wrong { background: rgba(231,76,60,0.15); border: 1px solid #e74c3c; color: #e74c3c; display: block; }
-.level-up-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; font-size: 14px; font-weight: 700; padding: 12px 24px; border-radius: 20px; z-index: 100; display: none; text-align: center; }
 .next-btn { margin: 0 16px 16px; width: calc(100% - 32px); background: #E2471E; border: none; border-radius: 14px; color: #fff; font-size: 15px; font-weight: 700; padding: 15px; cursor: pointer; display: none; }
 .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 16px; }
 .loading-icon { font-size: 60px; animation: pulse 1s infinite; }
 .loading-text { color: rgba(255,255,255,0.5); font-size: 15px; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* LEVEL UP OVERLAY */
+.levelup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px; }
+.levelup-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.levelup-emoji { font-size: 80px; animation: bounce 0.6s infinite alternate; }
+@keyframes bounce { from{transform:scale(1)} to{transform:scale(1.2)} }
+.levelup-title { font-size: 28px; font-weight: 800; color: #FFD700; margin: 16px 0 8px; }
+.levelup-level { font-size: 48px; font-weight: 800; color: #fff; margin: 8px 0; }
+.levelup-name { font-size: 20px; color: rgba(255,255,255,0.7); margin-bottom: 24px; }
+.levelup-stars { font-size: 32px; letter-spacing: 8px; margin-bottom: 24px; }
+.levelup-btn { background: #FFD700; border: none; border-radius: 16px; color: #000; font-size: 16px; font-weight: 800; padding: 16px 40px; cursor: pointer; }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 998; }
+
+/* LEADERBOARD */
 .lb-wrap { padding: 16px; flex: 1; overflow-y: auto; }
 .lb-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; text-align: center; }
 .lb-title span { color: #E2471E; }
 .lb-sub { text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; margin-bottom: 16px; }
 .lb-item { display: flex; align-items: center; gap: 10px; background: #111118; border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid #1a1a2e; }
 .lb-item.me { border-color: rgba(226,71,30,0.5); background: rgba(226,71,30,0.08); }
-.lb-item.gold { border-color: rgba(255,215,0,0.4); background: rgba(255,215,0,0.06); }
-.lb-item.silver { border-color: rgba(192,192,192,0.4); background: rgba(192,192,192,0.06); }
-.lb-item.bronze { border-color: rgba(205,127,50,0.4); background: rgba(205,127,50,0.06); }
-.lb-rank { font-size: 20px; width: 30px; text-align: center; }
-.lb-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(226,71,30,0.25); display: flex; align-items: center; justify-content: center; color: #E2471E; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.lb-item.gold { border-color: rgba(255,215,0,0.5); background: rgba(255,215,0,0.06); }
+.lb-item.silver { border-color: rgba(192,192,192,0.4); background: rgba(192,192,192,0.05); }
+.lb-item.bronze { border-color: rgba(205,127,50,0.4); background: rgba(205,127,50,0.05); }
+.lb-rank { font-size: 22px; width: 32px; text-align: center; }
+.lb-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(226,71,30,0.25); display: flex; align-items: center; justify-content: center; color: #E2471E; font-size: 13px; font-weight: 700; flex-shrink: 0; }
 .lb-info { flex: 1; }
-.lb-name { font-size: 14px; font-weight: 500; }
+.lb-name { font-size: 14px; font-weight: 600; }
 .lb-level { font-size: 11px; color: #FFD700; margin-top: 2px; }
-.lb-coins { color: #E2471E; font-size: 14px; font-weight: 700; text-align: right; }
+.lb-coins { color: #E2471E; font-size: 14px; font-weight: 700; }
 .lb-empty { text-align: center; color: rgba(255,255,255,0.3); padding: 60px 20px; font-size: 14px; line-height: 1.8; }
 .bottom-nav { display: flex; background: #0a0a0f; border-top: 1px solid #1a1a2e; padding: 10px 0 20px; position: sticky; bottom: 0; }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 0; }
@@ -96,7 +109,16 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 </head>
 <body>
 
-<div class="level-up-toast" id="levelToast">🎉 Səviyyə artdı!</div>
+<!-- LEVEL UP OVERLAY -->
+<div class="levelup-overlay" id="levelupOverlay">
+  <canvas class="confetti" id="confettiCanvas"></canvas>
+  <div class="levelup-emoji" id="levelupEmoji">🎬</div>
+  <div class="levelup-title">TƏBRİK EDİRİK!</div>
+  <div class="levelup-level" id="levelupNum">Səviyyə 2</div>
+  <div class="levelup-name" id="levelupName">Kinofil</div>
+  <div class="levelup-stars">⭐⭐⭐</div>
+  <button class="levelup-btn" onclick="closeLevelUp()">🎮 Davam et</button>
+</div>
 
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-icon">🎬</div>
@@ -197,19 +219,35 @@ const TMDB='707ef4b59e038ab276ae6d95d85fcc4f';
 const BASE='https://api.themoviedb.org/3';
 const TIMER_SEC=7;
 const COINS=100;
+const CORRECT_PER_LEVEL=5;
+const MAX_LEVEL=100;
 
-const LEVELS=[
-  {min:0,name:'Yeni Baxıcı'},
-  {min:5,name:'Kinofil'},
-  {min:10,name:'Film Sevər'},
-  {min:20,name:'Kino Bilici'},
-  {min:35,name:'Film Ekspert'},
-  {min:55,name:'Kino Ustası'},
-  {min:80,name:'Hollywood Bilgəsi'},
-  {min:110,name:'Kino Əfsanəsi'},
-  {min:150,name:'MitoMan'},
-  {min:200,name:'Qızıl MitoMan'},
-];
+// 100 level — hər 10-da böyük ad dəyişir
+function getLevelName(level){
+  if(level>=100)return'👑 Kino İmperatoru';
+  if(level>=90)return'💎 Əfsanəvi MitoMan';
+  if(level>=80)return'🌟 Hollywood Ulduzu';
+  if(level>=70)return'🎭 Böyük Usta';
+  if(level>=60)return'🏆 Qızıl MitoMan';
+  if(level>=50)return'🎬 Kino Əfsanəsi';
+  if(level>=40)return'⭐ Hollywood Bilgəsi';
+  if(level>=30)return'🎯 Kino Ustası';
+  if(level>=20)return'🔥 Film Ekspert';
+  if(level>=15)return'💡 Kino Bilici';
+  if(level>=10)return'🎥 Film Sevər';
+  if(level>=5)return'🍿 Kinofil';
+  return'🎬 Yeni Baxıcı';
+}
+
+function getLevelEmoji(level){
+  if(level>=90)return'👑';
+  if(level>=70)return'💎';
+  if(level>=50)return'🌟';
+  if(level>=30)return'🏆';
+  if(level>=15)return'🎬';
+  if(level>=5)return'🍿';
+  return'🎭';
+}
 
 const {createClient}=supabase;
 const db=createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -217,6 +255,7 @@ const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 const tgUser=tg?.initDataUnsafe?.user;
 let timerInterval=null;
+let confettiInterval=null;
 
 const st={
   coins:+localStorage.getItem('mf_coins')||0,
@@ -229,16 +268,6 @@ const st={
   userPhone:localStorage.getItem('mf_phone')||'',
   userId:localStorage.getItem('mf_uid')||(tgUser?.id?String(tgUser.id):'u_'+Math.random().toString(36).slice(2,8))
 };
-
-function getLevelInfo(level){
-  const idx=Math.min(level-1,LEVELS.length-1);
-  return LEVELS[idx]||LEVELS[LEVELS.length-1];
-}
-
-function getNextLevelName(level){
-  const idx=Math.min(level,LEVELS.length-1);
-  return LEVELS[idx]?LEVELS[idx].name:'MitoMan';
-}
 
 function isOk(str){
   if(!str||str.length<2)return false;
@@ -265,37 +294,80 @@ function saveLocal(){
 }
 function save(){saveLocal();saveDB();}
 
+// CONFETTI
+function startConfetti(){
+  const canvas=document.getElementById('confettiCanvas');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const pieces=Array.from({length:80},()=>({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height-canvas.height,
+    w:Math.random()*10+5,
+    h:Math.random()*6+3,
+    color:['#FFD700','#E2471E','#2ecc71','#3498db','#e91e63'][Math.floor(Math.random()*5)],
+    rot:Math.random()*360,
+    speed:Math.random()*3+2,
+    rotSpeed:Math.random()*4-2
+  }));
+  confettiInterval=setInterval(()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.y+=p.speed;p.rot+=p.rotSpeed;
+      if(p.y>canvas.height)p.y=-20;
+      ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+  },16);
+}
+
+function stopConfetti(){
+  clearInterval(confettiInterval);
+  const canvas=document.getElementById('confettiCanvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+function showLevelUp(){
+  const name=getLevelName(st.level);
+  const emoji=getLevelEmoji(st.level);
+  document.getElementById('levelupEmoji').textContent=emoji;
+  document.getElementById('levelupNum').textContent=`Səviyyə ${st.level}`;
+  document.getElementById('levelupName').textContent=name;
+  document.getElementById('levelupOverlay').className='levelup-overlay show';
+  startConfetti();
+  // Vibrasiya
+  if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
+}
+
+function closeLevelUp(){
+  document.getElementById('levelupOverlay').className='levelup-overlay';
+  stopConfetti();
+}
+
 function checkLevelUp(){
-  const CORRECT_PER_LEVEL=5;
-  if(st.correctInLevel>=CORRECT_PER_LEVEL){
+  if(st.correctInLevel>=CORRECT_PER_LEVEL&&st.level<MAX_LEVEL){
     st.correctInLevel=0;
     st.level++;
-    showLevelUpToast();
+    showLevelUp();
   }
 }
 
-function showLevelUpToast(){
-  const info=getLevelInfo(st.level);
-  const toast=document.getElementById('levelToast');
-  toast.innerHTML=`🎉 Səviyyə ${st.level}: ${info.name}!`;
-  toast.style.display='block';
-  setTimeout(()=>toast.style.display='none',3000);
-}
-
 function updateUI(){
-  const info=getLevelInfo(st.level);
-  const nextName=getNextLevelName(st.level);
-  const CORRECT_PER_LEVEL=5;
+  const name=getLevelName(st.level);
+  const nextName=getLevelName(st.level+1);
   const pct=Math.min(st.correctInLevel/CORRECT_PER_LEVEL*100,100);
-
   document.getElementById('coinsVal').textContent=st.coins;
   document.getElementById('coinsVal2').textContent=st.coins;
   document.getElementById('levelVal').textContent=st.level;
   document.getElementById('levelVal2').textContent=st.level;
-  document.getElementById('levelName').textContent=info.name;
+  document.getElementById('levelName').textContent=name;
   document.getElementById('levelBar').style.width=pct+'%';
   document.getElementById('levelProgress').textContent=`${st.correctInLevel}/${CORRECT_PER_LEVEL} düzgün`;
-  document.getElementById('levelNext').textContent=st.level<LEVELS.length?`Növbəti: ${nextName}`:'Maksimum səviyyə!';
+  document.getElementById('levelNext').textContent=st.level<MAX_LEVEL?`Növbəti: ${nextName}`:'👑 Maksimum!';
   document.getElementById('scoreVal').textContent=st.score;
   document.getElementById('streakVal').textContent=st.streak;
   document.getElementById('totalVal').textContent=st.total;
@@ -319,19 +391,17 @@ async function renderLB(){
     const {data,error}=await db.from('mitofilm_users').select('user_id,name,coins,score,level').order('coins',{ascending:false}).limit(20);
     if(error){el.innerHTML='<div class="lb-empty">Xəta baş verdi</div>';return;}
     const medals=['🥇','🥈','🥉'];
-    const classes=['gold','silver','bronze'];
-    if(!data||!data.length){el.innerHTML='<div class="lb-empty">Hələ heç kim oynamayıb!<br>İlk MitoMan sən ol! 🎬</div>';return;}
+    const cls=['gold','silver','bronze'];
+    if(!data||!data.length){el.innerHTML='<div class="lb-empty">Hələ heç kim oynamayıb!</div>';return;}
     el.innerHTML=data.map((p,i)=>{
       const lvl=p.level||1;
-      const lvlInfo=getLevelInfo(lvl);
-      const cls=i<3?classes[i]:'';
       const isMe=p.user_id===st.userId;
-      return `<div class="lb-item ${cls} ${isMe?'me':''}">
+      return`<div class="lb-item ${i<3?cls[i]:''} ${isMe?'me':''}">
         <span class="lb-rank">${i<3?medals[i]:i+1}</span>
         <div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div>
         <div class="lb-info">
           <div class="lb-name">${p.name}${isMe?' 👈':''}</div>
-          <div class="lb-level">Səviyyə ${lvl} · ${lvlInfo.name}</div>
+          <div class="lb-level">${getLevelEmoji(lvl)} Səviyyə ${lvl} · ${getLevelName(lvl)}</div>
         </div>
         <span class="lb-coins">${p.coins} 🪙</span>
       </div>`;
@@ -430,9 +500,7 @@ async function qActorFace(){
   if(list.length<4)return qActorFace();
   const actor=list[0];
   const wrong=list.slice(1,4).map(a=>a.name);
-  // h632 formatı — portret, üz tam görünür
-  const imgUrl=`https://image.tmdb.org/t/p/h632${actor.profile_path}`;
-  setCard({img:imgUrl,badge:'🎭 Aktyor',question:'Bu aktyor kimdir?',sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
+  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:'🎭 Aktyor',question:'Bu aktyor kimdir?',sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
 }
 async function qMoviePoster(){
   const list=await getMovies();
@@ -472,8 +540,7 @@ async function qActorKnownFor(){
   const movies=await getMovies();
   const wrong=movies.filter(m=>m.title!==correct).slice(0,3).map(m=>m.title);
   if(wrong.length<3)return qActorKnownFor();
-  const imgUrl=`https://image.tmdb.org/t/p/h632${actor.profile_path}`;
-  setCard({img:imgUrl,badge:'🎭 Film tap',question:`${actor.name} hansı filmdə baş rol oynamışdır?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
+  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:'🎭 Film tap',question:`${actor.name} hansı filmdə baş rol oynamışdır?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
 }
 async function qMovieGenre(){
   const genres={28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'};
@@ -551,17 +618,6 @@ function answer(btn,chosen){
   }
   document.getElementById('nextBtn').style.display='block';
   updateUI();save();
-}
-
-// Supabase-də level sütunu yoxdursa əlavə et
-async function ensureLevelColumn(){
-  try{
-    await db.from('mitofilm_users').select('level').limit(1);
-  }catch(e){
-    try{
-      await db.rpc('exec_sql',{sql:'ALTER TABLE mitofilm_users ADD COLUMN IF NOT EXISTS level int8 DEFAULT 1'});
-    }catch(e2){}
-  }
 }
 
 document.getElementById('loadingScreen').style.display='none';
