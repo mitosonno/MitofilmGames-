@@ -16,10 +16,10 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .reg-sub { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 40px; }
 .reg-card { background: #111118; border: 1px solid #2a2a3a; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 340px; }
 .reg-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; text-align: center; }
-.reg-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px; letter-spacing: 0.5px; }
+.reg-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
 .reg-input { width: 100%; background: #0a0a0f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 13px 16px; color: #fff; font-size: 15px; outline: none; margin-bottom: 16px; }
 .reg-input:focus { border-color: #E2471E; }
-.reg-btn { width: 100%; background: #E2471E; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; padding: 15px; cursor: pointer; margin-top: 4px; }
+.reg-btn { width: 100%; background: #E2471E; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; padding: 15px; cursor: pointer; }
 .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(10,10,15,0.98); border-bottom: 1px solid #1a1a2e; position: sticky; top: 0; z-index: 10; }
 .logo { color: #E2471E; font-size: 16px; font-weight: 800; letter-spacing: 2px; }
 .coins-badge { display: flex; align-items: center; gap: 5px; background: rgba(226,71,30,0.15); border: 1px solid rgba(226,71,30,0.3); border-radius: 20px; padding: 6px 12px; }
@@ -30,24 +30,26 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .stat-val { font-size: 20px; font-weight: 700; color: #E2471E; }
 .stat-lbl { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
 .dots { display: flex; gap: 5px; justify-content: center; padding: 4px 16px 8px; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: #1a1a2e; transition: all 0.3s; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #1a1a2e; }
 .dot.ok { background: #E2471E; }
 .dot.bad { background: #e74c3c; }
-.timer-wrap { margin: 0 16px 10px; }
+.timer-wrap { margin: 0 16px 8px; }
 .timer-bar-bg { background: #1a1a2e; border-radius: 10px; height: 6px; overflow: hidden; }
 .timer-bar { height: 6px; border-radius: 10px; background: #E2471E; transition: width 1s linear, background 0.3s; }
 .timer-text { text-align: right; font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
 .timer-text.urgent { color: #e74c3c; }
-.q-badge { margin: 0 16px 8px; display: inline-flex; align-items: center; gap: 6px; background: #111118; border: 1px solid #2a2a3a; border-radius: 10px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.6); }
-.media-card { margin: 0 16px 12px; border-radius: 20px; overflow: hidden; position: relative; background: #111118; }
-.media-img { width: 100%; height: 300px; object-fit: cover; object-position: 50% 15%; display: block; }
-.no-img { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 70px; background: #111118; }
-.card-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 16px 14px; background: linear-gradient(transparent, rgba(0,0,0,0.95)); }
-.card-question { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; }
-.card-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
-.round-badge { position: absolute; top: 12px; right: 12px; background: rgba(226,71,30,0.9); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; }
+.q-badge { margin: 0 16px 6px; display: inline-flex; align-items: center; gap: 6px; background: #111118; border: 1px solid #2a2a3a; border-radius: 10px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.6); }
+/* ŞƏKİL - overlay yoxdur, sual altda */
+.media-img-wrap { margin: 0 16px 0; border-radius: 16px 16px 0 0; overflow: hidden; background: #111118; position: relative; }
+.media-img { width: 100%; height: 240px; object-fit: cover; object-position: 50% 15%; display: block; }
+.no-img { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: #111118; }
+.round-badge { position: absolute; top: 10px; right: 10px; background: rgba(226,71,30,0.9); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; }
+/* SUAL MƏTNİ - şəklin altında ayrıca */
+.question-box { margin: 0 16px 12px; background: #111118; border-radius: 0 0 16px 16px; border-top: 1px solid #1a1a2e; padding: 12px 14px; }
+.question-text { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; }
+.question-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
 .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 12px; }
-.opt-btn { background: #111118; border: 1px solid #2a2a3a; border-radius: 14px; color: #fff; font-size: 13px; font-weight: 500; padding: 14px 10px; cursor: pointer; text-align: center; transition: all 0.2s; line-height: 1.3; min-height: 56px; }
+.opt-btn { background: #111118; border: 1px solid #2a2a3a; border-radius: 14px; color: #fff; font-size: 13px; font-weight: 500; padding: 14px 10px; cursor: pointer; text-align: center; line-height: 1.3; min-height: 56px; transition: all 0.2s; }
 .opt-btn:active { transform: scale(0.97); }
 .opt-btn.correct { background: rgba(39,174,96,0.2); border-color: #27ae60; color: #2ecc71; }
 .opt-btn.wrong { background: rgba(231,76,60,0.2); border-color: #e74c3c; color: #e74c3c; }
@@ -60,7 +62,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 16px; }
 .loading-icon { font-size: 60px; animation: pulse 1s infinite; }
 .loading-text { color: rgba(255,255,255,0.5); font-size: 15px; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.95)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 .lb-wrap { padding: 16px; flex: 1; overflow-y: auto; }
 .lb-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; text-align: center; }
 .lb-title span { color: #E2471E; }
@@ -117,14 +119,14 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="timer-text" id="timerText">7 saniyə</div>
   </div>
   <div id="qBadge" class="q-badge"></div>
-  <div class="media-card">
+  <div class="media-img-wrap">
     <img id="mediaImg" class="media-img" src="" style="display:none" />
     <div id="noImg" class="no-img" style="display:none">🎬</div>
-    <div class="card-overlay">
-      <div class="card-question" id="cardQ"></div>
-      <div class="card-sub" id="cardSub"></div>
-    </div>
     <span class="round-badge" id="roundBadge">Sual 1</span>
+  </div>
+  <div class="question-box">
+    <div class="question-text" id="cardQ"></div>
+    <div class="question-sub" id="cardSub"></div>
   </div>
   <div class="options" id="optionsGrid"></div>
   <div class="result-bar" id="resultBar"></div>
@@ -161,121 +163,143 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 </div>
 
 <script>
-const SUPABASE_URL = 'https://dpvoluttxelwnqcfnsbh.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdm9sdXR0eGVsd25xY2Zuc2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzODQ4MTMsImV4cCI6MjA4ODk2MDgxM30.qodOw68r3OgeQXrr-SnzTDiXI4eI_moD4IWG-Dzj368';
-const TMDB = '707ef4b59e038ab276ae6d95d85fcc4f';
-const BASE = 'https://api.themoviedb.org/3';
-const IMG = 'https://image.tmdb.org/t/p/w500';
-const TIMER_SEC = 7;
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-const tg = window.Telegram?.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
-const tgUser = tg?.initDataUnsafe?.user;
-let timerInterval = null;
-const st = {
-  coins: +localStorage.getItem('mf_coins') || 0,
-  score: +localStorage.getItem('mf_score') || 0,
-  streak: 0, total: +localStorage.getItem('mf_total') || 0,
-  history: [], answered: false, current: null,
-  userName: localStorage.getItem('mf_name') || '',
-  userPhone: localStorage.getItem('mf_phone') || '',
-  userId: localStorage.getItem('mf_uid') || (tgUser?.id ? String(tgUser.id) : 'u_' + Math.random().toString(36).slice(2,8))
+const SUPABASE_URL='https://dpvoluttxelwnqcfnsbh.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdm9sdXR0eGVsd25xY2Zuc2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzODQ4MTMsImV4cCI6MjA4ODk2MDgxM30.qodOw68r3OgeQXrr-SnzTDiXI4eI_moD4IWG-Dzj368';
+const TMDB='707ef4b59e038ab276ae6d95d85fcc4f';
+const BASE='https://api.themoviedb.org/3';
+const IMG='https://image.tmdb.org/t/p/w500';
+const TIMER_SEC=7;
+const CORRECT_COINS=100;
+const WRONG_COINS=100;
+
+const {createClient}=supabase;
+const db=createClient(SUPABASE_URL,SUPABASE_KEY);
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+const tgUser=tg?.initDataUnsafe?.user;
+let timerInterval=null;
+
+const st={
+  coins:+localStorage.getItem('mf_coins')||0,
+  score:+localStorage.getItem('mf_score')||0,
+  streak:0,total:+localStorage.getItem('mf_total')||0,
+  history:[],answered:false,current:null,
+  userName:localStorage.getItem('mf_name')||'',
+  userPhone:localStorage.getItem('mf_phone')||'',
+  userId:localStorage.getItem('mf_uid')||(tgUser?.id?String(tgUser.id):'u_'+Math.random().toString(36).slice(2,8))
 };
-function isLatinOrAz(str) {
-  if (!str || str.length < 2) return false;
-  if (/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff\u0600-\u06ff]/.test(str)) return false;
+
+function isOk(str){
+  if(!str||str.length<2)return false;
+  if(/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff\u0600-\u06ff]/.test(str))return false;
   return true;
 }
-async function saveToSupabase() {
-  try { await db.from('mitofilm_users').upsert({ user_id: st.userId, name: st.userName, phone: st.userPhone, coins: st.coins, score: st.score, streak: st.streak }, { onConflict: 'user_id' }); } catch(e) {}
+
+async function saveDB(){
+  try{await db.from('mitofilm_users').upsert({user_id:st.userId,name:st.userName,phone:st.userPhone,coins:st.coins,score:st.score,streak:st.streak},{onConflict:'user_id'});}catch(e){}
 }
-function save() {
-  localStorage.setItem('mf_coins', st.coins);
-  localStorage.setItem('mf_score', st.score);
-  localStorage.setItem('mf_total', st.total);
-  localStorage.setItem('mf_uid', st.userId);
-  saveToSupabase();
+
+function saveLocal(){
+  localStorage.setItem('mf_coins',st.coins);
+  localStorage.setItem('mf_score',st.score);
+  localStorage.setItem('mf_total',st.total);
+  localStorage.setItem('mf_uid',st.userId);
 }
-async function register() {
-  const name = document.getElementById('regName').value.trim();
-  const phone = document.getElementById('regPhone').value.trim();
-  if (!name || name.length < 2) { alert('Adınızı daxil edin!'); return; }
-  if (!phone || phone.length < 6) { alert('Telefon nömrəsini daxil edin!'); return; }
-  st.userName = name; st.userPhone = phone;
-  localStorage.setItem('mf_name', name);
-  localStorage.setItem('mf_phone', phone);
-  await saveToSupabase();
-  document.getElementById('regScreen').className = 'screen';
-  document.getElementById('loadingScreen').style.display = 'flex';
+
+function save(){saveLocal();saveDB();}
+
+async function register(){
+  const name=document.getElementById('regName').value.trim();
+  const phone=document.getElementById('regPhone').value.trim();
+  if(!name||name.length<2){alert('Adınızı daxil edin!');return;}
+  if(!phone||phone.length<6){alert('Telefon nömrəsini daxil edin!');return;}
+  st.userName=name;st.userPhone=phone;
+  localStorage.setItem('mf_name',name);
+  localStorage.setItem('mf_phone',phone);
+  await saveDB();
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('loadingScreen').style.display='flex';
   loadQuestion();
 }
-function updateUI() {
-  document.getElementById('coinsVal').textContent = st.coins;
-  document.getElementById('coinsVal2').textContent = st.coins;
-  document.getElementById('scoreVal').textContent = st.score;
-  document.getElementById('streakVal').textContent = st.streak;
-  document.getElementById('totalVal').textContent = st.total;
-  document.getElementById('dotsRow').innerHTML = st.history.slice(-10).map(h=>`<div class="dot ${h}"></div>`).join('');
+
+function updateUI(){
+  document.getElementById('coinsVal').textContent=st.coins;
+  document.getElementById('coinsVal2').textContent=st.coins;
+  document.getElementById('scoreVal').textContent=st.score;
+  document.getElementById('streakVal').textContent=st.streak;
+  document.getElementById('totalVal').textContent=st.total;
+  document.getElementById('dotsRow').innerHTML=st.history.slice(-10).map(h=>`<div class="dot ${h}"></div>`).join('');
 }
-function showScreen(name) {
-  document.getElementById('loadingScreen').style.display = 'none';
-  document.getElementById('regScreen').className = 'screen';
-  document.getElementById('gameScreen').className = 'screen'+(name==='game'?' active':'');
-  document.getElementById('lbScreen').className = 'screen'+(name==='leaderboard'?' active':'');
-  document.getElementById('navGame').className = 'nav-item'+(name==='game'?' active':'');
-  document.getElementById('navLb').className = 'nav-item'+(name==='leaderboard'?' active':'');
-  if (name==='leaderboard') renderLB();
+
+function showScreen(name){
+  document.getElementById('loadingScreen').style.display='none';
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('gameScreen').className='screen'+(name==='game'?' active':'');
+  document.getElementById('lbScreen').className='screen'+(name==='leaderboard'?' active':'');
+  document.getElementById('navGame').className='nav-item'+(name==='game'?' active':'');
+  document.getElementById('navLb').className='nav-item'+(name==='leaderboard'?' active':'');
+  if(name==='leaderboard')renderLB();
 }
-async function renderLB() {
-  const el = document.getElementById('lbList');
-  el.innerHTML = '<div class="lb-empty">Yüklənir...</div>';
-  try {
-    const { data } = await db.from('mitofilm_users').select('*').order('coins', { ascending: false }).limit(20);
-    const medals = ['🥇','🥈','🥉'];
-    if (!data||!data.length) { el.innerHTML='<div class="lb-empty">Hələ heç kim oynamayıb!<br>İlk MitoMan sən ol! 🎬</div>'; return; }
-    el.innerHTML = data.map((p,i)=>`
+
+async function renderLB(){
+  const el=document.getElementById('lbList');
+  el.innerHTML='<div class="lb-empty">Yüklənir...</div>';
+  try{
+    const {data}=await db.from('mitofilm_users').select('*').order('coins',{ascending:false}).limit(20);
+    const medals=['🥇','🥈','🥉'];
+    if(!data||!data.length){el.innerHTML='<div class="lb-empty">Hələ heç kim oynamayıb!<br>İlk MitoMan sən ol! 🎬</div>';return;}
+    el.innerHTML=data.map((p,i)=>`
       <div class="lb-item ${p.user_id===st.userId?'me':''}">
         <span class="lb-rank">${i<3?medals[i]:i+1}</span>
         <div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div>
         <span class="lb-name">${p.name}${p.user_id===st.userId?' 👈':''}</span>
         <span class="lb-coins">${p.coins} 🪙</span>
       </div>`).join('');
-  } catch(e) { el.innerHTML='<div class="lb-empty">Xəta baş verdi</div>'; }
+  }catch(e){el.innerHTML='<div class="lb-empty">Xəta baş verdi</div>';}
 }
-function startTimer() {
+
+function startTimer(){
   clearInterval(timerInterval);
-  let tLeft = TIMER_SEC;
-  const bar = document.getElementById('timerBar');
-  const txt = document.getElementById('timerText');
-  bar.style.background='#E2471E'; bar.style.width='100%';
-  txt.className='timer-text'; txt.textContent=`${tLeft} saniyə`;
-  timerInterval = setInterval(()=>{
+  let tLeft=TIMER_SEC;
+  const bar=document.getElementById('timerBar');
+  const txt=document.getElementById('timerText');
+  bar.style.background='#E2471E';bar.style.width='100%';
+  txt.className='timer-text';txt.textContent=`${tLeft} saniyə`;
+  timerInterval=setInterval(()=>{
     tLeft--;
     bar.style.width=(tLeft/TIMER_SEC*100)+'%';
     txt.textContent=`${tLeft} saniyə`;
-    if (tLeft<=3){bar.style.background='#e74c3c';txt.className='timer-text urgent';}
-    if (tLeft<=0){clearInterval(timerInterval);timeOut();}
+    if(tLeft<=3){bar.style.background='#e74c3c';txt.className='timer-text urgent';}
+    if(tLeft<=0){clearInterval(timerInterval);timeOut();}
   },1000);
 }
-function timeOut() {
-  if (st.answered) return;
-  st.answered=true; st.total++;
-  st.coins=Math.max(0,st.coins-20); st.streak=0; st.history.push('bad');
-  document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');});
+
+function timeOut(){
+  if(st.answered)return;
+  st.answered=true;st.total++;
+  st.coins=Math.max(0,st.coins-WRONG_COINS);
+  st.streak=0;st.history.push('bad');
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');
+  });
   document.getElementById('resultBar').className='result-bar wrong';
-  document.getElementById('resultBar').innerHTML=`⏰ Vaxt bitti! -20 MitoCoins<br><small>Düzgün cavab: <b>${st.current.correct}</b></small>`;
+  document.getElementById('resultBar').innerHTML=`⏰ Vaxt bitti! -${WRONG_COINS} MitoCoins<br><small>Düzgün cavab: <b>${st.current.correct}</b></small>`;
   document.getElementById('nextBtn').style.display='block';
-  updateUI(); save();
+  updateUI();save();
 }
-async function api(url,lang='az-AZ') {
-  const r = await fetch(`${BASE}${url}&api_key=${TMDB}&language=${lang}`);
+
+async function api(url,lang='az-AZ'){
+  const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${lang}`);
   return r.json();
 }
+
 function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
 const qTypes=['actor_face','movie_poster','movie_year','movie_director','actor_known_for','movie_genre','movie_country','movie_rating'];
-async function loadQuestion() {
-  st.answered=false; clearInterval(timerInterval);
+
+async function loadQuestion(){
+  st.answered=false;clearInterval(timerInterval);
   document.getElementById('resultBar').className='result-bar';
   document.getElementById('nextBtn').style.display='none';
   document.getElementById('optionsGrid').innerHTML='';
@@ -285,27 +309,30 @@ async function loadQuestion() {
   document.getElementById('timerText').textContent=`${TIMER_SEC} saniyə`;
   document.getElementById('timerText').className='timer-text';
   const type=qTypes[Math.floor(Math.random()*qTypes.length)];
-  try {
-    if(type==='actor_face') await qActorFace();
-    else if(type==='movie_poster') await qMoviePoster();
-    else if(type==='movie_year') await qMovieYear();
-    else if(type==='movie_director') await qMovieDirector();
-    else if(type==='actor_known_for') await qActorKnownFor();
-    else if(type==='movie_genre') await qMovieGenre();
-    else if(type==='movie_country') await qMovieCountry();
+  try{
+    if(type==='actor_face')await qActorFace();
+    else if(type==='movie_poster')await qMoviePoster();
+    else if(type==='movie_year')await qMovieYear();
+    else if(type==='movie_director')await qMovieDirector();
+    else if(type==='actor_known_for')await qActorKnownFor();
+    else if(type==='movie_genre')await qMovieGenre();
+    else if(type==='movie_country')await qMovieCountry();
     else await qMovieRating();
-  } catch(e){console.error(e);setTimeout(loadQuestion,1000);return;}
-  showScreen('game'); startTimer();
+  }catch(e){console.error(e);setTimeout(loadQuestion,1000);return;}
+  showScreen('game');startTimer();
 }
+
 async function getActors(){
   const d=await api(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);
-  return shuffle((d.results||[]).filter(p=>p.profile_path&&isLatinOrAz(p.name)));
+  return shuffle((d.results||[]).filter(p=>p.profile_path&&isOk(p.name)));
 }
+
 async function getMovies(){
   const eps=['/movie/popular','/movie/top_rated','/movie/now_playing'];
   const d=await api(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);
-  return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isLatinOrAz(m.title||'')));
+  return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isOk(m.title||'')));
 }
+
 async function qActorFace(){
   const list=await getActors();
   if(list.length<4)return qActorFace();
@@ -313,13 +340,15 @@ async function qActorFace(){
   const wrong=list.slice(1,4).map(a=>a.name);
   setCard({img:IMG+actor.profile_path,badge:'🎭 Aktyor',question:'Bu aktyor kimdir?',sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
 }
+
 async function qMoviePoster(){
   const list=await getMovies();
   if(list.length<4)return qMoviePoster();
   const movie=list[0];
   const wrong=list.slice(1,4).map(m=>m.title);
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🎬 Film',question:'Bu filmin adı nədir?',sub:movie.release_date?.slice(0,4)||'',opts:shuffle([movie.title,...wrong]),correct:movie.title,isActor:false});
+  setCard({img:`${IMG}${movie.poster_path}`,badge:'🎬 Film',question:'Bu filmin adı nədir?',sub:movie.release_date?.slice(0,4)||'',opts:shuffle([movie.title,...wrong]),correct:movie.title,isActor:false});
 }
+
 async function qMovieYear(){
   const list=await getMovies();
   if(!list.length)return qMovieYear();
@@ -327,25 +356,27 @@ async function qMovieYear(){
   const year=movie.release_date.slice(0,4);
   const wy=new Set();
   while(wy.size<3){const y=String(parseInt(year)+(Math.floor(Math.random()*10)-5));if(y!==year&&parseInt(y)>1950&&parseInt(y)<=2025)wy.add(y);}
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'📅 İl',question:`"${movie.title}" filmi hansı ildə çıxıb?`,sub:`${movie.vote_average?.toFixed(1)}⭐`,opts:shuffle([year,...wy]),correct:year,isActor:false});
+  setCard({img:`${IMG}${movie.poster_path}`,badge:'📅 İl',question:`"${movie.title}" filmi hansı ildə çıxıb?`,sub:`${movie.vote_average?.toFixed(1)}⭐`,opts:shuffle([year,...wy]),correct:year,isActor:false});
 }
+
 async function qMovieDirector(){
   const list=await getMovies();
   if(!list.length)return qMovieDirector();
   const movie=list[0];
   const credits=await api(`/movie/${movie.id}/credits?`,'en-US');
-  const dir=(credits.crew||[]).find(c=>c.job==='Director'&&isLatinOrAz(c.name));
+  const dir=(credits.crew||[]).find(c=>c.job==='Director'&&isOk(c.name));
   if(!dir)return qMovieDirector();
   const actors=await getActors();
   const wrong=actors.slice(0,3).map(a=>a.name).filter(n=>n!==dir.name);
   if(wrong.length<3)return qMovieDirector();
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🎬 Rejissor',question:`"${movie.title}" filminin rejissoru kimdir?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([dir.name,...wrong.slice(0,3)]),correct:dir.name,isActor:false});
+  setCard({img:`${IMG}${movie.poster_path}`,badge:'🎬 Rejissor',question:`"${movie.title}" filminin rejissoru kimdir?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([dir.name,...wrong.slice(0,3)]),correct:dir.name,isActor:false});
 }
+
 async function qActorKnownFor(){
   const list=await getActors();
   if(!list.length)return qActorKnownFor();
   const actor=list[0];
-  const films=(actor.known_for||[]).filter(f=>(f.title||f.name)&&isLatinOrAz(f.title||f.name));
+  const films=(actor.known_for||[]).filter(f=>(f.title||f.name)&&isOk(f.title||f.name));
   if(!films.length)return qActorKnownFor();
   const correct=films[0].title||films[0].name;
   const movies=await getMovies();
@@ -353,6 +384,7 @@ async function qActorKnownFor(){
   if(wrong.length<3)return qActorKnownFor();
   setCard({img:IMG+actor.profile_path,badge:'🎭 Film tap',question:`${actor.name} hansı filmdə baş rol oynamışdır?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
 }
+
 async function qMovieGenre(){
   const genres={28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'};
   const list=await getMovies();
@@ -360,8 +392,9 @@ async function qMovieGenre(){
   if(!movie)return qMovieGenre();
   const cg=genres[movie.genre_ids[0]];
   const wg=shuffle(Object.values(genres).filter(g=>g!==cg)).slice(0,3);
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🎭 Janr',question:`"${movie.title}" filmi hansı janrdadır?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([cg,...wg]),correct:cg,isActor:false});
+  setCard({img:`${IMG}${movie.poster_path}`,badge:'🎭 Janr',question:`"${movie.title}" filmi hansı janrdadır?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([cg,...wg]),correct:cg,isActor:false});
 }
+
 async function qMovieCountry(){
   const list=await getMovies();
   if(!list.length)return qMovieCountry();
@@ -370,10 +403,11 @@ async function qMovieCountry(){
   const countries=detail.production_countries||[];
   if(!countries.length)return qMovieCountry();
   const correct=countries[0].name;
-  if(!isLatinOrAz(correct))return qMovieCountry();
+  if(!isOk(correct))return qMovieCountry();
   const wl=['United States of America','United Kingdom','France','Germany','Japan','South Korea','Italy','Spain','Canada','Australia','India','China'].filter(c=>c!==correct);
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🌍 Ölkə',question:`"${movie.title}" filmi hansı ölkədə çəkilib?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
+  setCard({img:`${IMG}${movie.poster_path}`,badge:'🌍 Ölkə',question:`"${movie.title}" filmi hansı ölkədə çəkilib?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
 }
+
 async function qMovieRating(){
   const list=await getMovies();
   const movie=list.find(m=>m.vote_average>0);
@@ -381,8 +415,9 @@ async function qMovieRating(){
   const rating=movie.vote_average.toFixed(1);
   const wr=new Set();
   while(wr.size<3){const r=(parseFloat(rating)+(Math.random()*2-1)).toFixed(1);if(r!==rating&&parseFloat(r)>=1&&parseFloat(r)<=10)wr.add(r);}
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'⭐ Reytinq',question:`"${movie.title}" filminin TMDB reytinqi neçədir?`,sub:`${movie.release_date?.slice(0,4)} · ${movie.vote_count?.toLocaleString()} səs`,opts:shuffle([rating,...wr]),correct:rating,isActor:false});
+  setCard({img:`${IMG}${movie.poster_path}`,badge:'⭐ Reytinq',question:`"${movie.title}" filminin TMDB reytinqi neçədir?`,sub:`${movie.release_date?.slice(0,4)} · ${movie.vote_count?.toLocaleString()} səs`,opts:shuffle([rating,...wr]),correct:rating,isActor:false});
 }
+
 function setCard({img,badge,question,sub,opts,correct,isActor}){
   st.current={correct};
   document.getElementById('qBadge').textContent=badge;
@@ -397,36 +432,41 @@ function setCard({img,badge,question,sub,opts,correct,isActor}){
     imgEl.onload=()=>{imgEl.style.display='block';noImg.style.display='none';};
     imgEl.onerror=()=>{imgEl.style.display='none';noImg.style.display='flex';};
     imgEl.src=img;
-  } else {imgEl.style.display='none';noImg.style.display='flex';}
+  }else{imgEl.style.display='none';noImg.style.display='flex';}
   document.getElementById('optionsGrid').innerHTML=opts.map(o=>`<button class="opt-btn" onclick="answer(this,'${String(o).replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${o}</button>`).join('');
 }
+
 function answer(btn,chosen){
   if(st.answered)return;
   st.answered=true;st.total++;clearInterval(timerInterval);
   const correct=st.current.correct;
-  const isOk=String(chosen)===String(correct);
-  document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;if(b.textContent.trim()===String(correct))b.classList.add('reveal');});
+  const isCorrect=String(chosen)===String(correct);
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===String(correct))b.classList.add('reveal');
+  });
   const result=document.getElementById('resultBar');
-  if(isOk){
+  if(isCorrect){
     btn.classList.add('correct');
     const bonus=st.streak>=2?Math.min(st.streak*10,50):0;
-    st.coins+=100+bonus;st.score++;st.streak++;st.history.push('ok');
+    st.coins+=CORRECT_COINS+bonus;st.score++;st.streak++;st.history.push('ok');
     result.className='result-bar correct';
-    result.innerHTML=`✅ Düzgün! +100${bonus>0?` +${bonus} seriya bonusu`:''} MitoCoins<br><small>🔥 Seriya: ${st.streak} · Cəmi: ${st.coins} MitoCoins</small>`;
-  } else {
+    result.innerHTML=`✅ Düzgün! +${CORRECT_COINS}${bonus>0?` +${bonus} seriya bonusu`:''} MitoCoins<br><small>🔥 Seriya: ${st.streak} · Cəmi: ${st.coins} MitoCoins</small>`;
+  }else{
     btn.classList.add('wrong');
-    st.coins=Math.max(0,st.coins-20);st.streak=0;st.history.push('bad');
+    st.coins=Math.max(0,st.coins-WRONG_COINS);st.streak=0;st.history.push('bad');
     result.className='result-bar wrong';
-    result.innerHTML=`❌ Yanlış! -20 MitoCoins<br><small>Düzgün cavab: <b>${correct}</b></small>`;
+    result.innerHTML=`❌ Yanlış! -${WRONG_COINS} MitoCoins<br><small>Düzgün cavab: <b>${correct}</b></small>`;
   }
   document.getElementById('nextBtn').style.display='block';
   updateUI();save();
 }
+
 document.getElementById('loadingScreen').style.display='none';
 if(!st.userName||!st.userPhone){
   if(tgUser?.first_name)document.getElementById('regName').value=tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'');
   document.getElementById('regScreen').className='screen active';
-} else {
+}else{
   document.getElementById('loadingScreen').style.display='flex';
   loadQuestion();
 }
