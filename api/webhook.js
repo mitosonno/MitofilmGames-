@@ -62,8 +62,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           chat_id: chatId,
           photo: img,
-          caption: `Bu aktyor kimdir?\nFilmler: ${films}\n\nCavabi yazin! /ipucu /kec /skor`,
-          parse_mode: 'HTML'
+          caption: `Bu aktyor kimdir?\nFilmler: ${films}\n\nCavabi yazin!\n/ipucu /kec /skor`
         })
       });
       return res.status(200).json({ ok: true });
