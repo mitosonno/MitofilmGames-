@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/game", "destination": "/public/game/index.html" },
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ]
+}
