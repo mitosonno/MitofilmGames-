@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MitoFilm</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; overflow-x: hidden; }
+.screen { display: none; flex-direction: column; min-height: 100vh; }
+.screen.active { display: flex; }
+.reg-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 24px; }
+.reg-logo { color: #E2471E; font-size: 36px; font-weight: 800; letter-spacing: 3px; margin-bottom: 8px; }
+.reg-sub { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 40px; }
+.reg-card { background: #111118; border: 1px solid #2a2a3a; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 340px; }
+.reg-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; text-align: center; }
+.reg-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+.reg-input { width: 100%; background: #0a0a0f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 13px 16px; color: #fff; font-size: 15px; outline: none; margin-bottom: 16px; }
+.reg-input:focus { border-color: #E2471E; }
+.reg-btn { width: 100%; background: #E2471E; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; padding: 15px; cursor: pointer; }
+.lang-select { display: flex; gap: 8px; margin-bottom: 20px; }
+.lang-btn { flex: 1; background: #0a0a0f; border: 1px solid #2a2a3a; border-radius: 10px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600; padding: 10px; cursor: pointer; text-align: center; transition: all 0.2s; }
+.lang-btn.active { background: rgba(226,71,30,0.2); border-color: #E2471E; color: #E2471E; }
+.header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(10,10,15,0.98); border-bottom: 1px solid #1a1a2e; position: sticky; top: 0; z-index: 10; }
+.header-left { display: flex; flex-direction: column; }
+.logo { color: #E2471E; font-size: 16px; font-weight: 800; letter-spacing: 2px; }
+.header-level { font-size: 11px; color: #FFD700; margin-top: 1px; font-weight: 600; }
+.coins-badge { display: flex; align-items: center; gap: 5px; background: rgba(226,71,30,0.15); border: 1px solid rgba(226,71,30,0.3); border-radius: 20px; padding: 6px 12px; }
+.coins-badge span { color: #E2471E; font-size: 12px; font-weight: 700; }
+.coins-label { color: rgba(226,71,30,0.8); font-size: 11px; font-weight: 600; }
+.level-progress { margin: 0 16px 8px; }
+.level-bar-bg { background: #1a1a2e; border-radius: 10px; height: 4px; overflow: hidden; }
+.level-bar { height: 4px; border-radius: 10px; background: #FFD700; transition: width 0.5s ease; }
+.level-info { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 3px; }
+.stats { display: flex; gap: 8px; padding: 10px 16px 8px; }
+.stat { flex: 1; background: #111118; border-radius: 12px; padding: 8px; text-align: center; }
+.stat-val { font-size: 18px; font-weight: 700; color: #E2471E; }
+.stat-val.green { color: #2ecc71; }
+.stat-val.red { color: #e74c3c; }
+.stat-lbl { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.dots { display: flex; gap: 5px; justify-content: center; padding: 4px 16px 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #1a1a2e; }
+.dot.ok { background: #2ecc71; }
+.dot.bad { background: #e74c3c; }
+.timer-wrap { margin: 0 16px 8px; }
+.timer-bar-bg { background: #1a1a2e; border-radius: 10px; height: 6px; overflow: hidden; }
+.timer-bar { height: 6px; border-radius: 10px; background: #E2471E; transition: width 1s linear, background 0.3s; }
+.timer-text { text-align: right; font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.timer-text.urgent { color: #e74c3c; }
+.q-badge { margin: 0 16px 6px; display: inline-flex; align-items: center; gap: 6px; background: #111118; border: 1px solid #2a2a3a; border-radius: 10px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.6); }
+.media-img-wrap { margin: 0 16px 0; border-radius: 16px 16px 0 0; overflow: hidden; background: #111118; position: relative; }
+.media-img.actor { width: 100%; height: 300px; object-fit: cover; object-position: 50% 30%; display: block; }
+.media-img.poster { width: 100%; height: 240px; object-fit: contain; background: #000; display: block; }
+.no-img { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: #111118; }
+.question-box { margin: 0 16px 10px; background: #111118; border-radius: 0 0 16px 16px; border-top: 1px solid #1a1a2e; padding: 12px 14px; }
+.question-text { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; }
+.question-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 10px; }
+.opt-btn { background: #111118; border: 1px solid #2a2a3a; border-radius: 14px; color: #fff; font-size: 13px; font-weight: 500; padding: 14px 10px; cursor: pointer; text-align: center; line-height: 1.3; min-height: 56px; transition: all 0.2s; }
+.opt-btn:active { transform: scale(0.97); }
+.opt-btn.correct { background: rgba(39,174,96,0.2); border-color: #27ae60; color: #2ecc71; }
+.opt-btn.wrong { background: rgba(231,76,60,0.2); border-color: #e74c3c; color: #e74c3c; }
+.opt-btn.reveal { background: rgba(39,174,96,0.15); border-color: #27ae60; }
+.opt-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+.result-bar { margin: 0 16px 10px; border-radius: 14px; padding: 12px 16px; text-align: center; font-size: 14px; font-weight: 600; display: none; line-height: 1.6; }
+.result-bar.correct { background: rgba(39,174,96,0.15); border: 1px solid #27ae60; color: #2ecc71; display: block; }
+.result-bar.wrong { background: rgba(231,76,60,0.15); border: 1px solid #e74c3c; color: #e74c3c; display: block; }
+.reset-btn { margin: 0 16px 8px; width: calc(100% - 32px); background: transparent; border: 1px solid #2a2a3a; border-radius: 12px; color: rgba(255,255,255,0.4); font-size: 12px; padding: 8px; cursor: pointer; }
+.next-btn { margin: 0 16px 8px; width: calc(100% - 32px); background: #E2471E; border: none; border-radius: 14px; color: #fff; font-size: 15px; font-weight: 700; padding: 15px; cursor: pointer; display: none; }
+.loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 16px; }
+.loading-icon { font-size: 60px; animation: pulse 1s infinite; }
+.loading-text { color: rgba(255,255,255,0.5); font-size: 15px; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.levelup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px; }
+.levelup-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.levelup-emoji { font-size: 80px; animation: bounce 0.6s infinite alternate; }
+@keyframes bounce { from{transform:scale(1)} to{transform:scale(1.2)} }
+.levelup-title { font-size: 26px; font-weight: 800; color: #FFD700; margin: 16px 0 8px; }
+.levelup-level { font-size: 52px; font-weight: 800; color: #fff; margin: 8px 0; }
+.levelup-coins { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+.levelup-btn { background: #FFD700; border: none; border-radius: 16px; color: #000; font-size: 16px; font-weight: 800; padding: 16px 40px; cursor: pointer; }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 998; }
+.gift-wrap { padding: 16px; flex: 1; overflow-y: auto; }
+.gift-card { background: #111118; border: 1px solid #2a2a3a; border-radius: 20px; overflow: hidden; margin-bottom: 16px; }
+.gift-img { width: 100%; height: 200px; object-fit: contain; background: #000; display: block; }
+.gift-body { padding: 16px; }
+.gift-title { font-size: 20px; font-weight: 800; color: #FFD700; margin-bottom: 6px; }
+.gift-desc { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+.gift-timer { background: #0a0a0f; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 16px; }
+.gift-timer-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+.gift-timer-val { font-size: 28px; font-weight: 800; color: #E2471E; letter-spacing: 2px; }
+.gift-deadline { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+.gift-lb-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
+.gift-lb-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; margin-bottom: 6px; background: #0a0a0f; }
+.gift-lb-item.p1 { background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); }
+.gift-lb-item.p2 { background: rgba(192,192,192,0.08); border: 1px solid rgba(192,192,192,0.2); }
+.gift-lb-item.p3 { background: rgba(205,127,50,0.08); border: 1px solid rgba(205,127,50,0.2); }
+.gift-lb-rank { font-size: 18px; width: 28px; text-align: center; }
+.gift-lb-name { flex: 1; font-size: 14px; font-weight: 600; }
+.gift-lb-coins { font-size: 13px; color: #E2471E; font-weight: 700; }
+.gift-empty { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); font-size: 14px; }
+.no-gift { text-align: center; padding: 60px 20px; }
+.no-gift-icon { font-size: 60px; margin-bottom: 16px; }
+.no-gift-text { color: rgba(255,255,255,0.4); font-size: 14px; }
+.lb-wrap { padding: 16px; flex: 1; overflow-y: auto; }
+.lb-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; text-align: center; }
+.lb-title span { color: #E2471E; }
+.lb-sub { text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; margin-bottom: 16px; }
+.lb-item { display: flex; align-items: center; gap: 10px; background: #111118; border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid #1a1a2e; }
+.lb-item.me { border-color: rgba(226,71,30,0.5); background: rgba(226,71,30,0.08); }
+.lb-item.gold { border-color: rgba(255,215,0,0.5); background: rgba(255,215,0,0.06); }
+.lb-item.silver { border-color: rgba(192,192,192,0.4); }
+.lb-item.bronze { border-color: rgba(205,127,50,0.4); }
+.lb-rank { font-size: 22px; width: 32px; text-align: center; }
+.lb-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(226,71,30,0.25); display: flex; align-items: center; justify-content: center; color: #E2471E; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.lb-info { flex: 1; }
+.lb-name { font-size: 14px; font-weight: 600; }
+.lb-level { font-size: 11px; color: #FFD700; margin-top: 2px; }
+.lb-coins { color: #E2471E; font-size: 14px; font-weight: 700; }
+.lb-empty { text-align: center; color: rgba(255,255,255,0.3); padding: 60px 20px; font-size: 14px; }
+.bottom-nav { display: flex; background: #0a0a0f; border-top: 1px solid #1a1a2e; padding: 10px 0 20px; position: sticky; bottom: 0; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 0; }
+.nav-icon { font-size: 20px; }
+.nav-label { font-size: 10px; color: rgba(255,255,255,0.4); }
+.nav-item.active .nav-label { color: #E2471E; }
+.nav-item.gift-nav .nav-label { color: #FFD700; }
+.nav-item.gift-nav.active .nav-label { color: #FFD700; }
+</style>
+</head>
+<body>
+
+<canvas class="confetti" id="confettiCanvas"></canvas>
+
+<div class="levelup-overlay" id="levelupOverlay">
+  <div class="levelup-emoji" id="levelupEmoji">🎬</div>
+  <div class="levelup-title" id="luTitle">TƏBRİK EDİRİK!</div>
+  <div class="levelup-level" id="levelupNum">Level 2</div>
+  <div class="levelup-coins" id="levelupCoinsNeeded"></div>
+  <button class="levelup-btn" onclick="closeLevelUp()" id="luBtn">🎮 Davam et</button>
+</div>
+
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-icon">🎬</div>
+  <div class="loading-text" id="loadingText">Yüklənir...</div>
+</div>
+
+<div id="regScreen" class="screen">
+  <div class="reg-wrap">
+    <div class="reg-logo">MITOFILM</div>
+    <div class="reg-sub" id="regSub">Kino dünyasının ən böyük oyunu</div>
+    <div class="reg-card">
+      <div class="reg-title" id="regTitle">🎬 Oyuna qoşul</div>
+      <div style="margin-bottom:16px">
+        <div class="reg-label" id="langLabel">DİL SEÇİN</div>
+        <div class="lang-select">
+          <button class="lang-btn active" onclick="setLang('az')" id="btnAz">🇦🇿 AZ</button>
+          <button class="lang-btn" onclick="setLang('ru')" id="btnRu">🇷🇺 RU</button>
+          <button class="lang-btn" onclick="setLang('en')" id="btnEn">🇬🇧 EN</button>
+        </div>
+      </div>
+      <div class="reg-label" id="nameLabel">ADINIZ</div>
+      <input class="reg-input" id="regName" placeholder="Ad Soyad" maxlength="40" />
+      <div class="reg-label" id="phoneLabel">TELEFON NÖMRƏSİ</div>
+      <input class="reg-input" id="regPhone" placeholder="+994 XX XXX XX XX" maxlength="20" type="tel" />
+      <button class="reg-btn" onclick="register()" id="regBtn">🎮 Oyunu Başlat</button>
+    </div>
+  </div>
+</div>
+
+<div id="gameScreen" class="screen">
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">MITOFILM</span>
+      <span class="header-level" id="headerLevel">Level 1</span>
+    </div>
+    <div class="coins-badge">🪙 <span id="coinsVal">0</span> <span class="coins-label">MitoCoins</span></div>
+  </div>
+  <div class="level-progress">
+    <div class="level-bar-bg"><div class="level-bar" id="levelBar" style="width:0%"></div></div>
+    <div class="level-info">
+      <span id="levelProgress">0 / 1000 MitoCoins</span>
+      <span id="levelNext"></span>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-val green" id="correctVal">0</div><div class="stat-lbl" id="statCorrect">✅ DÜZGÜN</div></div>
+    <div class="stat"><div class="stat-val red" id="wrongVal">0</div><div class="stat-lbl" id="statWrong">❌ SƏHV</div></div>
+    <div class="stat"><div class="stat-val" id="totalVal">0</div><div class="stat-lbl" id="statTotal">CƏMİ</div></div>
+  </div>
+  <div class="dots" id="dotsRow"></div>
+  <div class="timer-wrap">
+    <div class="timer-bar-bg"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
+    <div class="timer-text" id="timerText">15</div>
+  </div>
+  <div id="qBadge" class="q-badge"></div>
+  <div class="media-img-wrap">
+    <img id="mediaImg" class="media-img actor" src="" style="display:none" />
+    <div id="noImg" class="no-img" style="display:none">🎬</div>
+  </div>
+  <div class="question-box">
+    <div class="question-text" id="cardQ"></div>
+    <div class="question-sub" id="cardSub"></div>
+  </div>
+  <div class="options" id="optionsGrid"></div>
+  <div class="result-bar" id="resultBar"></div>
+  <button class="next-btn" id="nextBtn" onclick="loadQuestion()">▶</button>
+  <button class="reset-btn" onclick="confirmReset()" id="resetBtn">🔄 Sıfırla</button>
+  <div style="flex:1"></div>
+  <div class="bottom-nav">
+    <div class="nav-item active" id="navGame" onclick="showScreen('game')">
+      <span class="nav-icon">🎮</span><span class="nav-label" id="navGameLbl">Oyun</span>
+    </div>
+    <div class="nav-item gift-nav" id="navGift" onclick="showScreen('gift')">
+      <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl">Hədiyyə</span>
+    </div>
+    <div class="nav-item" id="navLb" onclick="showScreen('leaderboard')">
+      <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl">Liderboard</span>
+    </div>
+  </div>
+</div>
+
+<div id="giftScreen" class="screen">
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">MITOFILM</span>
+      <span class="header-level" id="headerLevel3">Level 1</span>
+    </div>
+    <div class="coins-badge">🪙 <span id="coinsVal3">0</span> <span class="coins-label">MitoCoins</span></div>
+  </div>
+  <div class="gift-wrap" id="giftContent"></div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showScreen('game')">
+      <span class="nav-icon">🎮</span><span class="nav-label" id="navGameLbl3">Oyun</span>
+    </div>
+    <div class="nav-item gift-nav active" onclick="showScreen('gift')">
+      <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl3">Hədiyyə</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('leaderboard')">
+      <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl3">Liderboard</span>
+    </div>
+  </div>
+</div>
+
+<div id="lbScreen" class="screen">
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">MITOFILM</span>
+      <span class="header-level" id="headerLevel2">Level 1</span>
+    </div>
+    <div class="coins-badge">🪙 <span id="coinsVal2">0</span> <span class="coins-label">MitoCoins</span></div>
+  </div>
+  <div class="lb-wrap">
+    <div class="lb-title">🏆 <span>MitoMan</span> Liderboard</div>
+    <div class="lb-sub" id="lbSub">Bütün oyunçular · Real vaxt</div>
+    <div id="lbList"></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showScreen('game')">
+      <span class="nav-icon">🎮</span><span class="nav-label" id="navGameLbl2">Oyun</span>
+    </div>
+    <div class="nav-item gift-nav" onclick="showScreen('gift')">
+      <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl2">Hədiyyə</span>
+    </div>
+    <div class="nav-item active" onclick="showScreen('leaderboard')">
+      <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl2">Liderboard</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://dpvoluttxelwnqcfnsbh.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdm9sdXR0eGVsd25xY2Zuc2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzODQ4MTMsImV4cCI6MjA4ODk2MDgxM30.qodOw68r3OgeQXrr-SnzTDiXI4eI_moD4IWG-Dzj368';
+const TMDB='707ef4b59e038ab276ae6d95d85fcc4f';
+const BASE='https://api.themoviedb.org/3';
+const TIMER_SEC=15;
+const COINS=100;
+const MAX_LEVEL=10;
+const LEVEL_COINS=[0,1000,2000,3000,5000,7000,9000,11000,14000,17000,20000];
+
+// DİL SİSTEMİ
+const LANGS={
+  az:{
+    code:'az-AZ',
+    regSub:'Kino dünyasının ən böyük oyunu',
+    regTitle:'🎬 Oyuna qoşul',
+    langLabel:'DİL SEÇİN',
+    nameLabel:'ADINIZ',
+    phoneLabel:'TELEFON NÖMRƏSİ',
+    regBtn:'🎮 Oyunu Başlat',
+    loading:'Yüklənir...',
+    navGame:'Oyun',navGift:'Hədiyyə',navLb:'Liderboard',
+    statCorrect:'✅ DÜZGÜN',statWrong:'❌ SƏHV',statTotal:'CƏMİ',
+    nextBtn:'▶ Növbəti sual',
+    resetBtn:'🔄 Hər şeyi sıfırla',
+    resetConfirm:'Bütün xallar sıfırlanacaq. Davam etmək istəyirsiniz?',
+    resetDone:'✅ Sıfırlandı!',
+    luTitle:'TƏBRİK EDİRİK!',luBtn:'🎮 Davam et',
+    maxLevel:'👑 Maksimum level!',nextLevel:'Növbəti level:',
+    lbSub:'Bütün oyunçular · Real vaxt',
+    giftLoading:'Yüklənir...',
+    giftTimerLabel:'⏰ Müsabiqə bitmənə qalan vaxt',
+    giftDeadline:'Son tarix:',
+    giftLbTitle:'🏅 Cari sıralama (ilk 10)',
+    giftEmpty:'Hələ heç kim oynamayıb!',
+    noGift:'Hazırda aktiv hədiyyə yoxdur.\nTezliklə əlavə olunacaq!',
+    giftError:'Xəta baş verdi',
+    lbEmpty:'Hələ heç kim oynamayıb!',
+    lbError:'Xəta baş verdi',
+    correct:'✅ Düzgün!',wrong:'❌ Yanlış!',timeout:'⏰ Vaxt bitti!',
+    correctAnswer:'Düzgün cavab:',
+    streakBonus:'seriya bonusu',
+    total:'Cəmi',streak:'Seriya',
+    qActor:'Bu aktyor kimdir?',
+    qFilm:'Bu filmin adı nədir?',
+    qYear:'filmi hansı ildə çıxıb?',
+    qDirector:'filminin rejissoru kimdir?',
+    qActorFilm:'hansı filmdə baş rol oynamışdır?',
+    qGenre:'filmi hansı janrdadır?',
+    qCountry:'filmi hansı ölkədə çəkilib?',
+    badgeActor:'🎭 Aktyor',badgeFilm:'🎬 Film',badgeYear:'📅 İl',
+    badgeDirector:'🎬 Rejissor',badgeActorFilm:'🎭 Film tap',
+    badgeGenre:'🎭 Janr',badgeCountry:'🌍 Ölkə',
+    genres:{28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'},
+    nextLevelTxt:'Növbəti: Level',
+  },
+  ru:{
+    code:'ru-RU',
+    regSub:'Величайшая киновикторина',
+    regTitle:'🎬 Войти в игру',
+    langLabel:'ВЫБЕРИТЕ ЯЗЫК',
+    nameLabel:'ВАШЕ ИМЯ',
+    phoneLabel:'НОМЕР ТЕЛЕФОНА',
+    regBtn:'🎮 Начать игру',
+    loading:'Загрузка...',
+    navGame:'Игра',navGift:'Приз',navLb:'Рейтинг',
+    statCorrect:'✅ ВЕРНО',statWrong:'❌ ОШИБКА',statTotal:'ВСЕГО',
+    nextBtn:'▶ Следующий вопрос',
+    resetBtn:'🔄 Сбросить всё',
+    resetConfirm:'Все очки будут сброшены. Продолжить?',
+    resetDone:'✅ Сброшено!',
+    luTitle:'ПОЗДРАВЛЯЕМ!',luBtn:'🎮 Продолжить',
+    maxLevel:'👑 Максимальный уровень!',nextLevel:'Следующий уровень:',
+    lbSub:'Все игроки · В реальном времени',
+    giftLoading:'Загрузка...',
+    giftTimerLabel:'⏰ До конца конкурса',
+    giftDeadline:'Дедлайн:',
+    giftLbTitle:'🏅 Текущий рейтинг (топ 10)',
+    giftEmpty:'Ещё никто не играл!',
+    noGift:'Активных призов нет.\nСкоро появится!',
+    giftError:'Произошла ошибка',
+    lbEmpty:'Ещё никто не играл!',
+    lbError:'Ошибка подключения',
+    correct:'✅ Верно!',wrong:'❌ Неверно!',timeout:'⏰ Время вышло!',
+    correctAnswer:'Правильный ответ:',
+    streakBonus:'бонус серии',
+    total:'Итого',streak:'Серия',
+    qActor:'Кто этот актёр?',
+    qFilm:'Как называется этот фильм?',
+    qYear:'В каком году вышел фильм',
+    qDirector:'Кто режиссёр фильма',
+    qActorFilm:'В каком фильме снялся',
+    qGenre:'В каком жанре фильм',
+    qCountry:'В какой стране снят фильм',
+    badgeActor:'🎭 Актёр',badgeFilm:'🎬 Фильм',badgeYear:'📅 Год',
+    badgeDirector:'🎬 Режиссёр',badgeActorFilm:'🎭 Найди фильм',
+    badgeGenre:'🎭 Жанр',badgeCountry:'🌍 Страна',
+    genres:{28:'Боевик',12:'Приключения',16:'Мультфильм',35:'Комедия',80:'Криминал',18:'Драма',10751:'Семейный',14:'Фэнтези',27:'Ужасы',9648:'Детектив',10749:'Романтика',878:'Фантастика',53:'Триллер',10752:'Военный'},
+    nextLevelTxt:'Следующий: Уровень',
+  },
+  en:{
+    code:'en-US',
+    regSub:'The greatest movie quiz',
+    regTitle:'🎬 Join the game',
+    langLabel:'SELECT LANGUAGE',
+    nameLabel:'YOUR NAME',
+    phoneLabel:'PHONE NUMBER',
+    regBtn:'🎮 Start Game',
+    loading:'Loading...',
+    navGame:'Game',navGift:'Prize',navLb:'Leaderboard',
+    statCorrect:'✅ CORRECT',statWrong:'❌ WRONG',statTotal:'TOTAL',
+    nextBtn:'▶ Next question',
+    resetBtn:'🔄 Reset everything',
+    resetConfirm:'All points will be reset. Continue?',
+    resetDone:'✅ Reset done!',
+    luTitle:'CONGRATULATIONS!',luBtn:'🎮 Continue',
+    maxLevel:'👑 Maximum level!',nextLevel:'Next level:',
+    lbSub:'All players · Real time',
+    giftLoading:'Loading...',
+    giftTimerLabel:'⏰ Time until end',
+    giftDeadline:'Deadline:',
+    giftLbTitle:'🏅 Current ranking (top 10)',
+    giftEmpty:'Nobody has played yet!',
+    noGift:'No active prize.\nComing soon!',
+    giftError:'An error occurred',
+    lbEmpty:'Nobody has played yet!',
+    lbError:'Connection error',
+    correct:'✅ Correct!',wrong:'❌ Wrong!',timeout:'⏰ Time is up!',
+    correctAnswer:'Correct answer:',
+    streakBonus:'streak bonus',
+    total:'Total',streak:'Streak',
+    qActor:'Who is this actor?',
+    qFilm:'What is the name of this film?',
+    qYear:'What year was',
+    qDirector:'Who directed',
+    qActorFilm:'Which film did',
+    qGenre:'What genre is',
+    qCountry:'Which country was',
+    badgeActor:'🎭 Actor',badgeFilm:'🎬 Film',badgeYear:'📅 Year',
+    badgeDirector:'🎬 Director',badgeActorFilm:'🎭 Find film',
+    badgeGenre:'🎭 Genre',badgeCountry:'🌍 Country',
+    genres:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',18:'Drama',10751:'Family',14:'Fantasy',27:'Horror',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War'},
+    nextLevelTxt:'Next: Level',
+  }
+};
+
+let lang=localStorage.getItem('mf_lang')||'az';
+function t(){return LANGS[lang];}
+
+function setLang(l){
+  lang=l;
+  localStorage.setItem('mf_lang',l);
+  ['az','ru','en'].forEach(x=>document.getElementById('btn'+x.charAt(0).toUpperCase()+x.slice(1))?.classList.remove('active'));
+  document.getElementById('btn'+l.charAt(0).toUpperCase()+l.slice(1))?.classList.add('active');
+  applyLangUI();
+}
+
+function applyLangUI(){
+  const L=t();
+  const s=(id,txt)=>{const el=document.getElementById(id);if(el)el.textContent=txt;};
+  const p=(id,txt)=>{const el=document.getElementById(id);if(el)el.placeholder=txt;};
+  s('regSub',L.regSub);s('regTitle',L.regTitle);s('langLabel',L.langLabel);
+  s('nameLabel',L.nameLabel);s('phoneLabel',L.phoneLabel);s('regBtn',L.regBtn);
+  s('loadingText',L.loading);
+  ['navGameLbl','navGameLbl2','navGameLbl3'].forEach(id=>s(id,L.navGame));
+  ['navGiftLbl','navGiftLbl2','navGiftLbl3'].forEach(id=>s(id,L.navGift));
+  ['navLbLbl','navLbLbl2','navLbLbl3'].forEach(id=>s(id,L.navLb));
+  s('statCorrect',L.statCorrect);s('statWrong',L.statWrong);s('statTotal',L.statTotal);
+  s('nextBtn',L.nextBtn);s('resetBtn',L.resetBtn);
+  s('luTitle',L.luTitle);s('luBtn',L.luBtn);
+  s('lbSub',L.lbSub);
+}
+
+function getLevelFromCoins(coins){
+  let level=1;
+  for(let i=1;i<=MAX_LEVEL;i++){if(coins>=LEVEL_COINS[i])level=i+1;else break;}
+  return Math.min(level,MAX_LEVEL+1);
+}
+function getLevelEmoji(level){
+  if(level>=10)return'👑';if(level>=8)return'💎';if(level>=6)return'🌟';
+  if(level>=4)return'🏆';if(level>=2)return'🍿';return'🎬';
+}
+
+const {createClient}=supabase;
+const db=createClient(SUPABASE_URL,SUPABASE_KEY);
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+const tgUser=tg?.initDataUnsafe?.user;
+let timerInterval=null;
+let confettiInterval=null;
+let giftTimerInterval=null;
+
+const st={
+  coins:+localStorage.getItem('mf_coins')||0,
+  score:+localStorage.getItem('mf_score')||0,
+  wrong:+localStorage.getItem('mf_wrong')||0,
+  total:+localStorage.getItem('mf_total')||0,
+  streak:0,history:[],answered:false,current:null,
+  userName:localStorage.getItem('mf_name')||'',
+  userPhone:localStorage.getItem('mf_phone')||'',
+  userId:localStorage.getItem('mf_uid')||(tgUser?.id?String(tgUser.id):'u_'+Math.random().toString(36).slice(2,8))
+};
+
+function isOk(str){
+  if(!str||str.length<2)return false;
+  if(/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff\u0600-\u06ff]/.test(str))return false;
+  return true;
+}
+
+async function saveDB(){
+  try{
+    const level=getLevelFromCoins(st.coins);
+    await db.from('mitofilm_users').upsert(
+      {user_id:st.userId,name:st.userName,phone:st.userPhone,coins:st.coins,score:st.score,streak:st.streak,level},
+      {onConflict:'user_id'}
+    );
+  }catch(e){}
+}
+function saveLocal(){
+  localStorage.setItem('mf_coins',st.coins);localStorage.setItem('mf_score',st.score);
+  localStorage.setItem('mf_wrong',st.wrong);localStorage.setItem('mf_total',st.total);
+  localStorage.setItem('mf_uid',st.userId);
+}
+function save(){saveLocal();saveDB();}
+
+function confirmReset(){
+  if(confirm(t().resetConfirm)){
+    st.coins=0;st.score=0;st.wrong=0;st.total=0;st.streak=0;st.history=[];
+    saveLocal();saveDB();updateUI();alert(t().resetDone);
+  }
+}
+
+function startConfetti(){
+  const canvas=document.getElementById('confettiCanvas');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const pieces=Array.from({length:100},()=>({
+    x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,
+    w:Math.random()*12+5,h:Math.random()*6+3,
+    color:['#FFD700','#E2471E','#2ecc71','#3498db','#e91e63','#fff'][Math.floor(Math.random()*6)],
+    rot:Math.random()*360,speed:Math.random()*4+2,rotSpeed:Math.random()*6-3
+  }));
+  confettiInterval=setInterval(()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.y+=p.speed;p.rot+=p.rotSpeed;if(p.y>canvas.height)p.y=-20;
+      ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    });
+  },16);
+}
+function stopConfetti(){
+  clearInterval(confettiInterval);
+  const canvas=document.getElementById('confettiCanvas');
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+}
+
+function showLevelUp(newLevel){
+  const L=t();
+  const emoji=getLevelEmoji(newLevel);
+  const nextCoins=LEVEL_COINS[newLevel]||null;
+  document.getElementById('levelupEmoji').textContent=emoji;
+  document.getElementById('levelupNum').textContent=`Level ${newLevel}`;
+  document.getElementById('levelupCoinsNeeded').textContent=nextCoins?`${L.nextLevel} ${nextCoins.toLocaleString()} MitoCoins`:L.maxLevel;
+  document.getElementById('luTitle').textContent=L.luTitle;
+  document.getElementById('luBtn').textContent=L.luBtn;
+  document.getElementById('levelupOverlay').className='levelup-overlay show';
+  startConfetti();
+  if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
+}
+function closeLevelUp(){
+  document.getElementById('levelupOverlay').className='levelup-overlay';
+  stopConfetti();
+}
+
+function updateUI(){
+  const L=t();
+  const level=getLevelFromCoins(st.coins);
+  const coins=st.coins;
+  const cur=LEVEL_COINS[level-1]||0;
+  const nxt=LEVEL_COINS[level]||null;
+  const pct=nxt?Math.min((coins-cur)/(nxt-cur)*100,100):100;
+  ['coinsVal','coinsVal2','coinsVal3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=coins.toLocaleString();});
+  ['headerLevel','headerLevel2','headerLevel3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=`${getLevelEmoji(level)} Level ${level}`;});
+  document.getElementById('levelBar').style.width=pct+'%';
+  document.getElementById('levelProgress').textContent=nxt?`${coins.toLocaleString()} / ${nxt.toLocaleString()} MitoCoins`:L.maxLevel;
+  document.getElementById('levelNext').textContent=nxt?`${L.nextLevelTxt} ${level+1}`:'';
+  document.getElementById('correctVal').textContent=st.score;
+  document.getElementById('wrongVal').textContent=st.wrong;
+  document.getElementById('totalVal').textContent=st.total;
+  document.getElementById('dotsRow').innerHTML=st.history.slice(-10).map(h=>`<div class="dot ${h}"></div>`).join('');
+}
+
+function showScreen(name){
+  document.getElementById('loadingScreen').style.display='none';
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('gameScreen').className='screen'+(name==='game'?' active':'');
+  document.getElementById('giftScreen').className='screen'+(name==='gift'?' active':'');
+  document.getElementById('lbScreen').className='screen'+(name==='leaderboard'?' active':'');
+  ['navGame','navGift','navLb'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
+  if(name==='game')document.getElementById('navGame').classList.add('active');
+  if(name==='gift'){document.getElementById('navGift').classList.add('active');loadGift();}
+  if(name==='leaderboard'){document.getElementById('navLb').classList.add('active');renderLB();}
+}
+
+async function loadGift(){
+  const L=t();
+  const el=document.getElementById('giftContent');
+  el.innerHTML=`<div style="text-align:center;padding:60px 20px"><div style="font-size:40px">🎁</div><div style="color:rgba(255,255,255,0.3);margin-top:12px">${L.giftLoading}</div></div>`;
+  clearInterval(giftTimerInterval);
+  try{
+    const {data}=await db.from('mitofilm_gifts').select('*').eq('is_active',true).order('created_at',{ascending:false}).limit(1);
+    const {data:top10}=await db.from('mitofilm_users').select('user_id,name,coins').order('coins',{ascending:false}).limit(10);
+    if(!data||!data.length){
+      el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">🎁</div><div class="no-gift-text">${L.noGift}</div></div>`;
+      return;
+    }
+    const gift=data[0];
+    const medals=['🥇','🥈','🥉'];
+    const posClass=['p1','p2','p3'];
+    const endDate=new Date(gift.ends_at);
+    const dateStr=endDate.toLocaleDateString(L.code==='az-AZ'?'az-AZ':L.code==='ru-RU'?'ru-RU':'en-US',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    el.innerHTML=`
+      <div class="gift-card">
+        ${gift.image_url?`<img class="gift-img" src="${gift.image_url}" onerror="this.style.display='none'" />`:''}
+        <div class="gift-body">
+          <div class="gift-title">🏆 ${gift.title}</div>
+          ${gift.description?`<div class="gift-desc">${gift.description}</div>`:''}
+          <div class="gift-timer">
+            <div class="gift-timer-label">${L.giftTimerLabel}</div>
+            <div class="gift-timer-val" id="giftTimerVal">--:--:--</div>
+            <div class="gift-deadline">${L.giftDeadline} ${dateStr}</div>
+          </div>
+          <div class="gift-lb-title">${L.giftLbTitle}</div>
+          ${top10&&top10.length?top10.map((p,i)=>`
+            <div class="gift-lb-item ${i<3?posClass[i]:''}">
+              <span class="gift-lb-rank">${i<3?medals[i]:i+1}</span>
+              <span class="gift-lb-name">${p.name}${p.user_id===st.userId?' 👈':''}</span>
+              <span class="gift-lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
+            </div>`).join(''):`<div class="gift-empty">${L.giftEmpty}</div>`}
+        </div>
+      </div>`;
+    function updateGiftTimer(){
+      const now=new Date();const diff=endDate-now;
+      if(diff<=0){document.getElementById('giftTimerVal').textContent='BİTDİ';clearInterval(giftTimerInterval);return;}
+      const days=Math.floor(diff/86400000);
+      const h=Math.floor((diff%86400000)/3600000);
+      const m=Math.floor((diff%3600000)/60000);
+      const s=Math.floor((diff%60000)/1000);
+      document.getElementById('giftTimerVal').textContent=
+        days>0?`${days}g ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:
+        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+    updateGiftTimer();giftTimerInterval=setInterval(updateGiftTimer,1000);
+  }catch(e){el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">⚠️</div><div class="no-gift-text">${t().giftError}</div></div>`;}
+}
+
+async function renderLB(){
+  const L=t();
+  const el=document.getElementById('lbList');
+  el.innerHTML=`<div class="lb-empty">${L.giftLoading}</div>`;
+  try{
+    const {data,error}=await db.from('mitofilm_users').select('user_id,name,coins,score,level').order('coins',{ascending:false}).limit(20);
+    if(error){el.innerHTML=`<div class="lb-empty">${L.lbError}</div>`;return;}
+    const medals=['🥇','🥈','🥉'];const cls=['gold','silver','bronze'];
+    if(!data||!data.length){el.innerHTML=`<div class="lb-empty">${L.lbEmpty}</div>`;return;}
+    el.innerHTML=data.map((p,i)=>{
+      const lvl=getLevelFromCoins(p.coins||0);const isMe=p.user_id===st.userId;
+      return`<div class="lb-item ${i<3?cls[i]:''} ${isMe?'me':''}">
+        <span class="lb-rank">${i<3?medals[i]:i+1}</span>
+        <div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div>
+        <div class="lb-info">
+          <div class="lb-name">${p.name}${isMe?' 👈':''}</div>
+          <div class="lb-level">${getLevelEmoji(lvl)} Level ${lvl}</div>
+        </div>
+        <span class="lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
+      </div>`;
+    }).join('');
+  }catch(e){el.innerHTML=`<div class="lb-empty">${t().lbError}</div>`;}
+}
+
+async function register(){
+  const name=document.getElementById('regName').value.trim();
+  const phone=document.getElementById('regPhone').value.trim();
+  if(!name||name.length<2){alert(t().nameLabel+' !');return;}
+  if(!phone||phone.length<6){alert(t().phoneLabel+' !');return;}
+  st.userName=name;st.userPhone=phone;
+  localStorage.setItem('mf_name',name);localStorage.setItem('mf_phone',phone);
+  await saveDB();
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('loadingScreen').style.display='flex';
+  loadQuestion();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  let tLeft=TIMER_SEC;
+  const bar=document.getElementById('timerBar');const txt=document.getElementById('timerText');
+  bar.style.background='#E2471E';bar.style.width='100%';
+  txt.className='timer-text';txt.textContent=`${tLeft}s`;
+  timerInterval=setInterval(()=>{
+    tLeft--;
+    bar.style.width=(tLeft/TIMER_SEC*100)+'%';txt.textContent=`${tLeft}s`;
+    if(tLeft<=5){bar.style.background='#e74c3c';txt.className='timer-text urgent';}
+    if(tLeft<=0){clearInterval(timerInterval);timeOut();}
+  },1000);
+}
+
+function timeOut(){
+  if(st.answered)return;
+  st.answered=true;st.total++;
+  st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');
+  });
+  document.getElementById('resultBar').className='result-bar wrong';
+  document.getElementById('resultBar').innerHTML=`${t().timeout} -${COINS} MitoCoins<br><small>${t().correctAnswer} <b>${st.current.correct}</b></small>`;
+  document.getElementById('nextBtn').style.display='block';
+  updateUI();save();
+}
+
+async function apiCall(url,langCode){
+  const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${langCode||t().code}`);
+  return r.json();
+}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
+// Reytinq sualı silindi — yalnız 6 növ
+const qTypes=['actor_face','movie_poster','movie_year','movie_director','actor_known_for','movie_genre','movie_country'];
+
+async function loadQuestion(){
+  st.answered=false;clearInterval(timerInterval);
+  document.getElementById('resultBar').className='result-bar';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('optionsGrid').innerHTML='';
+  document.getElementById('mediaImg').style.display='none';
+  document.getElementById('noImg').style.display='none';
+  document.getElementById('timerBar').style.width='100%';
+  document.getElementById('timerText').textContent=`${TIMER_SEC}s`;
+  document.getElementById('timerText').className='timer-text';
+  const type=qTypes[Math.floor(Math.random()*qTypes.length)];
+  try{
+    if(type==='actor_face')await qActorFace();
+    else if(type==='movie_poster')await qMoviePoster();
+    else if(type==='movie_year')await qMovieYear();
+    else if(type==='movie_director')await qMovieDirector();
+    else if(type==='actor_known_for')await qActorKnownFor();
+    else if(type==='movie_genre')await qMovieGenre();
+    else await qMovieCountry();
+  }catch(e){console.error(e);setTimeout(loadQuestion,1000);return;}
+  showScreen('game');startTimer();
+}
+
+async function getActors(){
+  const d=await apiCall(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);
+  return shuffle((d.results||[]).filter(p=>p.profile_path&&isOk(p.name)));
+}
+async function getMovies(){
+  const eps=['/movie/popular','/movie/top_rated','/movie/now_playing'];
+  const d=await apiCall(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);
+  return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isOk(m.title||'')));
+}
+
+async function qActorFace(){
+  const L=t();
+  const list=await getActors();
+  if(list.length<4)return qActorFace();
+  const actor=list[0];
+  const gender=actor.gender;
+  const same=list.filter(a=>a.id!==actor.id&&(gender===0||a.gender===gender||a.gender===0));
+  const wrong=(same.length>=3?same:list.filter(a=>a.id!==actor.id)).slice(0,3).map(a=>a.name);
+  if(wrong.length<3)return qActorFace();
+  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:L.badgeActor,question:L.qActor,sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
+}
+
+async function qMoviePoster(){
+  const L=t();
+  const list=await getMovies();
+  if(list.length<4)return qMoviePoster();
+  const movie=list[0];
+  // Fərqli səhifədən yanlış variantlar çək ki eyni film çıxmasın
+  const otherPage=await apiCall(`/movie/popular?page=${Math.floor(Math.random()*8)+1}`);
+  const others=shuffle((otherPage.results||[]).filter(m=>m.id!==movie.id&&isOk(m.title||'')&&m.title!==movie.title));
+  if(others.length<3)return qMoviePoster();
+  const wrong=others.slice(0,3).map(m=>m.title);
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeFilm,question:L.qFilm,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([movie.title,...wrong]),correct:movie.title,isActor:false});
+}
+
+async function qMovieYear(){
+  const L=t();
+  const list=await getMovies();
+  if(!list.length)return qMovieYear();
+  const movie=list[0];
+  const year=movie.release_date.slice(0,4);
+  const wy=new Set();
+  while(wy.size<3){const y=String(parseInt(year)+(Math.floor(Math.random()*10)-5));if(y!==year&&parseInt(y)>1950&&parseInt(y)<=2025)wy.add(y);}
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeYear,question:`"${movie.title}" ${L.qYear}?`,sub:`${movie.vote_average?.toFixed(1)}⭐`,opts:shuffle([year,...wy]),correct:year,isActor:false});
+}
+
+async function qMovieDirector(){
+  const L=t();
+  const list=await getMovies();
+  if(!list.length)return qMovieDirector();
+  const movie=list[0];
+  const credits=await apiCall(`/movie/${movie.id}/credits?`,'en-US');
+  const dir=(credits.crew||[]).find(c=>c.job==='Director'&&isOk(c.name));
+  if(!dir)return qMovieDirector();
+  const actors=await getActors();
+  const wrong=actors.slice(0,3).map(a=>a.name).filter(n=>n!==dir.name);
+  if(wrong.length<3)return qMovieDirector();
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeDirector,question:`"${movie.title}" ${L.qDirector}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([dir.name,...wrong.slice(0,3)]),correct:dir.name,isActor:false});
+}
+
+async function qActorKnownFor(){
+  const L=t();
+  const list=await getActors();
+  if(!list.length)return qActorKnownFor();
+  const actor=list[0];
+  const films=(actor.known_for||[]).filter(f=>(f.title||f.name)&&isOk(f.title||f.name));
+  if(!films.length)return qActorKnownFor();
+  const correct=films[0].title||films[0].name;
+  // Fərqli səhifədən yanlış film adları çək
+  const otherPage=await apiCall(`/movie/popular?page=${Math.floor(Math.random()*8)+2}`);
+  const others=shuffle((otherPage.results||[]).filter(m=>m.title!==correct&&isOk(m.title||'')));
+  if(others.length<3)return qActorKnownFor();
+  const wrong=others.slice(0,3).map(m=>m.title);
+  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:L.badgeActorFilm,question:`${actor.name} ${L.qActorFilm}?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
+}
+
+async function qMovieGenre(){
+  const L=t();
+  const genres=L.genres;
+  const list=await getMovies();
+  const movie=list.find(m=>m.genre_ids&&m.genre_ids.length>0&&genres[m.genre_ids[0]]);
+  if(!movie)return qMovieGenre();
+  const cg=genres[movie.genre_ids[0]];
+  const wg=shuffle(Object.values(genres).filter(g=>g!==cg)).slice(0,3);
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeGenre,question:`"${movie.title}" ${L.qGenre}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([cg,...wg]),correct:cg,isActor:false});
+}
+
+async function qMovieCountry(){
+  const L=t();
+  const list=await getMovies();
+  if(!list.length)return qMovieCountry();
+  const movie=list[0];
+  const detail=await apiCall(`/movie/${movie.id}?`);
+  const countries=detail.production_countries||[];
+  if(!countries.length)return qMovieCountry();
+  const correct=countries[0].name;
+  if(!isOk(correct))return qMovieCountry();
+  const wl=['United States of America','United Kingdom','France','Germany','Japan','South Korea','Italy','Spain','Canada','Australia','India','China'].filter(c=>c!==correct);
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeCountry,question:`"${movie.title}" ${L.qCountry}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
+}
+
+function setCard({img,badge,question,sub,opts,correct,isActor}){
+  st.current={correct};
+  document.getElementById('qBadge').textContent=badge;
+  document.getElementById('cardQ').textContent=question;
+  document.getElementById('cardSub').textContent=sub;
+  const imgEl=document.getElementById('mediaImg');
+  const noImg=document.getElementById('noImg');
+  imgEl.className='media-img '+(isActor?'actor':'poster');
+  if(img){
+    imgEl.style.display='none';
+    imgEl.onload=()=>{imgEl.style.display='block';noImg.style.display='none';};
+    imgEl.onerror=()=>{imgEl.style.display='none';noImg.style.display='flex';};
+    imgEl.src=img;
+  }else{imgEl.style.display='none';noImg.style.display='flex';}
+  document.getElementById('optionsGrid').innerHTML=opts.map(o=>`<button class="opt-btn" onclick="answer(this,'${String(o).replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${o}</button>`).join('');
+}
+
+function answer(btn,chosen){
+  if(st.answered)return;
+  st.answered=true;st.total++;clearInterval(timerInterval);
+  const L=t();
+  const correct=st.current.correct;
+  const isCorrect=String(chosen)===String(correct);
+  const prevLevel=getLevelFromCoins(st.coins);
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;if(b.textContent.trim()===String(correct))b.classList.add('reveal');
+  });
+  const result=document.getElementById('resultBar');
+  if(isCorrect){
+    btn.classList.add('correct');
+    const bonus=st.streak>=2?Math.min(st.streak*10,50):0;
+    st.coins+=COINS+bonus;st.score++;st.streak++;st.history
