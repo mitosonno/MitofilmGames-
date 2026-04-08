@@ -20,6 +20,9 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .reg-input { width: 100%; background: #0a0a0f; border: 1px solid #2a2a3a; border-radius: 12px; padding: 13px 16px; color: #fff; font-size: 15px; outline: none; margin-bottom: 16px; }
 .reg-input:focus { border-color: #E2471E; }
 .reg-btn { width: 100%; background: #E2471E; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; padding: 15px; cursor: pointer; }
+.lang-select { display: flex; gap: 8px; margin-bottom: 20px; }
+.lang-btn { flex: 1; background: #0a0a0f; border: 1px solid #2a2a3a; border-radius: 10px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600; padding: 10px; cursor: pointer; text-align: center; transition: all 0.2s; }
+.lang-btn.active { background: rgba(226,71,30,0.2); border-color: #E2471E; color: #E2471E; }
 .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(10,10,15,0.98); border-bottom: 1px solid #1a1a2e; position: sticky; top: 0; z-index: 10; }
 .header-left { display: flex; flex-direction: column; }
 .logo { color: #E2471E; font-size: 16px; font-weight: 800; letter-spacing: 2px; }
@@ -133,28 +136,36 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 
 <div class="levelup-overlay" id="levelupOverlay">
   <div class="levelup-emoji" id="levelupEmoji">🎬</div>
-  <div class="levelup-title">TƏBRİK EDİRİK!</div>
+  <div class="levelup-title" id="luTitle">TƏBRİK EDİRİK!</div>
   <div class="levelup-level" id="levelupNum">Level 2</div>
   <div class="levelup-coins" id="levelupCoinsNeeded"></div>
-  <button class="levelup-btn" onclick="closeLevelUp()">🎮 Davam et</button>
+  <button class="levelup-btn" onclick="closeLevelUp()" id="luBtn">🎮 Davam et</button>
 </div>
 
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-icon">🎬</div>
-  <div class="loading-text">Yüklənir...</div>
+  <div class="loading-text" id="loadingText">Yüklənir...</div>
 </div>
 
 <div id="regScreen" class="screen">
   <div class="reg-wrap">
     <div class="reg-logo">MITOFILM</div>
-    <div class="reg-sub">Kino dünyasının ən böyük oyunu</div>
+    <div class="reg-sub" id="regSub">Kino dünyasının ən böyük oyunu</div>
     <div class="reg-card">
-      <div class="reg-title">🎬 Oyuna qoşul</div>
-      <div class="reg-label">ADINIZ</div>
+      <div class="reg-title" id="regTitle">🎬 Oyuna qoşul</div>
+      <div style="margin-bottom:16px">
+        <div class="reg-label" id="langLabel">DİL SEÇİN</div>
+        <div class="lang-select">
+          <button class="lang-btn active" onclick="setLang('az')" id="btnAz">🇦🇿 AZ</button>
+          <button class="lang-btn" onclick="setLang('ru')" id="btnRu">🇷🇺 RU</button>
+          <button class="lang-btn" onclick="setLang('en')" id="btnEn">🇬🇧 EN</button>
+        </div>
+      </div>
+      <div class="reg-label" id="nameLabel">ADINIZ</div>
       <input class="reg-input" id="regName" placeholder="Ad Soyad" maxlength="40" />
-      <div class="reg-label">TELEFON NÖMRƏSİ</div>
+      <div class="reg-label" id="phoneLabel">TELEFON NÖMRƏSİ</div>
       <input class="reg-input" id="regPhone" placeholder="+994 XX XXX XX XX" maxlength="20" type="tel" />
-      <button class="reg-btn" onclick="register()">🎮 Oyunu Başlat</button>
+      <button class="reg-btn" onclick="register()" id="regBtn">🎮 Oyunu Başlat</button>
     </div>
   </div>
 </div>
@@ -171,18 +182,18 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="level-bar-bg"><div class="level-bar" id="levelBar" style="width:0%"></div></div>
     <div class="level-info">
       <span id="levelProgress">0 / 1000 MitoCoins</span>
-      <span id="levelNext">Növbəti: Level 2</span>
+      <span id="levelNext"></span>
     </div>
   </div>
   <div class="stats">
-    <div class="stat"><div class="stat-val green" id="correctVal">0</div><div class="stat-lbl">✅ DÜZGÜN</div></div>
-    <div class="stat"><div class="stat-val red" id="wrongVal">0</div><div class="stat-lbl">❌ SƏHV</div></div>
-    <div class="stat"><div class="stat-val" id="totalVal">0</div><div class="stat-lbl">CƏMİ</div></div>
+    <div class="stat"><div class="stat-val green" id="correctVal">0</div><div class="stat-lbl" id="statCorrect">✅ DÜZGÜN</div></div>
+    <div class="stat"><div class="stat-val red" id="wrongVal">0</div><div class="stat-lbl" id="statWrong">❌ SƏHV</div></div>
+    <div class="stat"><div class="stat-val" id="totalVal">0</div><div class="stat-lbl" id="statTotal">CƏMİ</div></div>
   </div>
   <div class="dots" id="dotsRow"></div>
   <div class="timer-wrap">
     <div class="timer-bar-bg"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
-    <div class="timer-text" id="timerText">15 saniyə</div>
+    <div class="timer-text" id="timerText">15</div>
   </div>
   <div id="qBadge" class="q-badge"></div>
   <div class="media-img-wrap">
@@ -195,18 +206,18 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   </div>
   <div class="options" id="optionsGrid"></div>
   <div class="result-bar" id="resultBar"></div>
-  <button class="next-btn" id="nextBtn" onclick="loadQuestion()">▶ Növbəti sual</button>
-  <button class="reset-btn" onclick="confirmReset()">🔄 Hər şeyi sıfırla və yenidən başla</button>
+  <button class="next-btn" id="nextBtn" onclick="loadQuestion()">▶</button>
+  <button class="reset-btn" onclick="confirmReset()" id="resetBtn">🔄 Sıfırla</button>
   <div style="flex:1"></div>
   <div class="bottom-nav">
     <div class="nav-item active" id="navGame" onclick="showScreen('game')">
-      <span class="nav-icon">🎮</span><span class="nav-label">Oyun</span>
+      <span class="nav-icon">🎮</span><span class="nav-label" id="navGameLbl">Oyun</span>
     </div>
     <div class="nav-item gift-nav" id="navGift" onclick="showScreen('gift')">
-      <span class="nav-icon">🎁</span><span class="nav-label">Hədiyyə</span>
+      <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl">Hədiyyə</span>
     </div>
     <div class="nav-item" id="navLb" onclick="showScreen('leaderboard')">
-      <span class="nav-icon">🏆</span><span class="nav-label">Liderboard</span>
+      <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl">Liderboard</span>
     </div>
   </div>
 </div>
@@ -219,21 +230,16 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
     <div class="coins-badge">🪙 <span id="coinsVal3">0</span> <span class="coins-label">MitoCoins</span></div>
   </div>
-  <div class="gift-wrap" id="giftContent">
-    <div style="text-align:center;padding:60px 20px">
-      <div style="font-size:40px">🎁</div>
-      <div style="color:rgba(255,255,255,0.3);margin-top:12px">Yüklənir...</div>
-    </div>
-  </div>
+  <div class="gift-wrap" id="giftContent"></div>
   <div class="bottom-nav">
     <div class="nav-item" onclick="showScreen('game')">
-      <span class="nav-icon">🎮</span><span class="nav-label">Oyun</span>
+      <span class="nav-icon">🎮</span><span class="nav-label" id="navGameLbl3">Oyun</span>
     </div>
-    <div class="nav-item gift-nav active" id="navGift2" onclick="showScreen('gift')">
-      <span class="nav-icon">🎁</span><span class="nav-label">Hədiyyə</span>
+    <div class="nav-item gift-nav active" onclick="showScreen('gift')">
+      <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl3">Hədiyyə</span>
     </div>
     <div class="nav-item" onclick="showScreen('leaderboard')">
-      <span class="nav-icon">🏆</span><span class="nav-label">Liderboard</span>
+      <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl3">Liderboard</span>
     </div>
   </div>
 </div>
@@ -248,18 +254,18 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   </div>
   <div class="lb-wrap">
     <div class="lb-title">🏆 <span>MitoMan</span> Liderboard</div>
-    <div class="lb-sub">Bütün oyunçular · Real vaxt</div>
+    <div class="lb-sub" id="lbSub">Bütün oyunçular · Real vaxt</div>
     <div id="lbList"></div>
   </div>
   <div class="bottom-nav">
     <div class="nav-item" onclick="showScreen('game')">
-      <span class="nav-icon">🎮</span><span class="nav-label">Oyun</span>
+      <span class="nav-icon">🎮</span><span class="nav-label" id="navGameLbl2">Oyun</span>
     </div>
     <div class="nav-item gift-nav" onclick="showScreen('gift')">
-      <span class="nav-icon">🎁</span><span class="nav-label">Hədiyyə</span>
+      <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl2">Hədiyyə</span>
     </div>
-    <div class="nav-item active" id="navLb2" onclick="showScreen('leaderboard')">
-      <span class="nav-icon">🏆</span><span class="nav-label">Liderboard</span>
+    <div class="nav-item active" onclick="showScreen('leaderboard')">
+      <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl2">Liderboard</span>
     </div>
   </div>
 </div>
@@ -273,6 +279,169 @@ const TIMER_SEC=15;
 const COINS=100;
 const MAX_LEVEL=10;
 const LEVEL_COINS=[0,1000,2000,3000,5000,7000,9000,11000,14000,17000,20000];
+
+// DİL SİSTEMİ
+const LANGS={
+  az:{
+    code:'az-AZ',
+    regSub:'Kino dünyasının ən böyük oyunu',
+    regTitle:'🎬 Oyuna qoşul',
+    langLabel:'DİL SEÇİN',
+    nameLabel:'ADINIZ',
+    phoneLabel:'TELEFON NÖMRƏSİ',
+    regBtn:'🎮 Oyunu Başlat',
+    loading:'Yüklənir...',
+    navGame:'Oyun',navGift:'Hədiyyə',navLb:'Liderboard',
+    statCorrect:'✅ DÜZGÜN',statWrong:'❌ SƏHV',statTotal:'CƏMİ',
+    nextBtn:'▶ Növbəti sual',
+    resetBtn:'🔄 Hər şeyi sıfırla',
+    resetConfirm:'Bütün xallar sıfırlanacaq. Davam etmək istəyirsiniz?',
+    resetDone:'✅ Sıfırlandı!',
+    luTitle:'TƏBRİK EDİRİK!',luBtn:'🎮 Davam et',
+    maxLevel:'👑 Maksimum level!',nextLevel:'Növbəti level:',
+    lbSub:'Bütün oyunçular · Real vaxt',
+    giftLoading:'Yüklənir...',
+    giftTimerLabel:'⏰ Müsabiqə bitmənə qalan vaxt',
+    giftDeadline:'Son tarix:',
+    giftLbTitle:'🏅 Cari sıralama (ilk 10)',
+    giftEmpty:'Hələ heç kim oynamayıb!',
+    noGift:'Hazırda aktiv hədiyyə yoxdur.\nTezliklə əlavə olunacaq!',
+    giftError:'Xəta baş verdi',
+    lbEmpty:'Hələ heç kim oynamayıb!',
+    lbError:'Xəta baş verdi',
+    correct:'✅ Düzgün!',wrong:'❌ Yanlış!',timeout:'⏰ Vaxt bitti!',
+    correctAnswer:'Düzgün cavab:',
+    streakBonus:'seriya bonusu',
+    total:'Cəmi',streak:'Seriya',
+    qActor:'Bu aktyor kimdir?',
+    qFilm:'Bu filmin adı nədir?',
+    qYear:'filmi hansı ildə çıxıb?',
+    qDirector:'filminin rejissoru kimdir?',
+    qActorFilm:'hansı filmdə baş rol oynamışdır?',
+    qGenre:'filmi hansı janrdadır?',
+    qCountry:'filmi hansı ölkədə çəkilib?',
+    badgeActor:'🎭 Aktyor',badgeFilm:'🎬 Film',badgeYear:'📅 İl',
+    badgeDirector:'🎬 Rejissor',badgeActorFilm:'🎭 Film tap',
+    badgeGenre:'🎭 Janr',badgeCountry:'🌍 Ölkə',
+    genres:{28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'},
+    nextLevelTxt:'Növbəti: Level',
+  },
+  ru:{
+    code:'ru-RU',
+    regSub:'Величайшая киновикторина',
+    regTitle:'🎬 Войти в игру',
+    langLabel:'ВЫБЕРИТЕ ЯЗЫК',
+    nameLabel:'ВАШЕ ИМЯ',
+    phoneLabel:'НОМЕР ТЕЛЕФОНА',
+    regBtn:'🎮 Начать игру',
+    loading:'Загрузка...',
+    navGame:'Игра',navGift:'Приз',navLb:'Рейтинг',
+    statCorrect:'✅ ВЕРНО',statWrong:'❌ ОШИБКА',statTotal:'ВСЕГО',
+    nextBtn:'▶ Следующий вопрос',
+    resetBtn:'🔄 Сбросить всё',
+    resetConfirm:'Все очки будут сброшены. Продолжить?',
+    resetDone:'✅ Сброшено!',
+    luTitle:'ПОЗДРАВЛЯЕМ!',luBtn:'🎮 Продолжить',
+    maxLevel:'👑 Максимальный уровень!',nextLevel:'Следующий уровень:',
+    lbSub:'Все игроки · В реальном времени',
+    giftLoading:'Загрузка...',
+    giftTimerLabel:'⏰ До конца конкурса',
+    giftDeadline:'Дедлайн:',
+    giftLbTitle:'🏅 Текущий рейтинг (топ 10)',
+    giftEmpty:'Ещё никто не играл!',
+    noGift:'Активных призов нет.\nСкоро появится!',
+    giftError:'Произошла ошибка',
+    lbEmpty:'Ещё никто не играл!',
+    lbError:'Ошибка подключения',
+    correct:'✅ Верно!',wrong:'❌ Неверно!',timeout:'⏰ Время вышло!',
+    correctAnswer:'Правильный ответ:',
+    streakBonus:'бонус серии',
+    total:'Итого',streak:'Серия',
+    qActor:'Кто этот актёр?',
+    qFilm:'Как называется этот фильм?',
+    qYear:'В каком году вышел фильм',
+    qDirector:'Кто режиссёр фильма',
+    qActorFilm:'В каком фильме снялся',
+    qGenre:'В каком жанре фильм',
+    qCountry:'В какой стране снят фильм',
+    badgeActor:'🎭 Актёр',badgeFilm:'🎬 Фильм',badgeYear:'📅 Год',
+    badgeDirector:'🎬 Режиссёр',badgeActorFilm:'🎭 Найди фильм',
+    badgeGenre:'🎭 Жанр',badgeCountry:'🌍 Страна',
+    genres:{28:'Боевик',12:'Приключения',16:'Мультфильм',35:'Комедия',80:'Криминал',18:'Драма',10751:'Семейный',14:'Фэнтези',27:'Ужасы',9648:'Детектив',10749:'Романтика',878:'Фантастика',53:'Триллер',10752:'Военный'},
+    nextLevelTxt:'Следующий: Уровень',
+  },
+  en:{
+    code:'en-US',
+    regSub:'The greatest movie quiz',
+    regTitle:'🎬 Join the game',
+    langLabel:'SELECT LANGUAGE',
+    nameLabel:'YOUR NAME',
+    phoneLabel:'PHONE NUMBER',
+    regBtn:'🎮 Start Game',
+    loading:'Loading...',
+    navGame:'Game',navGift:'Prize',navLb:'Leaderboard',
+    statCorrect:'✅ CORRECT',statWrong:'❌ WRONG',statTotal:'TOTAL',
+    nextBtn:'▶ Next question',
+    resetBtn:'🔄 Reset everything',
+    resetConfirm:'All points will be reset. Continue?',
+    resetDone:'✅ Reset done!',
+    luTitle:'CONGRATULATIONS!',luBtn:'🎮 Continue',
+    maxLevel:'👑 Maximum level!',nextLevel:'Next level:',
+    lbSub:'All players · Real time',
+    giftLoading:'Loading...',
+    giftTimerLabel:'⏰ Time until end',
+    giftDeadline:'Deadline:',
+    giftLbTitle:'🏅 Current ranking (top 10)',
+    giftEmpty:'Nobody has played yet!',
+    noGift:'No active prize.\nComing soon!',
+    giftError:'An error occurred',
+    lbEmpty:'Nobody has played yet!',
+    lbError:'Connection error',
+    correct:'✅ Correct!',wrong:'❌ Wrong!',timeout:'⏰ Time is up!',
+    correctAnswer:'Correct answer:',
+    streakBonus:'streak bonus',
+    total:'Total',streak:'Streak',
+    qActor:'Who is this actor?',
+    qFilm:'What is the name of this film?',
+    qYear:'What year was',
+    qDirector:'Who directed',
+    qActorFilm:'Which film did',
+    qGenre:'What genre is',
+    qCountry:'Which country was',
+    badgeActor:'🎭 Actor',badgeFilm:'🎬 Film',badgeYear:'📅 Year',
+    badgeDirector:'🎬 Director',badgeActorFilm:'🎭 Find film',
+    badgeGenre:'🎭 Genre',badgeCountry:'🌍 Country',
+    genres:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',18:'Drama',10751:'Family',14:'Fantasy',27:'Horror',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War'},
+    nextLevelTxt:'Next: Level',
+  }
+};
+
+let lang=localStorage.getItem('mf_lang')||'az';
+function t(){return LANGS[lang];}
+
+function setLang(l){
+  lang=l;
+  localStorage.setItem('mf_lang',l);
+  ['az','ru','en'].forEach(x=>document.getElementById('btn'+x.charAt(0).toUpperCase()+x.slice(1))?.classList.remove('active'));
+  document.getElementById('btn'+l.charAt(0).toUpperCase()+l.slice(1))?.classList.add('active');
+  applyLangUI();
+}
+
+function applyLangUI(){
+  const L=t();
+  const s=(id,txt)=>{const el=document.getElementById(id);if(el)el.textContent=txt;};
+  const p=(id,txt)=>{const el=document.getElementById(id);if(el)el.placeholder=txt;};
+  s('regSub',L.regSub);s('regTitle',L.regTitle);s('langLabel',L.langLabel);
+  s('nameLabel',L.nameLabel);s('phoneLabel',L.phoneLabel);s('regBtn',L.regBtn);
+  s('loadingText',L.loading);
+  ['navGameLbl','navGameLbl2','navGameLbl3'].forEach(id=>s(id,L.navGame));
+  ['navGiftLbl','navGiftLbl2','navGiftLbl3'].forEach(id=>s(id,L.navGift));
+  ['navLbLbl','navLbLbl2','navLbLbl3'].forEach(id=>s(id,L.navLb));
+  s('statCorrect',L.statCorrect);s('statWrong',L.statWrong);s('statTotal',L.statTotal);
+  s('nextBtn',L.nextBtn);s('resetBtn',L.resetBtn);
+  s('luTitle',L.luTitle);s('luBtn',L.luBtn);
+  s('lbSub',L.lbSub);
+}
 
 function getLevelFromCoins(coins){
   let level=1;
@@ -319,21 +488,17 @@ async function saveDB(){
     );
   }catch(e){}
 }
-
 function saveLocal(){
-  localStorage.setItem('mf_coins',st.coins);
-  localStorage.setItem('mf_score',st.score);
-  localStorage.setItem('mf_wrong',st.wrong);
-  localStorage.setItem('mf_total',st.total);
+  localStorage.setItem('mf_coins',st.coins);localStorage.setItem('mf_score',st.score);
+  localStorage.setItem('mf_wrong',st.wrong);localStorage.setItem('mf_total',st.total);
   localStorage.setItem('mf_uid',st.userId);
 }
 function save(){saveLocal();saveDB();}
 
 function confirmReset(){
-  if(confirm('Bütün xallar, coins və level sıfırlanacaq. Davam etmək istəyirsiniz?')){
+  if(confirm(t().resetConfirm)){
     st.coins=0;st.score=0;st.wrong=0;st.total=0;st.streak=0;st.history=[];
-    saveLocal();saveDB();updateUI();
-    alert('✅ Sıfırlandı! Yenidən başlayın.');
+    saveLocal();saveDB();updateUI();alert(t().resetDone);
   }
 }
 
@@ -350,11 +515,9 @@ function startConfetti(){
   confettiInterval=setInterval(()=>{
     ctx.clearRect(0,0,canvas.width,canvas.height);
     pieces.forEach(p=>{
-      p.y+=p.speed;p.rot+=p.rotSpeed;
-      if(p.y>canvas.height)p.y=-20;
-      ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);
-      ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;
-      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+      p.y+=p.speed;p.rot+=p.rotSpeed;if(p.y>canvas.height)p.y=-20;
+      ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
     });
   },16);
 }
@@ -365,11 +528,14 @@ function stopConfetti(){
 }
 
 function showLevelUp(newLevel){
+  const L=t();
   const emoji=getLevelEmoji(newLevel);
   const nextCoins=LEVEL_COINS[newLevel]||null;
   document.getElementById('levelupEmoji').textContent=emoji;
   document.getElementById('levelupNum').textContent=`Level ${newLevel}`;
-  document.getElementById('levelupCoinsNeeded').textContent=nextCoins?`Növbəti level: ${nextCoins.toLocaleString()} MitoCoins`:'👑 Maksimum level!';
+  document.getElementById('levelupCoinsNeeded').textContent=nextCoins?`${L.nextLevel} ${nextCoins.toLocaleString()} MitoCoins`:L.maxLevel;
+  document.getElementById('luTitle').textContent=L.luTitle;
+  document.getElementById('luBtn').textContent=L.luBtn;
   document.getElementById('levelupOverlay').className='levelup-overlay show';
   startConfetti();
   if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
@@ -380,16 +546,17 @@ function closeLevelUp(){
 }
 
 function updateUI(){
+  const L=t();
   const level=getLevelFromCoins(st.coins);
   const coins=st.coins;
-  const currentLevelCoins=LEVEL_COINS[level-1]||0;
-  const nextLevelCoins=LEVEL_COINS[level]||null;
-  let pct=nextLevelCoins?Math.min((coins-currentLevelCoins)/(nextLevelCoins-currentLevelCoins)*100,100):100;
+  const cur=LEVEL_COINS[level-1]||0;
+  const nxt=LEVEL_COINS[level]||null;
+  const pct=nxt?Math.min((coins-cur)/(nxt-cur)*100,100):100;
   ['coinsVal','coinsVal2','coinsVal3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=coins.toLocaleString();});
   ['headerLevel','headerLevel2','headerLevel3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=`${getLevelEmoji(level)} Level ${level}`;});
   document.getElementById('levelBar').style.width=pct+'%';
-  document.getElementById('levelProgress').textContent=nextLevelCoins?`${coins.toLocaleString()} / ${nextLevelCoins.toLocaleString()} MitoCoins`:'👑 Maksimum!';
-  document.getElementById('levelNext').textContent=nextLevelCoins?`Növbəti: Level ${level+1}`:'';
+  document.getElementById('levelProgress').textContent=nxt?`${coins.toLocaleString()} / ${nxt.toLocaleString()} MitoCoins`:L.maxLevel;
+  document.getElementById('levelNext').textContent=nxt?`${L.nextLevelTxt} ${level+1}`:'';
   document.getElementById('correctVal').textContent=st.score;
   document.getElementById('wrongVal').textContent=st.wrong;
   document.getElementById('totalVal').textContent=st.total;
@@ -403,27 +570,28 @@ function showScreen(name){
   document.getElementById('giftScreen').className='screen'+(name==='gift'?' active':'');
   document.getElementById('lbScreen').className='screen'+(name==='leaderboard'?' active':'');
   ['navGame','navGift','navLb'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
-  if(name==='game'){document.getElementById('navGame').classList.add('active');}
+  if(name==='game')document.getElementById('navGame').classList.add('active');
   if(name==='gift'){document.getElementById('navGift').classList.add('active');loadGift();}
   if(name==='leaderboard'){document.getElementById('navLb').classList.add('active');renderLB();}
 }
 
 async function loadGift(){
+  const L=t();
   const el=document.getElementById('giftContent');
-  el.innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-size:40px">🎁</div><div style="color:rgba(255,255,255,0.3);margin-top:12px">Yüklənir...</div></div>';
+  el.innerHTML=`<div style="text-align:center;padding:60px 20px"><div style="font-size:40px">🎁</div><div style="color:rgba(255,255,255,0.3);margin-top:12px">${L.giftLoading}</div></div>`;
   clearInterval(giftTimerInterval);
   try{
     const {data}=await db.from('mitofilm_gifts').select('*').eq('is_active',true).order('created_at',{ascending:false}).limit(1);
     const {data:top10}=await db.from('mitofilm_users').select('user_id,name,coins').order('coins',{ascending:false}).limit(10);
     if(!data||!data.length){
-      el.innerHTML='<div class="no-gift"><div class="no-gift-icon">🎁</div><div class="no-gift-text">Hazırda aktiv hədiyyə yoxdur.<br>Tezliklə əlavə olunacaq!</div></div>';
+      el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">🎁</div><div class="no-gift-text">${L.noGift}</div></div>`;
       return;
     }
     const gift=data[0];
     const medals=['🥇','🥈','🥉'];
     const posClass=['p1','p2','p3'];
     const endDate=new Date(gift.ends_at);
-    const dateStr=endDate.toLocaleDateString('az-AZ',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const dateStr=endDate.toLocaleDateString(L.code==='az-AZ'?'az-AZ':L.code==='ru-RU'?'ru-RU':'en-US',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
     el.innerHTML=`
       <div class="gift-card">
         ${gift.image_url?`<img class="gift-img" src="${gift.image_url}" onerror="this.style.display='none'" />`:''}
@@ -431,22 +599,21 @@ async function loadGift(){
           <div class="gift-title">🏆 ${gift.title}</div>
           ${gift.description?`<div class="gift-desc">${gift.description}</div>`:''}
           <div class="gift-timer">
-            <div class="gift-timer-label">⏰ Müsabiqə bitmənə qalan vaxt</div>
+            <div class="gift-timer-label">${L.giftTimerLabel}</div>
             <div class="gift-timer-val" id="giftTimerVal">--:--:--</div>
-            <div class="gift-deadline">Son tarix: ${dateStr}</div>
+            <div class="gift-deadline">${L.giftDeadline} ${dateStr}</div>
           </div>
-          <div class="gift-lb-title">🏅 Cari sıralama (ilk 10)</div>
+          <div class="gift-lb-title">${L.giftLbTitle}</div>
           ${top10&&top10.length?top10.map((p,i)=>`
             <div class="gift-lb-item ${i<3?posClass[i]:''}">
               <span class="gift-lb-rank">${i<3?medals[i]:i+1}</span>
               <span class="gift-lb-name">${p.name}${p.user_id===st.userId?' 👈':''}</span>
               <span class="gift-lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
-            </div>`).join(''):'<div class="gift-empty">Hələ heç kim oynamayıb!</div>'}
+            </div>`).join(''):`<div class="gift-empty">${L.giftEmpty}</div>`}
         </div>
       </div>`;
     function updateGiftTimer(){
-      const now=new Date();
-      const diff=endDate-now;
+      const now=new Date();const diff=endDate-now;
       if(diff<=0){document.getElementById('giftTimerVal').textContent='BİTDİ';clearInterval(giftTimerInterval);return;}
       const days=Math.floor(diff/86400000);
       const h=Math.floor((diff%86400000)/3600000);
@@ -456,23 +623,21 @@ async function loadGift(){
         days>0?`${days}g ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:
         `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
-    updateGiftTimer();
-    giftTimerInterval=setInterval(updateGiftTimer,1000);
-  }catch(e){el.innerHTML='<div class="no-gift"><div class="no-gift-icon">⚠️</div><div class="no-gift-text">Xəta baş verdi</div></div>';}
+    updateGiftTimer();giftTimerInterval=setInterval(updateGiftTimer,1000);
+  }catch(e){el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">⚠️</div><div class="no-gift-text">${t().giftError}</div></div>`;}
 }
 
 async function renderLB(){
+  const L=t();
   const el=document.getElementById('lbList');
-  el.innerHTML='<div class="lb-empty">Yüklənir...</div>';
+  el.innerHTML=`<div class="lb-empty">${L.giftLoading}</div>`;
   try{
     const {data,error}=await db.from('mitofilm_users').select('user_id,name,coins,score,level').order('coins',{ascending:false}).limit(20);
-    if(error){el.innerHTML=`<div class="lb-empty">Xəta: ${error.message}</div>`;return;}
-    const medals=['🥇','🥈','🥉'];
-    const cls=['gold','silver','bronze'];
-    if(!data||!data.length){el.innerHTML='<div class="lb-empty">Hələ heç kim oynamayıb!</div>';return;}
+    if(error){el.innerHTML=`<div class="lb-empty">${L.lbError}</div>`;return;}
+    const medals=['🥇','🥈','🥉'];const cls=['gold','silver','bronze'];
+    if(!data||!data.length){el.innerHTML=`<div class="lb-empty">${L.lbEmpty}</div>`;return;}
     el.innerHTML=data.map((p,i)=>{
-      const lvl=getLevelFromCoins(p.coins||0);
-      const isMe=p.user_id===st.userId;
+      const lvl=getLevelFromCoins(p.coins||0);const isMe=p.user_id===st.userId;
       return`<div class="lb-item ${i<3?cls[i]:''} ${isMe?'me':''}">
         <span class="lb-rank">${i<3?medals[i]:i+1}</span>
         <div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div>
@@ -483,17 +648,16 @@ async function renderLB(){
         <span class="lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
       </div>`;
     }).join('');
-  }catch(e){el.innerHTML=`<div class="lb-empty">Bağlantı xətası: ${e.message}</div>`;}
+  }catch(e){el.innerHTML=`<div class="lb-empty">${t().lbError}</div>`;}
 }
 
 async function register(){
   const name=document.getElementById('regName').value.trim();
   const phone=document.getElementById('regPhone').value.trim();
-  if(!name||name.length<2){alert('Adınızı daxil edin!');return;}
-  if(!phone||phone.length<6){alert('Telefon nömrəsini daxil edin!');return;}
+  if(!name||name.length<2){alert(t().nameLabel+' !');return;}
+  if(!phone||phone.length<6){alert(t().phoneLabel+' !');return;}
   st.userName=name;st.userPhone=phone;
-  localStorage.setItem('mf_name',name);
-  localStorage.setItem('mf_phone',phone);
+  localStorage.setItem('mf_name',name);localStorage.setItem('mf_phone',phone);
   await saveDB();
   document.getElementById('regScreen').className='screen';
   document.getElementById('loadingScreen').style.display='flex';
@@ -503,14 +667,12 @@ async function register(){
 function startTimer(){
   clearInterval(timerInterval);
   let tLeft=TIMER_SEC;
-  const bar=document.getElementById('timerBar');
-  const txt=document.getElementById('timerText');
+  const bar=document.getElementById('timerBar');const txt=document.getElementById('timerText');
   bar.style.background='#E2471E';bar.style.width='100%';
-  txt.className='timer-text';txt.textContent=`${tLeft} saniyə`;
+  txt.className='timer-text';txt.textContent=`${tLeft}s`;
   timerInterval=setInterval(()=>{
     tLeft--;
-    bar.style.width=(tLeft/TIMER_SEC*100)+'%';
-    txt.textContent=`${tLeft} saniyə`;
+    bar.style.width=(tLeft/TIMER_SEC*100)+'%';txt.textContent=`${tLeft}s`;
     if(tLeft<=5){bar.style.background='#e74c3c';txt.className='timer-text urgent';}
     if(tLeft<=0){clearInterval(timerInterval);timeOut();}
   },1000);
@@ -519,24 +681,24 @@ function startTimer(){
 function timeOut(){
   if(st.answered)return;
   st.answered=true;st.total++;
-  st.coins=Math.max(0,st.coins-COINS);
-  st.wrong++;st.streak=0;st.history.push('bad');
+  st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
   document.querySelectorAll('.opt-btn').forEach(b=>{
-    b.disabled=true;
-    if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');
+    b.disabled=true;if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');
   });
   document.getElementById('resultBar').className='result-bar wrong';
-  document.getElementById('resultBar').innerHTML=`⏰ Vaxt bitti! -${COINS} MitoCoins<br><small>Düzgün cavab: <b>${st.current.correct}</b></small>`;
+  document.getElementById('resultBar').innerHTML=`${t().timeout} -${COINS} MitoCoins<br><small>${t().correctAnswer} <b>${st.current.correct}</b></small>`;
   document.getElementById('nextBtn').style.display='block';
   updateUI();save();
 }
 
-async function api(url,lang='az-AZ'){
-  const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${lang}`);
+async function apiCall(url,langCode){
+  const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${langCode||t().code}`);
   return r.json();
 }
 function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
-const qTypes=['actor_face','movie_poster','movie_year','movie_director','actor_known_for','movie_genre','movie_country','movie_rating'];
+
+// Reytinq sualı silindi — yalnız 6 növ
+const qTypes=['actor_face','movie_poster','movie_year','movie_director','actor_known_for','movie_genre','movie_country'];
 
 async function loadQuestion(){
   st.answered=false;clearInterval(timerInterval);
@@ -546,7 +708,7 @@ async function loadQuestion(){
   document.getElementById('mediaImg').style.display='none';
   document.getElementById('noImg').style.display='none';
   document.getElementById('timerBar').style.width='100%';
-  document.getElementById('timerText').textContent=`${TIMER_SEC} saniyə`;
+  document.getElementById('timerText').textContent=`${TIMER_SEC}s`;
   document.getElementById('timerText').className='timer-text';
   const type=qTypes[Math.floor(Math.random()*qTypes.length)];
   try{
@@ -556,23 +718,23 @@ async function loadQuestion(){
     else if(type==='movie_director')await qMovieDirector();
     else if(type==='actor_known_for')await qActorKnownFor();
     else if(type==='movie_genre')await qMovieGenre();
-    else if(type==='movie_country')await qMovieCountry();
-    else await qMovieRating();
+    else await qMovieCountry();
   }catch(e){console.error(e);setTimeout(loadQuestion,1000);return;}
   showScreen('game');startTimer();
 }
 
 async function getActors(){
-  const d=await api(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);
+  const d=await apiCall(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);
   return shuffle((d.results||[]).filter(p=>p.profile_path&&isOk(p.name)));
 }
 async function getMovies(){
   const eps=['/movie/popular','/movie/top_rated','/movie/now_playing'];
-  const d=await api(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);
+  const d=await apiCall(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);
   return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isOk(m.title||'')));
 }
 
 async function qActorFace(){
+  const L=t();
   const list=await getActors();
   if(list.length<4)return qActorFace();
   const actor=list[0];
@@ -580,77 +742,86 @@ async function qActorFace(){
   const same=list.filter(a=>a.id!==actor.id&&(gender===0||a.gender===gender||a.gender===0));
   const wrong=(same.length>=3?same:list.filter(a=>a.id!==actor.id)).slice(0,3).map(a=>a.name);
   if(wrong.length<3)return qActorFace();
-  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:'🎭 Aktyor',question:'Bu aktyor kimdir?',sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
+  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:L.badgeActor,question:L.qActor,sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
 }
+
 async function qMoviePoster(){
+  const L=t();
   const list=await getMovies();
   if(list.length<4)return qMoviePoster();
   const movie=list[0];
-  const wrong=list.slice(1,4).map(m=>m.title);
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🎬 Film',question:'Bu filmin adı nədir?',sub:movie.release_date?.slice(0,4)||'',opts:shuffle([movie.title,...wrong]),correct:movie.title,isActor:false});
+  // Fərqli səhifədən yanlış variantlar çək ki eyni film çıxmasın
+  const otherPage=await apiCall(`/movie/popular?page=${Math.floor(Math.random()*8)+1}`);
+  const others=shuffle((otherPage.results||[]).filter(m=>m.id!==movie.id&&isOk(m.title||'')&&m.title!==movie.title));
+  if(others.length<3)return qMoviePoster();
+  const wrong=others.slice(0,3).map(m=>m.title);
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeFilm,question:L.qFilm,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([movie.title,...wrong]),correct:movie.title,isActor:false});
 }
+
 async function qMovieYear(){
+  const L=t();
   const list=await getMovies();
   if(!list.length)return qMovieYear();
   const movie=list[0];
   const year=movie.release_date.slice(0,4);
   const wy=new Set();
   while(wy.size<3){const y=String(parseInt(year)+(Math.floor(Math.random()*10)-5));if(y!==year&&parseInt(y)>1950&&parseInt(y)<=2025)wy.add(y);}
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'📅 İl',question:`"${movie.title}" filmi hansı ildə çıxıb?`,sub:`${movie.vote_average?.toFixed(1)}⭐`,opts:shuffle([year,...wy]),correct:year,isActor:false});
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeYear,question:`"${movie.title}" ${L.qYear}?`,sub:`${movie.vote_average?.toFixed(1)}⭐`,opts:shuffle([year,...wy]),correct:year,isActor:false});
 }
+
 async function qMovieDirector(){
+  const L=t();
   const list=await getMovies();
   if(!list.length)return qMovieDirector();
   const movie=list[0];
-  const credits=await api(`/movie/${movie.id}/credits?`,'en-US');
+  const credits=await apiCall(`/movie/${movie.id}/credits?`,'en-US');
   const dir=(credits.crew||[]).find(c=>c.job==='Director'&&isOk(c.name));
   if(!dir)return qMovieDirector();
   const actors=await getActors();
   const wrong=actors.slice(0,3).map(a=>a.name).filter(n=>n!==dir.name);
   if(wrong.length<3)return qMovieDirector();
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🎬 Rejissor',question:`"${movie.title}" filminin rejissoru kimdir?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([dir.name,...wrong.slice(0,3)]),correct:dir.name,isActor:false});
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeDirector,question:`"${movie.title}" ${L.qDirector}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([dir.name,...wrong.slice(0,3)]),correct:dir.name,isActor:false});
 }
+
 async function qActorKnownFor(){
+  const L=t();
   const list=await getActors();
   if(!list.length)return qActorKnownFor();
   const actor=list[0];
   const films=(actor.known_for||[]).filter(f=>(f.title||f.name)&&isOk(f.title||f.name));
   if(!films.length)return qActorKnownFor();
   const correct=films[0].title||films[0].name;
-  const movies=await getMovies();
-  const wrong=movies.filter(m=>m.title!==correct).slice(0,3).map(m=>m.title);
-  if(wrong.length<3)return qActorKnownFor();
-  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:'🎭 Film tap',question:`${actor.name} hansı filmdə baş rol oynamışdır?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
+  // Fərqli səhifədən yanlış film adları çək
+  const otherPage=await apiCall(`/movie/popular?page=${Math.floor(Math.random()*8)+2}`);
+  const others=shuffle((otherPage.results||[]).filter(m=>m.title!==correct&&isOk(m.title||'')));
+  if(others.length<3)return qActorKnownFor();
+  const wrong=others.slice(0,3).map(m=>m.title);
+  setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:L.badgeActorFilm,question:`${actor.name} ${L.qActorFilm}?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
 }
+
 async function qMovieGenre(){
-  const genres={28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'};
+  const L=t();
+  const genres=L.genres;
   const list=await getMovies();
   const movie=list.find(m=>m.genre_ids&&m.genre_ids.length>0&&genres[m.genre_ids[0]]);
   if(!movie)return qMovieGenre();
   const cg=genres[movie.genre_ids[0]];
   const wg=shuffle(Object.values(genres).filter(g=>g!==cg)).slice(0,3);
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🎭 Janr',question:`"${movie.title}" filmi hansı janrdadır?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([cg,...wg]),correct:cg,isActor:false});
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeGenre,question:`"${movie.title}" ${L.qGenre}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([cg,...wg]),correct:cg,isActor:false});
 }
+
 async function qMovieCountry(){
+  const L=t();
   const list=await getMovies();
   if(!list.length)return qMovieCountry();
   const movie=list[0];
-  const detail=await api(`/movie/${movie.id}?`);
+  const detail=await apiCall(`/movie/${movie.id}?`);
   const countries=detail.production_countries||[];
   if(!countries.length)return qMovieCountry();
   const correct=countries[0].name;
   if(!isOk(correct))return qMovieCountry();
   const wl=['United States of America','United Kingdom','France','Germany','Japan','South Korea','Italy','Spain','Canada','Australia','India','China'].filter(c=>c!==correct);
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'🌍 Ölkə',question:`"${movie.title}" filmi hansı ölkədə çəkilib?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
-}
-async function qMovieRating(){
-  const list=await getMovies();
-  const movie=list.find(m=>m.vote_average>0);
-  if(!movie)return qMovieRating();
-  const rating=movie.vote_average.toFixed(1);
-  const wr=new Set();
-  while(wr.size<3){const r=(parseFloat(rating)+(Math.random()*2-1)).toFixed(1);if(r!==rating&&parseFloat(r)>=1&&parseFloat(r)<=10)wr.add(r);}
-  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:'⭐ Reytinq',question:`"${movie.title}" filminin TMDB reytinqi neçədir?`,sub:`${movie.release_date?.slice(0,4)} · ${movie.vote_count?.toLocaleString()} səs`,opts:shuffle([rating,...wr]),correct:rating,isActor:false});
+  setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeCountry,question:`"${movie.title}" ${L.qCountry}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
 }
 
 function setCard({img,badge,question,sub,opts,correct,isActor}){
@@ -673,41 +844,15 @@ function setCard({img,badge,question,sub,opts,correct,isActor}){
 function answer(btn,chosen){
   if(st.answered)return;
   st.answered=true;st.total++;clearInterval(timerInterval);
+  const L=t();
   const correct=st.current.correct;
   const isCorrect=String(chosen)===String(correct);
   const prevLevel=getLevelFromCoins(st.coins);
   document.querySelectorAll('.opt-btn').forEach(b=>{
-    b.disabled=true;
-    if(b.textContent.trim()===String(correct))b.classList.add('reveal');
+    b.disabled=true;if(b.textContent.trim()===String(correct))b.classList.add('reveal');
   });
   const result=document.getElementById('resultBar');
   if(isCorrect){
     btn.classList.add('correct');
     const bonus=st.streak>=2?Math.min(st.streak*10,50):0;
-    st.coins+=COINS+bonus;st.score++;st.streak++;st.history.push('ok');
-    const newLevel=getLevelFromCoins(st.coins);
-    if(newLevel>prevLevel)setTimeout(()=>showLevelUp(newLevel),500);
-    result.className='result-bar correct';
-    result.innerHTML=`✅ Düzgün! +${COINS}${bonus>0?` +${bonus} seriya bonusu`:''} MitoCoins<br><small>🔥 Seriya: ${st.streak} · Cəmi: ${st.coins.toLocaleString()} MitoCoins</small>`;
-  }else{
-    btn.classList.add('wrong');
-    st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
-    result.className='result-bar wrong';
-    result.innerHTML=`❌ Yanlış! -${COINS} MitoCoins<br><small>Düzgün cavab: <b>${correct}</b></small>`;
-  }
-  document.getElementById('nextBtn').style.display='block';
-  updateUI();save();
-}
-
-document.getElementById('loadingScreen').style.display='none';
-if(!st.userName||!st.userPhone){
-  if(tgUser?.first_name)document.getElementById('regName').value=tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'');
-  document.getElementById('regScreen').className='screen active';
-}else{
-  document.getElementById('loadingScreen').style.display='flex';
-  loadQuestion();
-}
-updateUI();
-</script>
-</body>
-</html>
+    st.coins+=COINS+bonus;st.score++;st.streak++;st.history
