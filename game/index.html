@@ -27,14 +27,13 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .header-left { display: flex; flex-direction: column; }
 .logo { color: #E2471E; font-size: 16px; font-weight: 800; letter-spacing: 2px; }
 .header-level { font-size: 11px; color: #FFD700; margin-top: 1px; font-weight: 600; }
-.header-right { display: flex; align-items: center; gap: 8px; }
-.coins-badge { display: flex; align-items: center; gap: 5px; background: rgba(226,71,30,0.15); border: 1px solid rgba(226,71,30,0.3); border-radius: 20px; padding: 6px 10px; }
+.header-right { display: flex; align-items: center; gap: 6px; }
+.coins-badge { display: flex; align-items: center; gap: 5px; background: rgba(226,71,30,0.15); border: 1px solid rgba(226,71,30,0.3); border-radius: 20px; padding: 5px 10px; }
 .coins-badge span { color: #E2471E; font-size: 12px; font-weight: 700; }
-.coins-label { color: rgba(226,71,30,0.8); font-size: 11px; font-weight: 600; }
-.lang-toggle { display: flex; gap: 4px; }
-.lang-toggle-btn { background: transparent; border: 1px solid #2a2a3a; border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 11px; padding: 4px 6px; cursor: pointer; }
+.lang-toggle { display: flex; gap: 3px; }
+.lang-toggle-btn { background: transparent; border: 1px solid #2a2a3a; border-radius: 6px; color: rgba(255,255,255,0.5); font-size: 11px; padding: 3px 5px; cursor: pointer; }
 .lang-toggle-btn.active { border-color: #E2471E; color: #E2471E; background: rgba(226,71,30,0.1); }
-.exit-btn { background: transparent; border: 1px solid #2a2a3a; border-radius: 8px; color: rgba(255,255,255,0.4); font-size: 16px; padding: 4px 8px; cursor: pointer; }
+.exit-btn { background: transparent; border: 1px solid #2a2a3a; border-radius: 6px; color: rgba(255,255,255,0.4); font-size: 14px; padding: 3px 8px; cursor: pointer; }
 .level-progress { margin: 0 16px 8px; }
 .level-bar-bg { background: #1a1a2e; border-radius: 10px; height: 4px; overflow: hidden; }
 .level-bar { height: 4px; border-radius: 10px; background: #FFD700; transition: width 0.5s ease; }
@@ -78,19 +77,16 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .loading-icon { font-size: 60px; animation: pulse 1s infinite; }
 .loading-text { color: rgba(255,255,255,0.5); font-size: 15px; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-/* START EKRANI */
 .start-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 24px; text-align: center; }
 .start-logo { color: #E2471E; font-size: 40px; font-weight: 800; letter-spacing: 3px; margin-bottom: 8px; }
-.start-sub { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 32px; }
-.start-icon { font-size: 80px; margin-bottom: 24px; animation: pulse 2s infinite; }
-.start-name { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-.start-level { font-size: 14px; color: #FFD700; margin-bottom: 8px; }
-.start-coins { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
+.start-sub { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 24px; }
+.start-icon { font-size: 70px; margin-bottom: 20px; animation: pulse 2s infinite; }
+.start-name { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.start-level { font-size: 14px; color: #FFD700; margin-bottom: 6px; }
+.start-coins { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
 .start-btn { background: #E2471E; border: none; border-radius: 16px; color: #fff; font-size: 18px; font-weight: 800; padding: 18px 48px; cursor: pointer; margin-bottom: 16px; width: 100%; max-width: 300px; }
 .start-rules { background: #111118; border: 1px solid #2a2a3a; border-radius: 14px; padding: 16px; width: 100%; max-width: 300px; text-align: left; }
 .start-rule { font-size: 13px; color: rgba(255,255,255,0.6); padding: 4px 0; }
-
 .levelup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px; }
 .levelup-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
@@ -157,13 +153,10 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   <div class="levelup-coins" id="levelupCoinsNeeded"></div>
   <button class="levelup-btn" onclick="closeLevelUp()" id="luBtn">🎮 Davam et</button>
 </div>
-
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-icon">🎬</div>
   <div class="loading-text" id="loadingText">Yüklənir...</div>
 </div>
-
-<!-- QEYDİYYAT -->
 <div id="regScreen" class="screen">
   <div class="reg-wrap">
     <div class="reg-logo">MITOFILM</div>
@@ -186,8 +179,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
   </div>
 </div>
-
-<!-- START EKRANI -->
 <div id="startScreen" class="screen">
   <div class="start-wrap">
     <div class="start-logo">MITOFILM</div>
@@ -205,8 +196,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
   </div>
 </div>
-
-<!-- OYUN -->
 <div id="gameScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -220,7 +209,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
         <button class="lang-toggle-btn" onclick="setLang('en')" id="tglEn">🇬🇧</button>
       </div>
       <div class="coins-badge">🪙 <span id="coinsVal">0</span></div>
-      <button class="exit-btn" onclick="exitApp()" title="Çıxış">✕</button>
+      <button class="exit-btn" onclick="exitApp()">✕</button>
     </div>
   </div>
   <div class="level-progress">
@@ -261,13 +250,11 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="nav-item gift-nav" id="navGift" onclick="showScreen('gift')">
       <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl">Hədiyyə</span>
     </div>
-    <div class="nav-item" id="navLb" onclick="showScreen('leaderboard')">
+    <div class="nav-item" id="navLb" onclick="showScreen('lb')">
       <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl">Liderboard</span>
     </div>
   </div>
 </div>
-
-<!-- HƏDİYYƏ -->
 <div id="giftScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -287,13 +274,11 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="nav-item gift-nav active" onclick="showScreen('gift')">
       <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl3">Hədiyyə</span>
     </div>
-    <div class="nav-item" onclick="showScreen('leaderboard')">
+    <div class="nav-item" onclick="showScreen('lb')">
       <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl3">Liderboard</span>
     </div>
   </div>
 </div>
-
-<!-- LİDERBOARD -->
 <div id="lbScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -317,12 +302,11 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="nav-item gift-nav" onclick="showScreen('gift')">
       <span class="nav-icon">🎁</span><span class="nav-label" id="navGiftLbl2">Hədiyyə</span>
     </div>
-    <div class="nav-item active" onclick="showScreen('leaderboard')">
+    <div class="nav-item active" onclick="showScreen('lb')">
       <span class="nav-icon">🏆</span><span class="nav-label" id="navLbLbl2">Liderboard</span>
     </div>
   </div>
 </div>
-
 <script>
 const SUPABASE_URL='https://dpvoluttxelwnqcfnsbh.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdm9sdXR0eGVsd25xY2Zuc2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzODQ4MTMsImV4cCI6MjA4ODk2MDgxM30.qodOw68r3OgeQXrr-SnzTDiXI4eI_moD4IWG-Dzj368';
@@ -330,27 +314,20 @@ const TMDB='707ef4b59e038ab276ae6d95d85fcc4f';
 const BASE='https://api.themoviedb.org/3';
 const TIMER_SEC=15;const COINS=100;const MAX_LEVEL=10;
 const LEVEL_COINS=[0,1000,2000,3000,5000,7000,9000,11000,14000,17000,20000];
-
 const LANGS={
   az:{code:'az-AZ',regSub:'Kino dünyasının ən böyük oyunu',regTitle:'🎬 Oyuna qoşul',langLabel:'DİL SEÇİN',nameLabel:'ADINIZ',phoneLabel:'TELEFON NÖMRƏSİ',regBtn:'🎮 Qeydiyyat',loading:'Yüklənir...',navGame:'Oyun',navGift:'Hədiyyə',navLb:'Liderboard',statCorrect:'✅ DÜZGÜN',statWrong:'❌ SƏHV',statTotal:'CƏMİ',nextBtn:'▶ Növbəti sual',resetBtn:'🔄 Sıfırla',resetConfirm:'Bütün xallar sıfırlanacaq?',resetDone:'✅ Sıfırlandı!',luTitle:'TƏBRİK EDİRİK!',luBtn:'🎮 Davam et',maxLevel:'👑 Maksimum!',nextLevel:'Növbəti:',lbSub:'Bütün oyunçular · Real vaxt',giftLoading:'Yüklənir...',giftTimerLabel:'⏰ Müsabiqə bitmənə qalan vaxt',giftDeadline:'Son tarix:',giftLbTitle:'🏅 Cari sıralama (ilk 10)',giftEmpty:'Hələ heç kim oynamayıb!',noGift:'Aktiv hədiyyə yoxdur.',giftError:'Xəta',lbEmpty:'Hələ heç kim oynamayıb!',lbError:'Xəta',correct:'✅ Düzgün!',wrong:'❌ Yanlış!',timeout:'⏰ Vaxt bitti!',correctAnswer:'Düzgün:',streakBonus:'seriya bonusu',total:'Cəmi',streak:'Seriya',startBtn:'🎮 Oyunu Başlat',startSub:'Kino dünyasının ən böyük oyunu',rule1:'✅ Düzgün cavab: +100 MitoCoins',rule2:'❌ Yanlış cavab: -100 MitoCoins',rule3:'⏰ Vaxt limiti: 15 saniyə',rule4:'🔥 Seriya bonusu: +10-50 coins',qActor:'Bu aktyor kimdir?',qFilm:'Bu filmin adı nədir?',qYear:'filmi hansı ildə çıxıb?',qDirector:'filminin rejissoru kimdir?',qActorFilm:'hansı filmdə baş rol oynamışdır?',qGenre:'filmi hansı janrdadır?',qCountry:'filmi hansı ölkədə çəkilib?',badgeActor:'🎭 Aktyor',badgeFilm:'🎬 Film',badgeYear:'📅 İl',badgeDirector:'🎬 Rejissor',badgeActorFilm:'🎭 Film tap',badgeGenre:'🎭 Janr',badgeCountry:'🌍 Ölkə',genres:{28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'},nextLevelTxt:'Növbəti: Level'},
-  ru:{code:'ru-RU',regSub:'Величайшая киновикторина',regTitle:'🎬 Войти в игру',langLabel:'ВЫБЕРИТЕ ЯЗЫК',nameLabel:'ИМЯ',phoneLabel:'ТЕЛЕФОН',regBtn:'🎮 Регистрация',loading:'Загрузка...',navGame:'Игра',navGift:'Приз',navLb:'Рейтинг',statCorrect:'✅ ВЕРНО',statWrong:'❌ ОШИБКА',statTotal:'ВСЕГО',nextBtn:'▶ Следующий',resetBtn:'🔄 Сбросить',resetConfirm:'Сбросить все очки?',resetDone:'✅ Сброшено!',luTitle:'ПОЗДРАВЛЯЕМ!',luBtn:'🎮 Продолжить',maxLevel:'👑 Максимум!',nextLevel:'Следующий:',lbSub:'Все игроки · Реальное время',giftLoading:'Загрузка...',giftTimerLabel:'⏰ До конца конкурса',giftDeadline:'Дедлайн:',giftLbTitle:'🏅 Рейтинг (топ 10)',giftEmpty:'Ещё никто не играл!',noGift:'Нет активных призов.',giftError:'Ошибка',lbEmpty:'Ещё никто не играл!',lbError:'Ошибка',correct:'✅ Верно!',wrong:'❌ Неверно!',timeout:'⏰ Время вышло!',correctAnswer:'Ответ:',streakBonus:'бонус серии',total:'Итого',streak:'Серия',startBtn:'🎮 Начать игру',startSub:'Величайшая киновикторина',rule1:'✅ Верный ответ: +100 MitoCoins',rule2:'❌ Неверный ответ: -100 MitoCoins',rule3:'⏰ Лимит времени: 15 секунд',rule4:'🔥 Бонус серии: +10-50 coins',qActor:'Кто этот актёр?',qFilm:'Как называется этот фильм?',qYear:'В каком году вышел',qDirector:'Кто режиссёр фильма',qActorFilm:'В каком фильме снялся',qGenre:'В каком жанре фильм',qCountry:'В какой стране снят',badgeActor:'🎭 Актёр',badgeFilm:'🎬 Фильм',badgeYear:'📅 Год',badgeDirector:'🎬 Режиссёр',badgeActorFilm:'🎭 Найди фильм',badgeGenre:'🎭 Жанр',badgeCountry:'🌍 Страна',genres:{28:'Боевик',12:'Приключения',16:'Мультфильм',35:'Комедия',80:'Криминал',18:'Драма',10751:'Семейный',14:'Фэнтези',27:'Ужасы',9648:'Детектив',10749:'Романтика',878:'Фантастика',53:'Триллер',10752:'Военный'},nextLevelTxt:'Следующий: Уровень'},
-  en:{code:'en-US',regSub:'The greatest movie quiz',regTitle:'🎬 Join the game',langLabel:'SELECT LANGUAGE',nameLabel:'NAME',phoneLabel:'PHONE',regBtn:'🎮 Register',loading:'Loading...',navGame:'Game',navGift:'Prize',navLb:'Leaderboard',statCorrect:'✅ CORRECT',statWrong:'❌ WRONG',statTotal:'TOTAL',nextBtn:'▶ Next',resetBtn:'🔄 Reset',resetConfirm:'Reset all points?',resetDone:'✅ Reset!',luTitle:'CONGRATULATIONS!',luBtn:'🎮 Continue',maxLevel:'👑 Maximum!',nextLevel:'Next:',lbSub:'All players · Real time',giftLoading:'Loading...',giftTimerLabel:'⏰ Time until end',giftDeadline:'Deadline:',giftLbTitle:'🏅 Ranking (top 10)',giftEmpty:'Nobody has played yet!',noGift:'No active prize.',giftError:'Error',lbEmpty:'Nobody has played yet!',lbError:'Error',correct:'✅ Correct!',wrong:'❌ Wrong!',timeout:'⏰ Time is up!',correctAnswer:'Answer:',streakBonus:'streak bonus',total:'Total',streak:'Streak',startBtn:'🎮 Start Game',startSub:'The greatest movie quiz',rule1:'✅ Correct answer: +100 MitoCoins',rule2:'❌ Wrong answer: -100 MitoCoins',rule3:'⏰ Time limit: 15 seconds',rule4:'🔥 Streak bonus: +10-50 coins',qActor:'Who is this actor?',qFilm:'What is the name of this film?',qYear:'What year was',qDirector:'Who directed',qActorFilm:'Which film did',qGenre:'What genre is',qCountry:'Which country was',badgeActor:'🎭 Actor',badgeFilm:'🎬 Film',badgeYear:'📅 Year',badgeDirector:'🎬 Director',badgeActorFilm:'🎭 Find film',badgeGenre:'🎭 Genre',badgeCountry:'🌍 Country',genres:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',18:'Drama',10751:'Family',14:'Fantasy',27:'Horror',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War'},nextLevelTxt:'Next: Level'}
+  ru:{code:'ru-RU',regSub:'Величайшая киновикторина',regTitle:'🎬 Войти в игру',langLabel:'ВЫБЕРИТЕ ЯЗЫК',nameLabel:'ИМЯ',phoneLabel:'ТЕЛЕФОН',regBtn:'🎮 Регистрация',loading:'Загрузка...',navGame:'Игра',navGift:'Приз',navLb:'Рейтинг',statCorrect:'✅ ВЕРНО',statWrong:'❌ ОШИБКА',statTotal:'ВСЕГО',nextBtn:'▶ Следующий',resetBtn:'🔄 Сбросить',resetConfirm:'Сбросить все очки?',resetDone:'✅ Сброшено!',luTitle:'ПОЗДРАВЛЯЕМ!',luBtn:'🎮 Продолжить',maxLevel:'👑 Максимум!',nextLevel:'Следующий:',lbSub:'Все игроки · Реальное время',giftLoading:'Загрузка...',giftTimerLabel:'⏰ До конца конкурса',giftDeadline:'Дедлайн:',giftLbTitle:'🏅 Рейтинг (топ 10)',giftEmpty:'Ещё никто не играл!',noGift:'Нет активных призов.',giftError:'Ошибка',lbEmpty:'Ещё никто не играл!',lbError:'Ошибка',correct:'✅ Верно!',wrong:'❌ Неверно!',timeout:'⏰ Время вышло!',correctAnswer:'Ответ:',streakBonus:'бонус серии',total:'Итого',streak:'Серия',startBtn:'🎮 Начать игру',startSub:'Величайшая киновикторина',rule1:'✅ Верный ответ: +100 MitoCoins',rule2:'❌ Неверный: -100 MitoCoins',rule3:'⏰ Время: 15 секунд',rule4:'🔥 Бонус серии: +10-50 coins',qActor:'Кто этот актёр?',qFilm:'Как называется фильм?',qYear:'В каком году вышел',qDirector:'Кто режиссёр фильма',qActorFilm:'В каком фильме снялся',qGenre:'В каком жанре фильм',qCountry:'В какой стране снят',badgeActor:'🎭 Актёр',badgeFilm:'🎬 Фильм',badgeYear:'📅 Год',badgeDirector:'🎬 Режиссёр',badgeActorFilm:'🎭 Найди фильм',badgeGenre:'🎭 Жанр',badgeCountry:'🌍 Страна',genres:{28:'Боевик',12:'Приключения',16:'Мультфильм',35:'Комедия',80:'Криминал',18:'Драма',10751:'Семейный',14:'Фэнтези',27:'Ужасы',9648:'Детектив',10749:'Романтика',878:'Фантастика',53:'Триллер',10752:'Военный'},nextLevelTxt:'Следующий: Уровень'},
+  en:{code:'en-US',regSub:'The greatest movie quiz',regTitle:'🎬 Join the game',langLabel:'SELECT LANGUAGE',nameLabel:'NAME',phoneLabel:'PHONE',regBtn:'🎮 Register',loading:'Loading...',navGame:'Game',navGift:'Prize',navLb:'Leaderboard',statCorrect:'✅ CORRECT',statWrong:'❌ WRONG',statTotal:'TOTAL',nextBtn:'▶ Next',resetBtn:'🔄 Reset',resetConfirm:'Reset all points?',resetDone:'✅ Reset!',luTitle:'CONGRATULATIONS!',luBtn:'🎮 Continue',maxLevel:'👑 Maximum!',nextLevel:'Next:',lbSub:'All players · Real time',giftLoading:'Loading...',giftTimerLabel:'⏰ Time until end',giftDeadline:'Deadline:',giftLbTitle:'🏅 Ranking (top 10)',giftEmpty:'Nobody played yet!',noGift:'No active prize.',giftError:'Error',lbEmpty:'Nobody played yet!',lbError:'Error',correct:'✅ Correct!',wrong:'❌ Wrong!',timeout:'⏰ Time is up!',correctAnswer:'Answer:',streakBonus:'streak bonus',total:'Total',streak:'Streak',startBtn:'🎮 Start Game',startSub:'The greatest movie quiz',rule1:'✅ Correct: +100 MitoCoins',rule2:'❌ Wrong: -100 MitoCoins',rule3:'⏰ Time limit: 15 seconds',rule4:'🔥 Streak bonus: +10-50 coins',qActor:'Who is this actor?',qFilm:'What is this film?',qYear:'What year was',qDirector:'Who directed',qActorFilm:'Which film did',qGenre:'What genre is',qCountry:'Which country was',badgeActor:'🎭 Actor',badgeFilm:'🎬 Film',badgeYear:'📅 Year',badgeDirector:'🎬 Director',badgeActorFilm:'🎭 Find film',badgeGenre:'🎭 Genre',badgeCountry:'🌍 Country',genres:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',18:'Drama',10751:'Family',14:'Fantasy',27:'Horror',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War'},nextLevelTxt:'Next: Level'}
 };
-
 let lang=localStorage.getItem('mf_lang')||'az';
 function t(){return LANGS[lang];}
-
 function setLang(l){
   lang=l;localStorage.setItem('mf_lang',l);
-  ['Az','Ru','En'].forEach(x=>{
-    document.getElementById('btn'+x)?.classList.remove('active');
-    document.getElementById('tgl'+x)?.classList.remove('active');
-  });
+  ['Az','Ru','En'].forEach(x=>{document.getElementById('btn'+x)?.classList.remove('active');document.getElementById('tgl'+x)?.classList.remove('active');});
   document.getElementById('btn'+l.charAt(0).toUpperCase()+l.slice(1))?.classList.add('active');
   document.getElementById('tgl'+l.charAt(0).toUpperCase()+l.slice(1))?.classList.add('active');
   applyLangUI();
 }
-
 function applyLangUI(){
   const L=t();
   const s=(id,txt)=>{const el=document.getElementById(id);if(el)el.textContent=txt;};
@@ -366,7 +343,6 @@ function applyLangUI(){
   s('luTitle',L.luTitle);s('luBtn',L.luBtn);s('lbSub',L.lbSub);
   updateStartScreen();
 }
-
 function getLevelFromCoins(coins){
   let level=1;
   for(let i=1;i<=MAX_LEVEL;i++){if(coins>=LEVEL_COINS[i])level=i+1;else break;}
@@ -376,13 +352,11 @@ function getLevelEmoji(level){
   if(level>=10)return'👑';if(level>=8)return'💎';if(level>=6)return'🌟';
   if(level>=4)return'🏆';if(level>=2)return'🍿';return'🎬';
 }
-
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 const tgUser=tg?.initDataUnsafe?.user;
 let timerInterval=null,confettiInterval=null,giftTimerInterval=null;
-
 const st={
   coins:+localStorage.getItem('mf_coins')||0,
   score:+localStorage.getItem('mf_score')||0,
@@ -393,18 +367,12 @@ const st={
   userPhone:localStorage.getItem('mf_phone')||'',
   userId:localStorage.getItem('mf_uid')||(tgUser?.id?String(tgUser.id):'u_'+Math.random().toString(36).slice(2,8))
 };
-
-function exitApp(){
-  if(tg&&tg.close){tg.close();}
-  else{window.history.back();}
-}
-
+function exitApp(){if(tg&&tg.close)tg.close();else window.history.back();}
 function isOk(str){
   if(!str||str.length<2)return false;
   if(/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff\u0600-\u06ff]/.test(str))return false;
   return true;
 }
-
 async function saveDB(){
   try{const level=getLevelFromCoins(st.coins);await db.from('mitofilm_users').upsert({user_id:st.userId,name:st.userName,phone:st.userPhone,coins:st.coins,score:st.score,streak:st.streak,level},{onConflict:'user_id'});}catch(e){}
 }
@@ -414,11 +382,9 @@ function saveLocal(){
   localStorage.setItem('mf_uid',st.userId);
 }
 function save(){saveLocal();saveDB();}
-
 function confirmReset(){
   if(confirm(t().resetConfirm)){st.coins=0;st.score=0;st.wrong=0;st.total=0;st.streak=0;st.history=[];saveLocal();saveDB();updateUI();alert(t().resetDone);}
 }
-
 function startConfetti(){
   const canvas=document.getElementById('confettiCanvas');
   canvas.width=window.innerWidth;canvas.height=window.innerHeight;
@@ -427,7 +393,6 @@ function startConfetti(){
   confettiInterval=setInterval(()=>{ctx.clearRect(0,0,canvas.width,canvas.height);pieces.forEach(p=>{p.y+=p.speed;p.rot+=p.rotSpeed;if(p.y>canvas.height)p.y=-20;ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();});},16);
 }
 function stopConfetti(){clearInterval(confettiInterval);const canvas=document.getElementById('confettiCanvas');canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);}
-
 function showLevelUp(newLevel){
   const L=t();const emoji=getLevelEmoji(newLevel);const nextCoins=LEVEL_COINS[newLevel]||null;
   document.getElementById('levelupEmoji').textContent=emoji;
@@ -439,15 +404,13 @@ function showLevelUp(newLevel){
   startConfetti();if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
 }
 function closeLevelUp(){document.getElementById('levelupOverlay').className='levelup-overlay';stopConfetti();}
-
 function updateStartScreen(){
-  const L=t();const level=getLevelFromCoins(st.coins);
-  const el=n=>document.getElementById(n);
-  if(el('startName'))el('startName').textContent=st.userName||'';
-  if(el('startLevel'))el('startLevel').textContent=`${getLevelEmoji(level)} Level ${level}`;
-  if(el('startCoins'))el('startCoins').textContent=`🪙 ${st.coins.toLocaleString()} MitoCoins`;
+  const level=getLevelFromCoins(st.coins);
+  const s=(id,txt)=>{const el=document.getElementById(id);if(el)el.textContent=txt;};
+  s('startName',st.userName||'');
+  s('startLevel',`${getLevelEmoji(level)} Level ${level}`);
+  s('startCoins',`🪙 ${st.coins.toLocaleString()} MitoCoins`);
 }
-
 function updateUI(){
   const L=t();const level=getLevelFromCoins(st.coins);const coins=st.coins;
   const cur=LEVEL_COINS[level-1]||0;const nxt=LEVEL_COINS[level]||null;
@@ -463,23 +426,22 @@ function updateUI(){
   document.getElementById('dotsRow').innerHTML=st.history.slice(-10).map(h=>`<div class="dot ${h}"></div>`).join('');
   updateStartScreen();
 }
-
 function showScreen(name){
   document.getElementById('loadingScreen').style.display='none';
-  ['regScreen','startScreen','gameScreen','giftScreen','lbScreen'].forEach(id=>{
-    document.getElementById(id).className='screen'+(id===name+'Screen'?' active':'');
-  });
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('startScreen').className='screen';
+  document.getElementById('gameScreen').className='screen'+(name==='game'?' active':'');
+  document.getElementById('giftScreen').className='screen'+(name==='gift'?' active':'');
+  document.getElementById('lbScreen').className='screen'+(name==='lb'?' active':'');
   ['navGame','navGift','navLb'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
-  if(name==='game')document.getElementById('navGame').classList.add('active');
-  if(name==='gift'){document.getElementById('navGift').classList.add('active');loadGift();}
-  if(name==='leaderboard'){document.getElementById('navLb').classList.add('active');renderLB();}
+  if(name==='game')document.getElementById('navGame')?.classList.add('active');
+  if(name==='gift'){document.getElementById('navGift')?.classList.add('active');loadGift();}
+  if(name==='lb'){document.getElementById('navLb')?.classList.add('active');renderLB();}
 }
-
 function startGame(){
   document.getElementById('loadingScreen').style.display='flex';
   loadQuestion();
 }
-
 async function loadGift(){
   const L=t();const el=document.getElementById('giftContent');
   el.innerHTML=`<div style="text-align:center;padding:60px 20px"><div style="font-size:40px">🎁</div><div style="color:rgba(255,255,255,0.3);margin-top:12px">${L.giftLoading}</div></div>`;
@@ -506,21 +468,19 @@ async function loadGift(){
     updateGiftTimer();giftTimerInterval=setInterval(updateGiftTimer,1000);
   }catch(e){el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">⚠️</div><div class="no-gift-text">${t().giftError}</div></div>`;}
 }
-
 async function renderLB(){
   const L=t();const el=document.getElementById('lbList');
   el.innerHTML=`<div class="lb-empty">${L.giftLoading}</div>`;
   try{
     const {data,error}=await db.from('mitofilm_users').select('user_id,name,coins,score,level').order('coins',{ascending:false}).limit(20);
-    if(error){el.innerHTML=`<div class="lb-empty">${L.lbError}</div>`;return;}
+    if(error){el.innerHTML=`<div class="lb-empty">${L.lbError}: ${error.message}</div>`;return;}
     const medals=['🥇','🥈','🥉'];const cls=['gold','silver','bronze'];
     if(!data||!data.length){el.innerHTML=`<div class="lb-empty">${L.lbEmpty}</div>`;return;}
     el.innerHTML=data.map((p,i)=>{const lvl=getLevelFromCoins(p.coins||0);const isMe=p.user_id===st.userId;
       return`<div class="lb-item ${i<3?cls[i]:''} ${isMe?'me':''}"><span class="lb-rank">${i<3?medals[i]:i+1}</span><div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div><div class="lb-info"><div class="lb-name">${p.name}${isMe?' 👈':''}</div><div class="lb-level">${getLevelEmoji(lvl)} Level ${lvl}</div></div><span class="lb-coins">${(p.coins||0).toLocaleString()} 🪙</span></div>`;
     }).join('');
-  }catch(e){el.innerHTML=`<div class="lb-empty">${t().lbError}</div>`;}
+  }catch(e){el.innerHTML=`<div class="lb-empty">${t().lbError}: ${e.message}</div>`;}
 }
-
 async function register(){
   const name=document.getElementById('regName').value.trim();const phone=document.getElementById('regPhone').value.trim();
   if(!name||name.length<2){alert(t().nameLabel+' !');return;}
@@ -529,16 +489,15 @@ async function register(){
   localStorage.setItem('mf_name',name);localStorage.setItem('mf_phone',phone);
   await saveDB();
   updateStartScreen();
-  showScreen('start');
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('startScreen').className='screen active';
 }
-
 function startTimer(){
   clearInterval(timerInterval);let tLeft=TIMER_SEC;
   const bar=document.getElementById('timerBar');const txt=document.getElementById('timerText');
   bar.style.background='#E2471E';bar.style.width='100%';txt.className='timer-text';txt.textContent=`${tLeft}s`;
   timerInterval=setInterval(()=>{tLeft--;bar.style.width=(tLeft/TIMER_SEC*100)+'%';txt.textContent=`${tLeft}s`;if(tLeft<=5){bar.style.background='#e74c3c';txt.className='timer-text urgent';}if(tLeft<=0){clearInterval(timerInterval);timeOut();}},1000);
 }
-
 function timeOut(){
   if(st.answered)return;st.answered=true;st.total++;st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
   document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');});
@@ -546,11 +505,9 @@ function timeOut(){
   document.getElementById('resultBar').innerHTML=`${t().timeout} -${COINS} MitoCoins<br><small>${t().correctAnswer} <b>${st.current.correct}</b></small>`;
   document.getElementById('nextBtn').style.display='block';updateUI();save();
 }
-
 async function apiCall(url,langCode){const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${langCode||t().code}`);return r.json();}
 function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
 const qTypes=['actor_face','movie_poster','movie_year','movie_director','actor_known_for','movie_genre','movie_country'];
-
 async function loadQuestion(){
   st.answered=false;clearInterval(timerInterval);
   document.getElementById('resultBar').className='result-bar';document.getElementById('nextBtn').style.display='none';
@@ -568,10 +525,8 @@ async function loadQuestion(){
   }catch(e){console.error(e);setTimeout(loadQuestion,1000);return;}
   showScreen('game');startTimer();
 }
-
 async function getActors(){const d=await apiCall(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);return shuffle((d.results||[]).filter(p=>p.profile_path&&isOk(p.name)));}
 async function getMovies(){const eps=['/movie/popular','/movie/top_rated','/movie/now_playing'];const d=await apiCall(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isOk(m.title||'')));}
-
 async function qActorFace(){
   const L=t();const list=await getActors();if(list.length<4)return qActorFace();
   const actor=list[0];const gender=actor.gender;
@@ -623,7 +578,6 @@ async function qMovieCountry(){
   const wl=['United States of America','United Kingdom','France','Germany','Japan','South Korea','Italy','Spain','Canada','Australia','India','China'].filter(c=>c!==correct);
   setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeCountry,question:`"${movie.title}" ${L.qCountry}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
 }
-
 function setCard({img,badge,question,sub,opts,correct,isActor}){
   st.current={correct};
   document.getElementById('qBadge').textContent=badge;document.getElementById('cardQ').textContent=question;document.getElementById('cardSub').textContent=sub;
@@ -633,7 +587,6 @@ function setCard({img,badge,question,sub,opts,correct,isActor}){
   else{imgEl.style.display='none';noImg.style.display='flex';}
   document.getElementById('optionsGrid').innerHTML=opts.map(o=>`<button class="opt-btn" onclick="answer(this,'${String(o).replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${o}</button>`).join('');
 }
-
 function answer(btn,chosen){
   if(st.answered)return;st.answered=true;st.total++;clearInterval(timerInterval);
   const L=t();const correct=st.current.correct;const isCorrect=String(chosen)===String(correct);
@@ -653,8 +606,6 @@ function answer(btn,chosen){
   }
   document.getElementById('nextBtn').style.display='block';updateUI();save();
 }
-
-// INIT
 setLang(lang);applyLangUI();
 document.getElementById('loadingScreen').style.display='none';
 if(!st.userName||!st.userPhone){
