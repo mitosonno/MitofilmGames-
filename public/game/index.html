@@ -80,8 +80,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .levelup-coins { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .levelup-btn { background: #FFD700; border: none; border-radius: 16px; color: #000; font-size: 16px; font-weight: 800; padding: 16px 40px; cursor: pointer; }
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 998; }
-
-/* HƏDİYYƏ */
 .gift-wrap { padding: 16px; flex: 1; overflow-y: auto; }
 .gift-card { background: #111118; border: 1px solid #2a2a3a; border-radius: 20px; overflow: hidden; margin-bottom: 16px; }
 .gift-img { width: 100%; height: 200px; object-fit: contain; background: #000; display: block; }
@@ -91,6 +89,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .gift-timer { background: #0a0a0f; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 16px; }
 .gift-timer-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
 .gift-timer-val { font-size: 28px; font-weight: 800; color: #E2471E; letter-spacing: 2px; }
+.gift-deadline { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 6px; }
 .gift-lb-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
 .gift-lb-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; margin-bottom: 6px; background: #0a0a0f; }
 .gift-lb-item.p1 { background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); }
@@ -103,8 +102,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 .no-gift { text-align: center; padding: 60px 20px; }
 .no-gift-icon { font-size: 60px; margin-bottom: 16px; }
 .no-gift-text { color: rgba(255,255,255,0.4); font-size: 14px; }
-
-/* LEADERBOARD */
 .lb-wrap { padding: 16px; flex: 1; overflow-y: auto; }
 .lb-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; text-align: center; }
 .lb-title span { color: #E2471E; }
@@ -214,7 +211,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   </div>
 </div>
 
-<!-- HƏDİYYƏ -->
 <div id="giftScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -224,16 +220,16 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="coins-badge">🪙 <span id="coinsVal3">0</span> <span class="coins-label">MitoCoins</span></div>
   </div>
   <div class="gift-wrap" id="giftContent">
-    <div class="loading-screen" style="min-height:300px">
-      <div class="loading-icon">🎁</div>
-      <div class="loading-text">Yüklənir...</div>
+    <div style="text-align:center;padding:60px 20px">
+      <div style="font-size:40px">🎁</div>
+      <div style="color:rgba(255,255,255,0.3);margin-top:12px">Yüklənir...</div>
     </div>
   </div>
   <div class="bottom-nav">
     <div class="nav-item" onclick="showScreen('game')">
       <span class="nav-icon">🎮</span><span class="nav-label">Oyun</span>
     </div>
-    <div class="nav-item gift-nav active" onclick="showScreen('gift')">
+    <div class="nav-item gift-nav active" id="navGift2" onclick="showScreen('gift')">
       <span class="nav-icon">🎁</span><span class="nav-label">Hədiyyə</span>
     </div>
     <div class="nav-item" onclick="showScreen('leaderboard')">
@@ -242,7 +238,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   </div>
 </div>
 
-<!-- LEADERBOARD -->
 <div id="lbScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -263,7 +258,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     <div class="nav-item gift-nav" onclick="showScreen('gift')">
       <span class="nav-icon">🎁</span><span class="nav-label">Hədiyyə</span>
     </div>
-    <div class="nav-item active" onclick="showScreen('leaderboard')">
+    <div class="nav-item active" id="navLb2" onclick="showScreen('leaderboard')">
       <span class="nav-icon">🏆</span><span class="nav-label">Liderboard</span>
     </div>
   </div>
@@ -390,9 +385,8 @@ function updateUI(){
   const currentLevelCoins=LEVEL_COINS[level-1]||0;
   const nextLevelCoins=LEVEL_COINS[level]||null;
   let pct=nextLevelCoins?Math.min((coins-currentLevelCoins)/(nextLevelCoins-currentLevelCoins)*100,100):100;
-
-  [document.getElementById('coinsVal'),document.getElementById('coinsVal2'),document.getElementById('coinsVal3')].forEach(el=>{if(el)el.textContent=coins.toLocaleString();});
-  [document.getElementById('headerLevel'),document.getElementById('headerLevel2'),document.getElementById('headerLevel3')].forEach(el=>{if(el)el.textContent=`${getLevelEmoji(level)} Level ${level}`;});
+  ['coinsVal','coinsVal2','coinsVal3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=coins.toLocaleString();});
+  ['headerLevel','headerLevel2','headerLevel3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=`${getLevelEmoji(level)} Level ${level}`;});
   document.getElementById('levelBar').style.width=pct+'%';
   document.getElementById('levelProgress').textContent=nextLevelCoins?`${coins.toLocaleString()} / ${nextLevelCoins.toLocaleString()} MitoCoins`:'👑 Maksimum!';
   document.getElementById('levelNext').textContent=nextLevelCoins?`Növbəti: Level ${level+1}`:'';
@@ -404,16 +398,16 @@ function updateUI(){
 
 function showScreen(name){
   document.getElementById('loadingScreen').style.display='none';
-  ['regScreen','gameScreen','giftScreen','lbScreen'].forEach(id=>{
-    document.getElementById(id).className='screen'+(id===name+'Screen'?' active':'');
-  });
-  ['navGame','navGift','navLb'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
-  if(name==='game')document.getElementById('navGame')?.classList.add('active');
-  if(name==='gift'){document.getElementById('navGift')?.classList.add('active');loadGift();}
-  if(name==='leaderboard'){document.getElementById('navLb')?.classList.add('active');renderLB();}
+  document.getElementById('regScreen').className='screen';
+  document.getElementById('gameScreen').className='screen'+(name==='game'?' active':'');
+  document.getElementById('giftScreen').className='screen'+(name==='gift'?' active':'');
+  document.getElementById('lbScreen').className='screen'+(name==='leaderboard'?' active':'');
+  ['navGame','navGift','navLb'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
+  if(name==='game'){document.getElementById('navGame').classList.add('active');}
+  if(name==='gift'){document.getElementById('navGift').classList.add('active');loadGift();}
+  if(name==='leaderboard'){document.getElementById('navLb').classList.add('active');renderLB();}
 }
 
-// HƏDİYYƏ
 async function loadGift(){
   const el=document.getElementById('giftContent');
   el.innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-size:40px">🎁</div><div style="color:rgba(255,255,255,0.3);margin-top:12px">Yüklənir...</div></div>';
@@ -421,16 +415,15 @@ async function loadGift(){
   try{
     const {data}=await db.from('mitofilm_gifts').select('*').eq('is_active',true).order('created_at',{ascending:false}).limit(1);
     const {data:top10}=await db.from('mitofilm_users').select('user_id,name,coins').order('coins',{ascending:false}).limit(10);
-
     if(!data||!data.length){
       el.innerHTML='<div class="no-gift"><div class="no-gift-icon">🎁</div><div class="no-gift-text">Hazırda aktiv hədiyyə yoxdur.<br>Tezliklə əlavə olunacaq!</div></div>';
       return;
     }
-
     const gift=data[0];
     const medals=['🥇','🥈','🥉'];
     const posClass=['p1','p2','p3'];
-
+    const endDate=new Date(gift.ends_at);
+    const dateStr=endDate.toLocaleDateString('az-AZ',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
     el.innerHTML=`
       <div class="gift-card">
         ${gift.image_url?`<img class="gift-img" src="${gift.image_url}" onerror="this.style.display='none'" />`:''}
@@ -440,6 +433,7 @@ async function loadGift(){
           <div class="gift-timer">
             <div class="gift-timer-label">⏰ Müsabiqə bitmənə qalan vaxt</div>
             <div class="gift-timer-val" id="giftTimerVal">--:--:--</div>
+            <div class="gift-deadline">Son tarix: ${dateStr}</div>
           </div>
           <div class="gift-lb-title">🏅 Cari sıralama (ilk 10)</div>
           ${top10&&top10.length?top10.map((p,i)=>`
@@ -450,22 +444,20 @@ async function loadGift(){
             </div>`).join(''):'<div class="gift-empty">Hələ heç kim oynamayıb!</div>'}
         </div>
       </div>`;
-
-    // Taymer
     function updateGiftTimer(){
       const now=new Date();
-      const end=new Date(gift.ends_at);
-      const diff=end-now;
+      const diff=endDate-now;
       if(diff<=0){document.getElementById('giftTimerVal').textContent='BİTDİ';clearInterval(giftTimerInterval);return;}
-      const h=Math.floor(diff/3600000);
+      const days=Math.floor(diff/86400000);
+      const h=Math.floor((diff%86400000)/3600000);
       const m=Math.floor((diff%3600000)/60000);
       const s=Math.floor((diff%60000)/1000);
       document.getElementById('giftTimerVal').textContent=
+        days>0?`${days}g ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:
         `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
     updateGiftTimer();
     giftTimerInterval=setInterval(updateGiftTimer,1000);
-
   }catch(e){el.innerHTML='<div class="no-gift"><div class="no-gift-icon">⚠️</div><div class="no-gift-text">Xəta baş verdi</div></div>';}
 }
 
@@ -474,7 +466,7 @@ async function renderLB(){
   el.innerHTML='<div class="lb-empty">Yüklənir...</div>';
   try{
     const {data,error}=await db.from('mitofilm_users').select('user_id,name,coins,score,level').order('coins',{ascending:false}).limit(20);
-    if(error){el.innerHTML='<div class="lb-empty">Xəta baş verdi</div>';return;}
+    if(error){el.innerHTML=`<div class="lb-empty">Xəta: ${error.message}</div>`;return;}
     const medals=['🥇','🥈','🥉'];
     const cls=['gold','silver','bronze'];
     if(!data||!data.length){el.innerHTML='<div class="lb-empty">Hələ heç kim oynamayıb!</div>';return;}
@@ -491,7 +483,7 @@ async function renderLB(){
         <span class="lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
       </div>`;
     }).join('');
-  }catch(e){el.innerHTML='<div class="lb-empty">Bağlantı xətası</div>';}
+  }catch(e){el.innerHTML=`<div class="lb-empty">Bağlantı xətası: ${e.message}</div>`;}
 }
 
 async function register(){
