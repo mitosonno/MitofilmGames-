@@ -131,9 +131,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
 </style>
 </head>
 <body>
-
 <canvas class="confetti" id="confettiCanvas"></canvas>
-
 <div class="levelup-overlay" id="levelupOverlay">
   <div class="levelup-emoji" id="levelupEmoji">🎬</div>
   <div class="levelup-title" id="luTitle">TƏBRİK EDİRİK!</div>
@@ -141,12 +139,10 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   <div class="levelup-coins" id="levelupCoinsNeeded"></div>
   <button class="levelup-btn" onclick="closeLevelUp()" id="luBtn">🎮 Davam et</button>
 </div>
-
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-icon">🎬</div>
   <div class="loading-text" id="loadingText">Yüklənir...</div>
 </div>
-
 <div id="regScreen" class="screen">
   <div class="reg-wrap">
     <div class="reg-logo">MITOFILM</div>
@@ -169,7 +165,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
   </div>
 </div>
-
 <div id="gameScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -193,7 +188,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   <div class="dots" id="dotsRow"></div>
   <div class="timer-wrap">
     <div class="timer-bar-bg"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
-    <div class="timer-text" id="timerText">15</div>
+    <div class="timer-text" id="timerText">15s</div>
   </div>
   <div id="qBadge" class="q-badge"></div>
   <div class="media-img-wrap">
@@ -206,7 +201,7 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
   </div>
   <div class="options" id="optionsGrid"></div>
   <div class="result-bar" id="resultBar"></div>
-  <button class="next-btn" id="nextBtn" onclick="loadQuestion()">▶</button>
+  <button class="next-btn" id="nextBtn" onclick="loadQuestion()">▶ Növbəti sual</button>
   <button class="reset-btn" onclick="confirmReset()" id="resetBtn">🔄 Sıfırla</button>
   <div style="flex:1"></div>
   <div class="bottom-nav">
@@ -221,7 +216,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
   </div>
 </div>
-
 <div id="giftScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -243,7 +237,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
   </div>
 </div>
-
 <div id="lbScreen" class="screen">
   <div class="header">
     <div class="header-left">
@@ -269,7 +262,6 @@ body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSys
     </div>
   </div>
 </div>
-
 <script>
 const SUPABASE_URL='https://dpvoluttxelwnqcfnsbh.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdm9sdXR0eGVsd25xY2Zuc2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzODQ4MTMsImV4cCI6MjA4ODk2MDgxM30.qodOw68r3OgeQXrr-SnzTDiXI4eI_moD4IWG-Dzj368';
@@ -279,158 +271,22 @@ const TIMER_SEC=15;
 const COINS=100;
 const MAX_LEVEL=10;
 const LEVEL_COINS=[0,1000,2000,3000,5000,7000,9000,11000,14000,17000,20000];
-
-// DİL SİSTEMİ
 const LANGS={
-  az:{
-    code:'az-AZ',
-    regSub:'Kino dünyasının ən böyük oyunu',
-    regTitle:'🎬 Oyuna qoşul',
-    langLabel:'DİL SEÇİN',
-    nameLabel:'ADINIZ',
-    phoneLabel:'TELEFON NÖMRƏSİ',
-    regBtn:'🎮 Oyunu Başlat',
-    loading:'Yüklənir...',
-    navGame:'Oyun',navGift:'Hədiyyə',navLb:'Liderboard',
-    statCorrect:'✅ DÜZGÜN',statWrong:'❌ SƏHV',statTotal:'CƏMİ',
-    nextBtn:'▶ Növbəti sual',
-    resetBtn:'🔄 Hər şeyi sıfırla',
-    resetConfirm:'Bütün xallar sıfırlanacaq. Davam etmək istəyirsiniz?',
-    resetDone:'✅ Sıfırlandı!',
-    luTitle:'TƏBRİK EDİRİK!',luBtn:'🎮 Davam et',
-    maxLevel:'👑 Maksimum level!',nextLevel:'Növbəti level:',
-    lbSub:'Bütün oyunçular · Real vaxt',
-    giftLoading:'Yüklənir...',
-    giftTimerLabel:'⏰ Müsabiqə bitmənə qalan vaxt',
-    giftDeadline:'Son tarix:',
-    giftLbTitle:'🏅 Cari sıralama (ilk 10)',
-    giftEmpty:'Hələ heç kim oynamayıb!',
-    noGift:'Hazırda aktiv hədiyyə yoxdur.\nTezliklə əlavə olunacaq!',
-    giftError:'Xəta baş verdi',
-    lbEmpty:'Hələ heç kim oynamayıb!',
-    lbError:'Xəta baş verdi',
-    correct:'✅ Düzgün!',wrong:'❌ Yanlış!',timeout:'⏰ Vaxt bitti!',
-    correctAnswer:'Düzgün cavab:',
-    streakBonus:'seriya bonusu',
-    total:'Cəmi',streak:'Seriya',
-    qActor:'Bu aktyor kimdir?',
-    qFilm:'Bu filmin adı nədir?',
-    qYear:'filmi hansı ildə çıxıb?',
-    qDirector:'filminin rejissoru kimdir?',
-    qActorFilm:'hansı filmdə baş rol oynamışdır?',
-    qGenre:'filmi hansı janrdadır?',
-    qCountry:'filmi hansı ölkədə çəkilib?',
-    badgeActor:'🎭 Aktyor',badgeFilm:'🎬 Film',badgeYear:'📅 İl',
-    badgeDirector:'🎬 Rejissor',badgeActorFilm:'🎭 Film tap',
-    badgeGenre:'🎭 Janr',badgeCountry:'🌍 Ölkə',
-    genres:{28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'},
-    nextLevelTxt:'Növbəti: Level',
-  },
-  ru:{
-    code:'ru-RU',
-    regSub:'Величайшая киновикторина',
-    regTitle:'🎬 Войти в игру',
-    langLabel:'ВЫБЕРИТЕ ЯЗЫК',
-    nameLabel:'ВАШЕ ИМЯ',
-    phoneLabel:'НОМЕР ТЕЛЕФОНА',
-    regBtn:'🎮 Начать игру',
-    loading:'Загрузка...',
-    navGame:'Игра',navGift:'Приз',navLb:'Рейтинг',
-    statCorrect:'✅ ВЕРНО',statWrong:'❌ ОШИБКА',statTotal:'ВСЕГО',
-    nextBtn:'▶ Следующий вопрос',
-    resetBtn:'🔄 Сбросить всё',
-    resetConfirm:'Все очки будут сброшены. Продолжить?',
-    resetDone:'✅ Сброшено!',
-    luTitle:'ПОЗДРАВЛЯЕМ!',luBtn:'🎮 Продолжить',
-    maxLevel:'👑 Максимальный уровень!',nextLevel:'Следующий уровень:',
-    lbSub:'Все игроки · В реальном времени',
-    giftLoading:'Загрузка...',
-    giftTimerLabel:'⏰ До конца конкурса',
-    giftDeadline:'Дедлайн:',
-    giftLbTitle:'🏅 Текущий рейтинг (топ 10)',
-    giftEmpty:'Ещё никто не играл!',
-    noGift:'Активных призов нет.\nСкоро появится!',
-    giftError:'Произошла ошибка',
-    lbEmpty:'Ещё никто не играл!',
-    lbError:'Ошибка подключения',
-    correct:'✅ Верно!',wrong:'❌ Неверно!',timeout:'⏰ Время вышло!',
-    correctAnswer:'Правильный ответ:',
-    streakBonus:'бонус серии',
-    total:'Итого',streak:'Серия',
-    qActor:'Кто этот актёр?',
-    qFilm:'Как называется этот фильм?',
-    qYear:'В каком году вышел фильм',
-    qDirector:'Кто режиссёр фильма',
-    qActorFilm:'В каком фильме снялся',
-    qGenre:'В каком жанре фильм',
-    qCountry:'В какой стране снят фильм',
-    badgeActor:'🎭 Актёр',badgeFilm:'🎬 Фильм',badgeYear:'📅 Год',
-    badgeDirector:'🎬 Режиссёр',badgeActorFilm:'🎭 Найди фильм',
-    badgeGenre:'🎭 Жанр',badgeCountry:'🌍 Страна',
-    genres:{28:'Боевик',12:'Приключения',16:'Мультфильм',35:'Комедия',80:'Криминал',18:'Драма',10751:'Семейный',14:'Фэнтези',27:'Ужасы',9648:'Детектив',10749:'Романтика',878:'Фантастика',53:'Триллер',10752:'Военный'},
-    nextLevelTxt:'Следующий: Уровень',
-  },
-  en:{
-    code:'en-US',
-    regSub:'The greatest movie quiz',
-    regTitle:'🎬 Join the game',
-    langLabel:'SELECT LANGUAGE',
-    nameLabel:'YOUR NAME',
-    phoneLabel:'PHONE NUMBER',
-    regBtn:'🎮 Start Game',
-    loading:'Loading...',
-    navGame:'Game',navGift:'Prize',navLb:'Leaderboard',
-    statCorrect:'✅ CORRECT',statWrong:'❌ WRONG',statTotal:'TOTAL',
-    nextBtn:'▶ Next question',
-    resetBtn:'🔄 Reset everything',
-    resetConfirm:'All points will be reset. Continue?',
-    resetDone:'✅ Reset done!',
-    luTitle:'CONGRATULATIONS!',luBtn:'🎮 Continue',
-    maxLevel:'👑 Maximum level!',nextLevel:'Next level:',
-    lbSub:'All players · Real time',
-    giftLoading:'Loading...',
-    giftTimerLabel:'⏰ Time until end',
-    giftDeadline:'Deadline:',
-    giftLbTitle:'🏅 Current ranking (top 10)',
-    giftEmpty:'Nobody has played yet!',
-    noGift:'No active prize.\nComing soon!',
-    giftError:'An error occurred',
-    lbEmpty:'Nobody has played yet!',
-    lbError:'Connection error',
-    correct:'✅ Correct!',wrong:'❌ Wrong!',timeout:'⏰ Time is up!',
-    correctAnswer:'Correct answer:',
-    streakBonus:'streak bonus',
-    total:'Total',streak:'Streak',
-    qActor:'Who is this actor?',
-    qFilm:'What is the name of this film?',
-    qYear:'What year was',
-    qDirector:'Who directed',
-    qActorFilm:'Which film did',
-    qGenre:'What genre is',
-    qCountry:'Which country was',
-    badgeActor:'🎭 Actor',badgeFilm:'🎬 Film',badgeYear:'📅 Year',
-    badgeDirector:'🎬 Director',badgeActorFilm:'🎭 Find film',
-    badgeGenre:'🎭 Genre',badgeCountry:'🌍 Country',
-    genres:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',18:'Drama',10751:'Family',14:'Fantasy',27:'Horror',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War'},
-    nextLevelTxt:'Next: Level',
-  }
+  az:{code:'az-AZ',regSub:'Kino dünyasının ən böyük oyunu',regTitle:'🎬 Oyuna qoşul',langLabel:'DİL SEÇİN',nameLabel:'ADINIZ',phoneLabel:'TELEFON NÖMRƏSİ',regBtn:'🎮 Oyunu Başlat',loading:'Yüklənir...',navGame:'Oyun',navGift:'Hədiyyə',navLb:'Liderboard',statCorrect:'✅ DÜZGÜN',statWrong:'❌ SƏHV',statTotal:'CƏMİ',nextBtn:'▶ Növbəti sual',resetBtn:'🔄 Hər şeyi sıfırla',resetConfirm:'Bütün xallar sıfırlanacaq. Davam etmək istəyirsiniz?',resetDone:'✅ Sıfırlandı!',luTitle:'TƏBRİK EDİRİK!',luBtn:'🎮 Davam et',maxLevel:'👑 Maksimum level!',nextLevel:'Növbəti level:',lbSub:'Bütün oyunçular · Real vaxt',giftLoading:'Yüklənir...',giftTimerLabel:'⏰ Müsabiqə bitmənə qalan vaxt',giftDeadline:'Son tarix:',giftLbTitle:'🏅 Cari sıralama (ilk 10)',giftEmpty:'Hələ heç kim oynamayıb!',noGift:'Hazırda aktiv hədiyyə yoxdur.\nTezliklə əlavə olunacaq!',giftError:'Xəta baş verdi',lbEmpty:'Hələ heç kim oynamayıb!',lbError:'Xəta baş verdi',correct:'✅ Düzgün!',wrong:'❌ Yanlış!',timeout:'⏰ Vaxt bitti!',correctAnswer:'Düzgün cavab:',streakBonus:'seriya bonusu',total:'Cəmi',streak:'Seriya',qActor:'Bu aktyor kimdir?',qFilm:'Bu filmin adı nədir?',qYear:'filmi hansı ildə çıxıb?',qDirector:'filminin rejissoru kimdir?',qActorFilm:'hansı filmdə baş rol oynamışdır?',qGenre:'filmi hansı janrdadır?',qCountry:'filmi hansı ölkədə çəkilib?',badgeActor:'🎭 Aktyor',badgeFilm:'🎬 Film',badgeYear:'📅 İl',badgeDirector:'🎬 Rejissor',badgeActorFilm:'🎭 Film tap',badgeGenre:'🎭 Janr',badgeCountry:'🌍 Ölkə',genres:{28:'Ekşn',12:'Macəra',16:'Cizgi film',35:'Komediya',80:'Cinayət',18:'Drama',10751:'Ailə',14:'Fantaziya',27:'Dəhşət',9648:'Sirr',10749:'Romantik',878:'Elmi fantastika',53:'Triller',10752:'Müharibə'},nextLevelTxt:'Növbəti: Level'},
+  ru:{code:'ru-RU',regSub:'Величайшая киновикторина',regTitle:'🎬 Войти в игру',langLabel:'ВЫБЕРИТЕ ЯЗЫК',nameLabel:'ВАШЕ ИМЯ',phoneLabel:'НОМЕР ТЕЛЕФОНА',regBtn:'🎮 Начать игру',loading:'Загрузка...',navGame:'Игра',navGift:'Приз',navLb:'Рейтинг',statCorrect:'✅ ВЕРНО',statWrong:'❌ ОШИБКА',statTotal:'ВСЕГО',nextBtn:'▶ Следующий вопрос',resetBtn:'🔄 Сбросить всё',resetConfirm:'Все очки будут сброшены. Продолжить?',resetDone:'✅ Сброшено!',luTitle:'ПОЗДРАВЛЯЕМ!',luBtn:'🎮 Продолжить',maxLevel:'👑 Максимальный уровень!',nextLevel:'Следующий уровень:',lbSub:'Все игроки · В реальном времени',giftLoading:'Загрузка...',giftTimerLabel:'⏰ До конца конкурса',giftDeadline:'Дедлайн:',giftLbTitle:'🏅 Текущий рейтинг (топ 10)',giftEmpty:'Ещё никто не играл!',noGift:'Активных призов нет.\nСкоро появится!',giftError:'Произошла ошибка',lbEmpty:'Ещё никто не играл!',lbError:'Ошибка подключения',correct:'✅ Верно!',wrong:'❌ Неверно!',timeout:'⏰ Время вышло!',correctAnswer:'Правильный ответ:',streakBonus:'бонус серии',total:'Итого',streak:'Серия',qActor:'Кто этот актёр?',qFilm:'Как называется этот фильм?',qYear:'В каком году вышел фильм',qDirector:'Кто режиссёр фильма',qActorFilm:'В каком фильме снялся',qGenre:'В каком жанре фильм',qCountry:'В какой стране снят фильм',badgeActor:'🎭 Актёр',badgeFilm:'🎬 Фильм',badgeYear:'📅 Год',badgeDirector:'🎬 Режиссёр',badgeActorFilm:'🎭 Найди фильм',badgeGenre:'🎭 Жанр',badgeCountry:'🌍 Страна',genres:{28:'Боевик',12:'Приключения',16:'Мультфильм',35:'Комедия',80:'Криминал',18:'Драма',10751:'Семейный',14:'Фэнтези',27:'Ужасы',9648:'Детектив',10749:'Романтика',878:'Фантастика',53:'Триллер',10752:'Военный'},nextLevelTxt:'Следующий: Уровень'},
+  en:{code:'en-US',regSub:'The greatest movie quiz',regTitle:'🎬 Join the game',langLabel:'SELECT LANGUAGE',nameLabel:'YOUR NAME',phoneLabel:'PHONE NUMBER',regBtn:'🎮 Start Game',loading:'Loading...',navGame:'Game',navGift:'Prize',navLb:'Leaderboard',statCorrect:'✅ CORRECT',statWrong:'❌ WRONG',statTotal:'TOTAL',nextBtn:'▶ Next question',resetBtn:'🔄 Reset everything',resetConfirm:'All points will be reset. Continue?',resetDone:'✅ Reset done!',luTitle:'CONGRATULATIONS!',luBtn:'🎮 Continue',maxLevel:'👑 Maximum level!',nextLevel:'Next level:',lbSub:'All players · Real time',giftLoading:'Loading...',giftTimerLabel:'⏰ Time until end',giftDeadline:'Deadline:',giftLbTitle:'🏅 Current ranking (top 10)',giftEmpty:'Nobody has played yet!',noGift:'No active prize.\nComing soon!',giftError:'An error occurred',lbEmpty:'Nobody has played yet!',lbError:'Connection error',correct:'✅ Correct!',wrong:'❌ Wrong!',timeout:'⏰ Time is up!',correctAnswer:'Correct answer:',streakBonus:'streak bonus',total:'Total',streak:'Streak',qActor:'Who is this actor?',qFilm:'What is the name of this film?',qYear:'What year was',qDirector:'Who directed',qActorFilm:'Which film did',qGenre:'What genre is',qCountry:'Which country was',badgeActor:'🎭 Actor',badgeFilm:'🎬 Film',badgeYear:'📅 Year',badgeDirector:'🎬 Director',badgeActorFilm:'🎭 Find film',badgeGenre:'🎭 Genre',badgeCountry:'🌍 Country',genres:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',18:'Drama',10751:'Family',14:'Fantasy',27:'Horror',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War'},nextLevelTxt:'Next: Level'}
 };
-
 let lang=localStorage.getItem('mf_lang')||'az';
 function t(){return LANGS[lang];}
-
 function setLang(l){
-  lang=l;
-  localStorage.setItem('mf_lang',l);
-  ['az','ru','en'].forEach(x=>document.getElementById('btn'+x.charAt(0).toUpperCase()+x.slice(1))?.classList.remove('active'));
+  lang=l;localStorage.setItem('mf_lang',l);
+  ['Az','Ru','En'].forEach(x=>document.getElementById('btn'+x)?.classList.remove('active'));
   document.getElementById('btn'+l.charAt(0).toUpperCase()+l.slice(1))?.classList.add('active');
   applyLangUI();
 }
-
 function applyLangUI(){
   const L=t();
   const s=(id,txt)=>{const el=document.getElementById(id);if(el)el.textContent=txt;};
-  const p=(id,txt)=>{const el=document.getElementById(id);if(el)el.placeholder=txt;};
   s('regSub',L.regSub);s('regTitle',L.regTitle);s('langLabel',L.langLabel);
   s('nameLabel',L.nameLabel);s('phoneLabel',L.phoneLabel);s('regBtn',L.regBtn);
   s('loadingText',L.loading);
@@ -439,10 +295,8 @@ function applyLangUI(){
   ['navLbLbl','navLbLbl2','navLbLbl3'].forEach(id=>s(id,L.navLb));
   s('statCorrect',L.statCorrect);s('statWrong',L.statWrong);s('statTotal',L.statTotal);
   s('nextBtn',L.nextBtn);s('resetBtn',L.resetBtn);
-  s('luTitle',L.luTitle);s('luBtn',L.luBtn);
-  s('lbSub',L.lbSub);
+  s('luTitle',L.luTitle);s('luBtn',L.luBtn);s('lbSub',L.lbSub);
 }
-
 function getLevelFromCoins(coins){
   let level=1;
   for(let i=1;i<=MAX_LEVEL;i++){if(coins>=LEVEL_COINS[i])level=i+1;else break;}
@@ -452,16 +306,11 @@ function getLevelEmoji(level){
   if(level>=10)return'👑';if(level>=8)return'💎';if(level>=6)return'🌟';
   if(level>=4)return'🏆';if(level>=2)return'🍿';return'🎬';
 }
-
-const {createClient}=supabase;
-const db=createClient(SUPABASE_URL,SUPABASE_KEY);
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 const tgUser=tg?.initDataUnsafe?.user;
-let timerInterval=null;
-let confettiInterval=null;
-let giftTimerInterval=null;
-
+let timerInterval=null,confettiInterval=null,giftTimerInterval=null;
 const st={
   coins:+localStorage.getItem('mf_coins')||0,
   score:+localStorage.getItem('mf_score')||0,
@@ -472,21 +321,13 @@ const st={
   userPhone:localStorage.getItem('mf_phone')||'',
   userId:localStorage.getItem('mf_uid')||(tgUser?.id?String(tgUser.id):'u_'+Math.random().toString(36).slice(2,8))
 };
-
 function isOk(str){
   if(!str||str.length<2)return false;
   if(/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff\u0600-\u06ff]/.test(str))return false;
   return true;
 }
-
 async function saveDB(){
-  try{
-    const level=getLevelFromCoins(st.coins);
-    await db.from('mitofilm_users').upsert(
-      {user_id:st.userId,name:st.userName,phone:st.userPhone,coins:st.coins,score:st.score,streak:st.streak,level},
-      {onConflict:'user_id'}
-    );
-  }catch(e){}
+  try{const level=getLevelFromCoins(st.coins);await db.from('mitofilm_users').upsert({user_id:st.userId,name:st.userName,phone:st.userPhone,coins:st.coins,score:st.score,streak:st.streak,level},{onConflict:'user_id'});}catch(e){}
 }
 function saveLocal(){
   localStorage.setItem('mf_coins',st.coins);localStorage.setItem('mf_score',st.score);
@@ -494,63 +335,31 @@ function saveLocal(){
   localStorage.setItem('mf_uid',st.userId);
 }
 function save(){saveLocal();saveDB();}
-
 function confirmReset(){
-  if(confirm(t().resetConfirm)){
-    st.coins=0;st.score=0;st.wrong=0;st.total=0;st.streak=0;st.history=[];
-    saveLocal();saveDB();updateUI();alert(t().resetDone);
-  }
+  if(confirm(t().resetConfirm)){st.coins=0;st.score=0;st.wrong=0;st.total=0;st.streak=0;st.history=[];saveLocal();saveDB();updateUI();alert(t().resetDone);}
 }
-
 function startConfetti(){
   const canvas=document.getElementById('confettiCanvas');
   canvas.width=window.innerWidth;canvas.height=window.innerHeight;
   const ctx=canvas.getContext('2d');
-  const pieces=Array.from({length:100},()=>({
-    x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,
-    w:Math.random()*12+5,h:Math.random()*6+3,
-    color:['#FFD700','#E2471E','#2ecc71','#3498db','#e91e63','#fff'][Math.floor(Math.random()*6)],
-    rot:Math.random()*360,speed:Math.random()*4+2,rotSpeed:Math.random()*6-3
-  }));
-  confettiInterval=setInterval(()=>{
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pieces.forEach(p=>{
-      p.y+=p.speed;p.rot+=p.rotSpeed;if(p.y>canvas.height)p.y=-20;
-      ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
-    });
-  },16);
+  const pieces=Array.from({length:100},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,w:Math.random()*12+5,h:Math.random()*6+3,color:['#FFD700','#E2471E','#2ecc71','#3498db','#e91e63','#fff'][Math.floor(Math.random()*6)],rot:Math.random()*360,speed:Math.random()*4+2,rotSpeed:Math.random()*6-3}));
+  confettiInterval=setInterval(()=>{ctx.clearRect(0,0,canvas.width,canvas.height);pieces.forEach(p=>{p.y+=p.speed;p.rot+=p.rotSpeed;if(p.y>canvas.height)p.y=-20;ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();});},16);
 }
-function stopConfetti(){
-  clearInterval(confettiInterval);
-  const canvas=document.getElementById('confettiCanvas');
-  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
-}
-
+function stopConfetti(){clearInterval(confettiInterval);const canvas=document.getElementById('confettiCanvas');canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);}
 function showLevelUp(newLevel){
-  const L=t();
-  const emoji=getLevelEmoji(newLevel);
-  const nextCoins=LEVEL_COINS[newLevel]||null;
+  const L=t();const emoji=getLevelEmoji(newLevel);const nextCoins=LEVEL_COINS[newLevel]||null;
   document.getElementById('levelupEmoji').textContent=emoji;
   document.getElementById('levelupNum').textContent=`Level ${newLevel}`;
   document.getElementById('levelupCoinsNeeded').textContent=nextCoins?`${L.nextLevel} ${nextCoins.toLocaleString()} MitoCoins`:L.maxLevel;
   document.getElementById('luTitle').textContent=L.luTitle;
   document.getElementById('luBtn').textContent=L.luBtn;
   document.getElementById('levelupOverlay').className='levelup-overlay show';
-  startConfetti();
-  if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
+  startConfetti();if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
 }
-function closeLevelUp(){
-  document.getElementById('levelupOverlay').className='levelup-overlay';
-  stopConfetti();
-}
-
+function closeLevelUp(){document.getElementById('levelupOverlay').className='levelup-overlay';stopConfetti();}
 function updateUI(){
-  const L=t();
-  const level=getLevelFromCoins(st.coins);
-  const coins=st.coins;
-  const cur=LEVEL_COINS[level-1]||0;
-  const nxt=LEVEL_COINS[level]||null;
+  const L=t();const level=getLevelFromCoins(st.coins);const coins=st.coins;
+  const cur=LEVEL_COINS[level-1]||0;const nxt=LEVEL_COINS[level]||null;
   const pct=nxt?Math.min((coins-cur)/(nxt-cur)*100,100):100;
   ['coinsVal','coinsVal2','coinsVal3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=coins.toLocaleString();});
   ['headerLevel','headerLevel2','headerLevel3'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=`${getLevelEmoji(level)} Level ${level}`;});
@@ -562,7 +371,6 @@ function updateUI(){
   document.getElementById('totalVal').textContent=st.total;
   document.getElementById('dotsRow').innerHTML=st.history.slice(-10).map(h=>`<div class="dot ${h}"></div>`).join('');
 }
-
 function showScreen(name){
   document.getElementById('loadingScreen').style.display='none';
   document.getElementById('regScreen').className='screen';
@@ -574,86 +382,47 @@ function showScreen(name){
   if(name==='gift'){document.getElementById('navGift').classList.add('active');loadGift();}
   if(name==='leaderboard'){document.getElementById('navLb').classList.add('active');renderLB();}
 }
-
 async function loadGift(){
-  const L=t();
-  const el=document.getElementById('giftContent');
+  const L=t();const el=document.getElementById('giftContent');
   el.innerHTML=`<div style="text-align:center;padding:60px 20px"><div style="font-size:40px">🎁</div><div style="color:rgba(255,255,255,0.3);margin-top:12px">${L.giftLoading}</div></div>`;
   clearInterval(giftTimerInterval);
   try{
     const {data}=await db.from('mitofilm_gifts').select('*').eq('is_active',true).order('created_at',{ascending:false}).limit(1);
     const {data:top10}=await db.from('mitofilm_users').select('user_id,name,coins').order('coins',{ascending:false}).limit(10);
-    if(!data||!data.length){
-      el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">🎁</div><div class="no-gift-text">${L.noGift}</div></div>`;
-      return;
-    }
-    const gift=data[0];
-    const medals=['🥇','🥈','🥉'];
-    const posClass=['p1','p2','p3'];
+    if(!data||!data.length){el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">🎁</div><div class="no-gift-text">${L.noGift}</div></div>`;return;}
+    const gift=data[0];const medals=['🥇','🥈','🥉'];const posClass=['p1','p2','p3'];
     const endDate=new Date(gift.ends_at);
-    const dateStr=endDate.toLocaleDateString(L.code==='az-AZ'?'az-AZ':L.code==='ru-RU'?'ru-RU':'en-US',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    el.innerHTML=`
-      <div class="gift-card">
-        ${gift.image_url?`<img class="gift-img" src="${gift.image_url}" onerror="this.style.display='none'" />`:''}
-        <div class="gift-body">
-          <div class="gift-title">🏆 ${gift.title}</div>
-          ${gift.description?`<div class="gift-desc">${gift.description}</div>`:''}
-          <div class="gift-timer">
-            <div class="gift-timer-label">${L.giftTimerLabel}</div>
-            <div class="gift-timer-val" id="giftTimerVal">--:--:--</div>
-            <div class="gift-deadline">${L.giftDeadline} ${dateStr}</div>
-          </div>
-          <div class="gift-lb-title">${L.giftLbTitle}</div>
-          ${top10&&top10.length?top10.map((p,i)=>`
-            <div class="gift-lb-item ${i<3?posClass[i]:''}">
-              <span class="gift-lb-rank">${i<3?medals[i]:i+1}</span>
-              <span class="gift-lb-name">${p.name}${p.user_id===st.userId?' 👈':''}</span>
-              <span class="gift-lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
-            </div>`).join(''):`<div class="gift-empty">${L.giftEmpty}</div>`}
-        </div>
-      </div>`;
+    const dateStr=endDate.toLocaleDateString(L.code,{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    el.innerHTML=`<div class="gift-card">${gift.image_url?`<img class="gift-img" src="${gift.image_url}" onerror="this.style.display='none'" />`:''}
+      <div class="gift-body"><div class="gift-title">🏆 ${gift.title}</div>${gift.description?`<div class="gift-desc">${gift.description}</div>`:''}
+      <div class="gift-timer"><div class="gift-timer-label">${L.giftTimerLabel}</div><div class="gift-timer-val" id="giftTimerVal">--:--:--</div><div class="gift-deadline">${L.giftDeadline} ${dateStr}</div></div>
+      <div class="gift-lb-title">${L.giftLbTitle}</div>
+      ${top10&&top10.length?top10.map((p,i)=>`<div class="gift-lb-item ${i<3?posClass[i]:''}"><span class="gift-lb-rank">${i<3?medals[i]:i+1}</span><span class="gift-lb-name">${p.name}${p.user_id===st.userId?' 👈':''}</span><span class="gift-lb-coins">${(p.coins||0).toLocaleString()} 🪙</span></div>`).join(''):`<div class="gift-empty">${L.giftEmpty}</div>`}
+      </div></div>`;
     function updateGiftTimer(){
       const now=new Date();const diff=endDate-now;
       if(diff<=0){document.getElementById('giftTimerVal').textContent='BİTDİ';clearInterval(giftTimerInterval);return;}
-      const days=Math.floor(diff/86400000);
-      const h=Math.floor((diff%86400000)/3600000);
-      const m=Math.floor((diff%3600000)/60000);
-      const s=Math.floor((diff%60000)/1000);
-      document.getElementById('giftTimerVal').textContent=
-        days>0?`${days}g ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:
-        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const days=Math.floor(diff/86400000);const h=Math.floor((diff%86400000)/3600000);const m=Math.floor((diff%3600000)/60000);const s=Math.floor((diff%60000)/1000);
+      document.getElementById('giftTimerVal').textContent=days>0?`${days}g ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
     updateGiftTimer();giftTimerInterval=setInterval(updateGiftTimer,1000);
   }catch(e){el.innerHTML=`<div class="no-gift"><div class="no-gift-icon">⚠️</div><div class="no-gift-text">${t().giftError}</div></div>`;}
 }
-
 async function renderLB(){
-  const L=t();
-  const el=document.getElementById('lbList');
+  const L=t();const el=document.getElementById('lbList');
   el.innerHTML=`<div class="lb-empty">${L.giftLoading}</div>`;
   try{
     const {data,error}=await db.from('mitofilm_users').select('user_id,name,coins,score,level').order('coins',{ascending:false}).limit(20);
     if(error){el.innerHTML=`<div class="lb-empty">${L.lbError}</div>`;return;}
     const medals=['🥇','🥈','🥉'];const cls=['gold','silver','bronze'];
     if(!data||!data.length){el.innerHTML=`<div class="lb-empty">${L.lbEmpty}</div>`;return;}
-    el.innerHTML=data.map((p,i)=>{
-      const lvl=getLevelFromCoins(p.coins||0);const isMe=p.user_id===st.userId;
-      return`<div class="lb-item ${i<3?cls[i]:''} ${isMe?'me':''}">
-        <span class="lb-rank">${i<3?medals[i]:i+1}</span>
-        <div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div>
-        <div class="lb-info">
-          <div class="lb-name">${p.name}${isMe?' 👈':''}</div>
-          <div class="lb-level">${getLevelEmoji(lvl)} Level ${lvl}</div>
-        </div>
-        <span class="lb-coins">${(p.coins||0).toLocaleString()} 🪙</span>
-      </div>`;
+    el.innerHTML=data.map((p,i)=>{const lvl=getLevelFromCoins(p.coins||0);const isMe=p.user_id===st.userId;
+      return`<div class="lb-item ${i<3?cls[i]:''} ${isMe?'me':''}"><span class="lb-rank">${i<3?medals[i]:i+1}</span><div class="lb-avatar">${(p.name||'?').slice(0,2).toUpperCase()}</div><div class="lb-info"><div class="lb-name">${p.name}${isMe?' 👈':''}</div><div class="lb-level">${getLevelEmoji(lvl)} Level ${lvl}</div></div><span class="lb-coins">${(p.coins||0).toLocaleString()} 🪙</span></div>`;
     }).join('');
   }catch(e){el.innerHTML=`<div class="lb-empty">${t().lbError}</div>`;}
 }
-
 async function register(){
-  const name=document.getElementById('regName').value.trim();
-  const phone=document.getElementById('regPhone').value.trim();
+  const name=document.getElementById('regName').value.trim();const phone=document.getElementById('regPhone').value.trim();
   if(!name||name.length<2){alert(t().nameLabel+' !');return;}
   if(!phone||phone.length<6){alert(t().phoneLabel+' !');return;}
   st.userName=name;st.userPhone=phone;
@@ -663,53 +432,27 @@ async function register(){
   document.getElementById('loadingScreen').style.display='flex';
   loadQuestion();
 }
-
 function startTimer(){
-  clearInterval(timerInterval);
-  let tLeft=TIMER_SEC;
+  clearInterval(timerInterval);let tLeft=TIMER_SEC;
   const bar=document.getElementById('timerBar');const txt=document.getElementById('timerText');
-  bar.style.background='#E2471E';bar.style.width='100%';
-  txt.className='timer-text';txt.textContent=`${tLeft}s`;
-  timerInterval=setInterval(()=>{
-    tLeft--;
-    bar.style.width=(tLeft/TIMER_SEC*100)+'%';txt.textContent=`${tLeft}s`;
-    if(tLeft<=5){bar.style.background='#e74c3c';txt.className='timer-text urgent';}
-    if(tLeft<=0){clearInterval(timerInterval);timeOut();}
-  },1000);
+  bar.style.background='#E2471E';bar.style.width='100%';txt.className='timer-text';txt.textContent=`${tLeft}s`;
+  timerInterval=setInterval(()=>{tLeft--;bar.style.width=(tLeft/TIMER_SEC*100)+'%';txt.textContent=`${tLeft}s`;if(tLeft<=5){bar.style.background='#e74c3c';txt.className='timer-text urgent';}if(tLeft<=0){clearInterval(timerInterval);timeOut();}},1000);
 }
-
 function timeOut(){
-  if(st.answered)return;
-  st.answered=true;st.total++;
-  st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
-  document.querySelectorAll('.opt-btn').forEach(b=>{
-    b.disabled=true;if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');
-  });
+  if(st.answered)return;st.answered=true;st.total++;st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
+  document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;if(b.textContent.trim()===st.current.correct)b.classList.add('reveal');});
   document.getElementById('resultBar').className='result-bar wrong';
   document.getElementById('resultBar').innerHTML=`${t().timeout} -${COINS} MitoCoins<br><small>${t().correctAnswer} <b>${st.current.correct}</b></small>`;
-  document.getElementById('nextBtn').style.display='block';
-  updateUI();save();
+  document.getElementById('nextBtn').style.display='block';updateUI();save();
 }
-
-async function apiCall(url,langCode){
-  const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${langCode||t().code}`);
-  return r.json();
-}
+async function apiCall(url,langCode){const r=await fetch(`${BASE}${url}&api_key=${TMDB}&language=${langCode||t().code}`);return r.json();}
 function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
-
-// Reytinq sualı silindi — yalnız 6 növ
 const qTypes=['actor_face','movie_poster','movie_year','movie_director','actor_known_for','movie_genre','movie_country'];
-
 async function loadQuestion(){
   st.answered=false;clearInterval(timerInterval);
-  document.getElementById('resultBar').className='result-bar';
-  document.getElementById('nextBtn').style.display='none';
-  document.getElementById('optionsGrid').innerHTML='';
-  document.getElementById('mediaImg').style.display='none';
-  document.getElementById('noImg').style.display='none';
-  document.getElementById('timerBar').style.width='100%';
-  document.getElementById('timerText').textContent=`${TIMER_SEC}s`;
-  document.getElementById('timerText').className='timer-text';
+  document.getElementById('resultBar').className='result-bar';document.getElementById('nextBtn').style.display='none';
+  document.getElementById('optionsGrid').innerHTML='';document.getElementById('mediaImg').style.display='none';document.getElementById('noImg').style.display='none';
+  document.getElementById('timerBar').style.width='100%';document.getElementById('timerText').textContent=`${TIMER_SEC}s`;document.getElementById('timerText').className='timer-text';
   const type=qTypes[Math.floor(Math.random()*qTypes.length)];
   try{
     if(type==='actor_face')await qActorFace();
@@ -722,137 +465,98 @@ async function loadQuestion(){
   }catch(e){console.error(e);setTimeout(loadQuestion,1000);return;}
   showScreen('game');startTimer();
 }
-
-async function getActors(){
-  const d=await apiCall(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);
-  return shuffle((d.results||[]).filter(p=>p.profile_path&&isOk(p.name)));
-}
-async function getMovies(){
-  const eps=['/movie/popular','/movie/top_rated','/movie/now_playing'];
-  const d=await apiCall(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);
-  return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isOk(m.title||'')));
-}
-
+async function getActors(){const d=await apiCall(`/person/popular?page=${Math.floor(Math.random()*20)+1}`);return shuffle((d.results||[]).filter(p=>p.profile_path&&isOk(p.name)));}
+async function getMovies(){const eps=['/movie/popular','/movie/top_rated','/movie/now_playing'];const d=await apiCall(`${eps[Math.floor(Math.random()*eps.length)]}?page=${Math.floor(Math.random()*8)+1}`);return shuffle((d.results||[]).filter(m=>m.poster_path&&m.release_date&&isOk(m.title||'')));}
 async function qActorFace(){
-  const L=t();
-  const list=await getActors();
-  if(list.length<4)return qActorFace();
-  const actor=list[0];
-  const gender=actor.gender;
+  const L=t();const list=await getActors();if(list.length<4)return qActorFace();
+  const actor=list[0];const gender=actor.gender;
   const same=list.filter(a=>a.id!==actor.id&&(gender===0||a.gender===gender||a.gender===0));
   const wrong=(same.length>=3?same:list.filter(a=>a.id!==actor.id)).slice(0,3).map(a=>a.name);
   if(wrong.length<3)return qActorFace();
   setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:L.badgeActor,question:L.qActor,sub:'',opts:shuffle([actor.name,...wrong]),correct:actor.name,isActor:true});
 }
-
 async function qMoviePoster(){
-  const L=t();
-  const list=await getMovies();
-  if(list.length<4)return qMoviePoster();
+  const L=t();const list=await getMovies();if(list.length<4)return qMoviePoster();
   const movie=list[0];
-  // Fərqli səhifədən yanlış variantlar çək ki eyni film çıxmasın
   const otherPage=await apiCall(`/movie/popular?page=${Math.floor(Math.random()*8)+1}`);
   const others=shuffle((otherPage.results||[]).filter(m=>m.id!==movie.id&&isOk(m.title||'')&&m.title!==movie.title));
   if(others.length<3)return qMoviePoster();
   const wrong=others.slice(0,3).map(m=>m.title);
   setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeFilm,question:L.qFilm,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([movie.title,...wrong]),correct:movie.title,isActor:false});
 }
-
 async function qMovieYear(){
-  const L=t();
-  const list=await getMovies();
-  if(!list.length)return qMovieYear();
-  const movie=list[0];
-  const year=movie.release_date.slice(0,4);
-  const wy=new Set();
-  while(wy.size<3){const y=String(parseInt(year)+(Math.floor(Math.random()*10)-5));if(y!==year&&parseInt(y)>1950&&parseInt(y)<=2025)wy.add(y);}
+  const L=t();const list=await getMovies();if(!list.length)return qMovieYear();
+  const movie=list[0];const year=movie.release_date.slice(0,4);
+  const wy=new Set();while(wy.size<3){const y=String(parseInt(year)+(Math.floor(Math.random()*10)-5));if(y!==year&&parseInt(y)>1950&&parseInt(y)<=2025)wy.add(y);}
   setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeYear,question:`"${movie.title}" ${L.qYear}?`,sub:`${movie.vote_average?.toFixed(1)}⭐`,opts:shuffle([year,...wy]),correct:year,isActor:false});
 }
-
 async function qMovieDirector(){
-  const L=t();
-  const list=await getMovies();
-  if(!list.length)return qMovieDirector();
-  const movie=list[0];
-  const credits=await apiCall(`/movie/${movie.id}/credits?`,'en-US');
-  const dir=(credits.crew||[]).find(c=>c.job==='Director'&&isOk(c.name));
-  if(!dir)return qMovieDirector();
-  const actors=await getActors();
-  const wrong=actors.slice(0,3).map(a=>a.name).filter(n=>n!==dir.name);
-  if(wrong.length<3)return qMovieDirector();
+  const L=t();const list=await getMovies();if(!list.length)return qMovieDirector();
+  const movie=list[0];const credits=await apiCall(`/movie/${movie.id}/credits?`,'en-US');
+  const dir=(credits.crew||[]).find(c=>c.job==='Director'&&isOk(c.name));if(!dir)return qMovieDirector();
+  const actors=await getActors();const wrong=actors.slice(0,3).map(a=>a.name).filter(n=>n!==dir.name);if(wrong.length<3)return qMovieDirector();
   setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeDirector,question:`"${movie.title}" ${L.qDirector}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([dir.name,...wrong.slice(0,3)]),correct:dir.name,isActor:false});
 }
-
 async function qActorKnownFor(){
-  const L=t();
-  const list=await getActors();
-  if(!list.length)return qActorKnownFor();
-  const actor=list[0];
-  const films=(actor.known_for||[]).filter(f=>(f.title||f.name)&&isOk(f.title||f.name));
-  if(!films.length)return qActorKnownFor();
+  const L=t();const list=await getActors();if(!list.length)return qActorKnownFor();
+  const actor=list[0];const films=(actor.known_for||[]).filter(f=>(f.title||f.name)&&isOk(f.title||f.name));if(!films.length)return qActorKnownFor();
   const correct=films[0].title||films[0].name;
-  // Fərqli səhifədən yanlış film adları çək
   const otherPage=await apiCall(`/movie/popular?page=${Math.floor(Math.random()*8)+2}`);
-  const others=shuffle((otherPage.results||[]).filter(m=>m.title!==correct&&isOk(m.title||'')));
-  if(others.length<3)return qActorKnownFor();
+  const others=shuffle((otherPage.results||[]).filter(m=>m.title!==correct&&isOk(m.title||'')));if(others.length<3)return qActorKnownFor();
   const wrong=others.slice(0,3).map(m=>m.title);
   setCard({img:`https://image.tmdb.org/t/p/h632${actor.profile_path}`,badge:L.badgeActorFilm,question:`${actor.name} ${L.qActorFilm}?`,sub:'',opts:shuffle([correct,...wrong]),correct,isActor:true});
 }
-
 async function qMovieGenre(){
-  const L=t();
-  const genres=L.genres;
-  const list=await getMovies();
-  const movie=list.find(m=>m.genre_ids&&m.genre_ids.length>0&&genres[m.genre_ids[0]]);
-  if(!movie)return qMovieGenre();
-  const cg=genres[movie.genre_ids[0]];
-  const wg=shuffle(Object.values(genres).filter(g=>g!==cg)).slice(0,3);
+  const L=t();const genres=L.genres;const list=await getMovies();
+  const movie=list.find(m=>m.genre_ids&&m.genre_ids.length>0&&genres[m.genre_ids[0]]);if(!movie)return qMovieGenre();
+  const cg=genres[movie.genre_ids[0]];const wg=shuffle(Object.values(genres).filter(g=>g!==cg)).slice(0,3);
   setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeGenre,question:`"${movie.title}" ${L.qGenre}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([cg,...wg]),correct:cg,isActor:false});
 }
-
 async function qMovieCountry(){
-  const L=t();
-  const list=await getMovies();
-  if(!list.length)return qMovieCountry();
-  const movie=list[0];
-  const detail=await apiCall(`/movie/${movie.id}?`);
-  const countries=detail.production_countries||[];
-  if(!countries.length)return qMovieCountry();
-  const correct=countries[0].name;
-  if(!isOk(correct))return qMovieCountry();
+  const L=t();const list=await getMovies();if(!list.length)return qMovieCountry();
+  const movie=list[0];const detail=await apiCall(`/movie/${movie.id}?`);
+  const countries=detail.production_countries||[];if(!countries.length)return qMovieCountry();
+  const correct=countries[0].name;if(!isOk(correct))return qMovieCountry();
   const wl=['United States of America','United Kingdom','France','Germany','Japan','South Korea','Italy','Spain','Canada','Australia','India','China'].filter(c=>c!==correct);
   setCard({img:`https://image.tmdb.org/t/p/w500${movie.poster_path}`,badge:L.badgeCountry,question:`"${movie.title}" ${L.qCountry}?`,sub:movie.release_date?.slice(0,4)||'',opts:shuffle([correct,...shuffle(wl).slice(0,3)]),correct,isActor:false});
 }
-
 function setCard({img,badge,question,sub,opts,correct,isActor}){
   st.current={correct};
-  document.getElementById('qBadge').textContent=badge;
-  document.getElementById('cardQ').textContent=question;
-  document.getElementById('cardSub').textContent=sub;
-  const imgEl=document.getElementById('mediaImg');
-  const noImg=document.getElementById('noImg');
+  document.getElementById('qBadge').textContent=badge;document.getElementById('cardQ').textContent=question;document.getElementById('cardSub').textContent=sub;
+  const imgEl=document.getElementById('mediaImg');const noImg=document.getElementById('noImg');
   imgEl.className='media-img '+(isActor?'actor':'poster');
-  if(img){
-    imgEl.style.display='none';
-    imgEl.onload=()=>{imgEl.style.display='block';noImg.style.display='none';};
-    imgEl.onerror=()=>{imgEl.style.display='none';noImg.style.display='flex';};
-    imgEl.src=img;
-  }else{imgEl.style.display='none';noImg.style.display='flex';}
+  if(img){imgEl.style.display='none';imgEl.onload=()=>{imgEl.style.display='block';noImg.style.display='none';};imgEl.onerror=()=>{imgEl.style.display='none';noImg.style.display='flex';};imgEl.src=img;}
+  else{imgEl.style.display='none';noImg.style.display='flex';}
   document.getElementById('optionsGrid').innerHTML=opts.map(o=>`<button class="opt-btn" onclick="answer(this,'${String(o).replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${o}</button>`).join('');
 }
-
 function answer(btn,chosen){
-  if(st.answered)return;
-  st.answered=true;st.total++;clearInterval(timerInterval);
-  const L=t();
-  const correct=st.current.correct;
-  const isCorrect=String(chosen)===String(correct);
+  if(st.answered)return;st.answered=true;st.total++;clearInterval(timerInterval);
+  const L=t();const correct=st.current.correct;const isCorrect=String(chosen)===String(correct);
   const prevLevel=getLevelFromCoins(st.coins);
-  document.querySelectorAll('.opt-btn').forEach(b=>{
-    b.disabled=true;if(b.textContent.trim()===String(correct))b.classList.add('reveal');
-  });
+  document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;if(b.textContent.trim()===String(correct))b.classList.add('reveal');});
   const result=document.getElementById('resultBar');
   if(isCorrect){
-    btn.classList.add('correct');
-    const bonus=st.streak>=2?Math.min(st.streak*10,50):0;
-    st.coins+=COINS+bonus;st.score++;st.streak++;st.history
+    btn.classList.add('correct');const bonus=st.streak>=2?Math.min(st.streak*10,50):0;
+    st.coins+=COINS+bonus;st.score++;st.streak++;st.history.push('ok');
+    const newLevel=getLevelFromCoins(st.coins);if(newLevel>prevLevel)setTimeout(()=>showLevelUp(newLevel),500);
+    result.className='result-bar correct';
+    result.innerHTML=`${L.correct} +${COINS}${bonus>0?` +${bonus} ${L.streakBonus}`:''} MitoCoins<br><small>🔥 ${L.streak}: ${st.streak} · ${L.total}: ${st.coins.toLocaleString()} MitoCoins</small>`;
+  }else{
+    btn.classList.add('wrong');st.coins=Math.max(0,st.coins-COINS);st.wrong++;st.streak=0;st.history.push('bad');
+    result.className='result-bar wrong';
+    result.innerHTML=`${L.wrong} -${COINS} MitoCoins<br><small>${L.correctAnswer} <b>${correct}</b></small>`;
+  }
+  document.getElementById('nextBtn').style.display='block';updateUI();save();
+}
+setLang(lang);applyLangUI();
+document.getElementById('loadingScreen').style.display='none';
+if(!st.userName||!st.userPhone){
+  if(tgUser?.first_name)document.getElementById('regName').value=tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'');
+  document.getElementById('regScreen').className='screen active';
+}else{
+  document.getElementById('loadingScreen').style.display='flex';loadQuestion();
+}
+updateUI();
+</script>
+</body>
+</html>
