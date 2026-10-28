@@ -16,13 +16,13 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: `🎬 <b>Salam, ${firstName}!</b>\n\nAşağıdakı düyməyə bas və oyna! 🚀`,
+        text: `<b>Salam, ${firstName}!</b>\n\nMitoGame — MitoClub-un kino viktorinası. Oyna, klub xalı və hədiyyələr qazan.`,
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [[
             {
-              text: '🎮 Oyunu Başlat',
-              web_app: { url: 'https://mitofilm-games.vercel.app/game' }
+              text: 'MitoGame-i aç',
+              web_app: { url: 'https://mitofilm.az/?go=game' }
             }
           ]]
         }

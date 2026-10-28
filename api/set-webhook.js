@@ -9,8 +9,8 @@ export default async function handler(req, res) {
     body: JSON.stringify({
       menu_button: {
         type: 'web_app',
-        text: '🎮 Oyna Başla',
-        web_app: { url: 'https://mitofilm-games.vercel.app/game' }
+        text: 'MitoGame',
+        web_app: { url: 'https://mitofilm.az/?go=game' }
       }
     })
   });
